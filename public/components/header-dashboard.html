@@ -1,78 +1,80 @@
 <!-- Header Dashboard Component - For authenticated users -->
 <header class="dashboard-header">
-    <div class="dashboard-nav">
-        <div class="dashboard-nav-left">
-            <a href="/pages/dashboard/dashboard.html" class="dashboard-brand">
-                <span class="brand-icon">🇹🇼</span>
-                <span class="brand-text">Học Tiếng Đài Loan</span>
-            </a>
-        </div>
-
-        <div class="dashboard-nav-right">
-            <!-- Search (hidden on mobile) -->
-            <div class="dashboard-search">
-                <i class="fas fa-search"></i>
-                <input type="text" placeholder="Tìm kiếm từ vựng..." id="dashboardSearchInput">
+    <div class="container-fluid">
+        <div class="dashboard-nav">
+            <div class="dashboard-nav-left">
+                <a href="/pages/dashboard/dashboard.html" class="dashboard-brand">
+                    <span class="brand-icon">🇹🇼</span>
+                    <span class="brand-text d-none d-md-inline">Học Tiếng Đài Loan</span>
+                </a>
             </div>
 
-            <!-- Notifications -->
-            <div class="dashboard-dropdown">
-                <button class="dashboard-icon-btn" id="notificationBtn" aria-label="Notifications">
-                    <i class="fas fa-bell"></i>
-                    <span class="badge" style="display: none;">0</span>
-                </button>
-                <div class="dashboard-dropdown-menu" id="notificationMenu">
-                    <div class="dropdown-header">
-                        <h4>Thông báo</h4>
-                    </div>
-                    <div class="dropdown-body">
-                        <div class="notification-loading">
-                            <i class="fas fa-spinner fa-spin"></i>
-                            <p>Đang tải...</p>
+            <div class="dashboard-nav-right d-flex align-items-center gap-2 gap-md-3">
+                <!-- Search (hidden on mobile) -->
+                <div class="dashboard-search d-none d-md-flex">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Tìm kiếm từ vựng..." id="dashboardSearchInput">
+                </div>
+
+                <!-- Notifications -->
+                <div class="dashboard-dropdown">
+                    <button class="dashboard-icon-btn" id="notificationBtn" aria-label="Notifications">
+                        <i class="fas fa-bell"></i>
+                        <span class="badge" style="display: none;">0</span>
+                    </button>
+                    <div class="dashboard-dropdown-menu" id="notificationMenu">
+                        <div class="dropdown-header">
+                            <h4>Thông báo</h4>
                         </div>
-                    </div>
-                    <div class="dropdown-footer">
-                        <a href="/pages/dashboard/notifications.html">Xem tất cả</a>
+                        <div class="dropdown-body">
+                            <div class="notification-loading">
+                                <i class="fas fa-spinner fa-spin"></i>
+                                <p>Đang tải...</p>
+                            </div>
+                        </div>
+                        <div class="dropdown-footer">
+                            <a href="/pages/dashboard/notifications.html">Xem tất cả</a>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- User Menu -->
-            <div class="dashboard-dropdown">
-                <button class="dashboard-user-btn" id="userMenuBtn" aria-label="User menu">
-                    <img src="https://ui-avatars.com/api/?name=User&background=667eea&color=fff" alt="User" class="user-avatar" id="userAvatar">
-                    <span class="user-name" id="userName">Loading...</span>
-                    <i class="fas fa-chevron-down"></i>
-                </button>
-                <div class="dashboard-dropdown-menu" id="userMenu">
-                    <div class="dropdown-header user-profile">
-                        <img src="https://ui-avatars.com/api/?name=User&background=667eea&color=fff" alt="User" id="userMenuAvatar">
-                        <div class="user-info">
-                            <div class="user-info-name" id="userMenuName">User</div>
-                            <div class="user-info-email" id="userMenuEmail">user@example.com</div>
+                <!-- User Menu -->
+                <div class="dashboard-dropdown">
+                    <button class="dashboard-user-btn" id="userMenuBtn" aria-label="User menu">
+                        <img src="https://ui-avatars.com/api/?name=User&background=667eea&color=fff" alt="User" class="user-avatar" id="userAvatar">
+                        <span class="user-name d-none d-md-inline" id="userName">Loading...</span>
+                        <i class="fas fa-chevron-down d-none d-md-inline"></i>
+                    </button>
+                    <div class="dashboard-dropdown-menu" id="userMenu">
+                        <div class="dropdown-header user-profile">
+                            <img src="https://ui-avatars.com/api/?name=User&background=667eea&color=fff" alt="User" id="userMenuAvatar">
+                            <div class="user-info">
+                                <div class="user-info-name" id="userMenuName">User</div>
+                                <div class="user-info-email" id="userMenuEmail">user@example.com</div>
+                            </div>
                         </div>
-                    </div>
-                    <div class="dropdown-divider"></div>
-                    <div class="dropdown-body">
-                        <a href="/pages/dashboard/profile.html" class="dropdown-item">
-                            <i class="fas fa-user"></i>
-                            <span>Hồ sơ</span>
-                        </a>
-                        <a href="/pages/dashboard/settings.html" class="dropdown-item">
-                            <i class="fas fa-cog"></i>
-                            <span>Cài đặt</span>
-                        </a>
-                        <a href="/pages/dashboard/achievements.html" class="dropdown-item">
-                            <i class="fas fa-trophy"></i>
-                            <span>Thành tích</span>
-                        </a>
-                    </div>
-                    <div class="dropdown-divider"></div>
-                    <div class="dropdown-body">
-                        <a href="#" class="dropdown-item logout-btn" id="logoutBtn">
-                            <i class="fas fa-sign-out-alt"></i>
-                            <span>Đăng xuất</span>
-                        </a>
+                        <div class="dropdown-divider"></div>
+                        <div class="dropdown-body">
+                            <a href="/pages/dashboard/profile.html" class="dropdown-item">
+                                <i class="fas fa-user"></i>
+                                <span>Hồ sơ</span>
+                            </a>
+                            <a href="/pages/dashboard/settings.html" class="dropdown-item">
+                                <i class="fas fa-cog"></i>
+                                <span>Cài đặt</span>
+                            </a>
+                            <a href="/pages/dashboard/achievements.html" class="dropdown-item">
+                                <i class="fas fa-trophy"></i>
+                                <span>Thành tích</span>
+                            </a>
+                        </div>
+                        <div class="dropdown-divider"></div>
+                        <div class="dropdown-body">
+                            <a href="#" class="dropdown-item logout-btn" id="logoutBtn">
+                                <i class="fas fa-sign-out-alt"></i>
+                                <span>Đăng xuất</span>
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>

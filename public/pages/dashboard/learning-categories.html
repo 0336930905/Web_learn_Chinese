@@ -115,9 +115,7 @@
 
         /* Categories Grid - Matching Dashboard Features Grid */
         .categories-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 1.5rem;
+            /* display: grid; removed for bootstrap */
             margin-bottom: 2rem;
         }
 
@@ -129,6 +127,7 @@
             transition: all 0.3s ease;
             border: 2px solid transparent;
             cursor: pointer;
+            height: 100%; /* Ensure full height in row */
         }
 
         .category-card:hover {
@@ -409,7 +408,7 @@
         </section>
 
         <!-- Categories Grid -->
-        <div id="categoriesGrid" class="categories-grid">
+        <div id="categoriesGrid" class="categories-grid row g-4">
             <div class="loading">
                 <div class="spinner-border" role="status">
                     <span class="visually-hidden">Đang tải...</span>
@@ -732,38 +731,40 @@
                 const ownerBadge = !selectedAdmin && isOwner ? '<span class="badge bg-light text-dark ms-2" style="font-size: 0.7rem;">Của tôi</span>' : '';
 
                 return `
-                    <div class="category-card" onclick="startLearning('${category.slug}', '${escapeHtml(category.name)}')">
-                        <div class="category-header ${gradient}">
-                            <div class="category-icon">
-                                ${category.icon || '📚'}
+                    <div class="col-12 col-md-6 col-lg-4">
+                        <div class="category-card" onclick="startLearning('${category.slug}', '${escapeHtml(category.name)}')">
+                            <div class="category-header ${gradient}">
+                                <div class="category-icon">
+                                    ${category.icon || '📚'}
+                                </div>
+                                <h3 class="category-name">${escapeHtml(category.name)}</h3>
+                                <div class="text-center mt-2">${ownerBadge}</div>
                             </div>
-                            <h3 class="category-name">${escapeHtml(category.name)}</h3>
-                            <div class="text-center mt-2">${ownerBadge}</div>
-                        </div>
-                        <div class="category-body">
-                            <div class="category-stats">
-                                <div class="stat-item">
-                                    <div class="stat-value">${totalWords}</div>
-                                    <div class="stat-label">Tổng từ</div>
+                            <div class="category-body">
+                                <div class="category-stats">
+                                    <div class="stat-item">
+                                        <div class="stat-value">${totalWords}</div>
+                                        <div class="stat-label">Tổng từ</div>
+                                    </div>
+                                    <div class="stat-item">
+                                        <div class="stat-value text-success">${learnedWords}</div>
+                                        <div class="stat-label">Đã học</div>
+                                    </div>
                                 </div>
-                                <div class="stat-item">
-                                    <div class="stat-value text-success">${learnedWords}</div>
-                                    <div class="stat-label">Đã học</div>
+                                <div class="progress-section">
+                                    <div class="progress-label">
+                                        <span>Tiến độ</span>
+                                        <span>${progressPercent}%</span>
+                                    </div>
+                                    <div class="progress-bar-custom">
+                                        <div class="progress-fill" style="width: ${progressPercent}%"></div>
+                                    </div>
                                 </div>
+                                <button class="btn-start-learning">
+                                    <i class="fas fa-play-circle"></i>
+                                    Bắt đầu học
+                                </button>
                             </div>
-                            <div class="progress-section">
-                                <div class="progress-label">
-                                    <span>Tiến độ</span>
-                                    <span>${progressPercent}%</span>
-                                </div>
-                                <div class="progress-bar-custom">
-                                    <div class="progress-fill" style="width: ${progressPercent}%"></div>
-                                </div>
-                            </div>
-                            <button class="btn-start-learning">
-                                <i class="fas fa-play-circle"></i>
-                                Bắt đầu học
-                            </button>
                         </div>
                     </div>
                 `;

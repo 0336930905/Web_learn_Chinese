@@ -19,6 +19,9 @@
     border-bottom: 1px solid rgba(102, 126, 234, 0.15);
     transition: all var(--transition-base);
     animation: slideDown 0.5s ease-out;
+    height: 80px;
+    display: flex;
+    align-items: center;
 }
 
 @keyframes slideDown {
@@ -119,6 +122,10 @@
     border-radius: var(--radius-md);
     transition: all var(--transition-base);
     background: rgba(255, 255, 255, 0.75);
+    width: 44px;
+    height: 44px;
+    align-items: center;
+    justify-content: center;
 }
 
 .navbar-toggle:hover {
@@ -126,6 +133,21 @@
     border-color: var(--primary-200);
     color: var(--primary-600);
     transform: scale(1.06);
+}
+
+.navbar-toggle:active {
+    transform: scale(0.96);
+}
+
+/* Icon animation when active */
+.navbar-toggle i {
+    transition: transform 0.3s ease;
+}
+
+.navbar-toggle.active {
+    background: var(--primary-600);
+    color: white;
+    border-color: var(--primary-600);
 }
 
 /* ========================================
@@ -226,12 +248,13 @@
 
 @media (max-width: 768px) {
     .navbar {
-        padding: var(--spacing-md) var(--spacing-lg);
+        padding: var(--spacing-sm) 0;
     }
     
     .navbar-toggle {
-        display: block;
+        display: flex;
         z-index: 1001;
+        position: relative;
     }
     
     .navbar-menu {
@@ -240,49 +263,123 @@
         left: 0;
         right: 0;
         bottom: 0;
-        background: linear-gradient(180deg, rgba(255, 255, 255, 0.98) 0%, rgba(244, 246, 255, 0.98) 100%);
+        width: 100vw;
+        height: 100vh;
+        background: #ffffff;
         flex-direction: column;
-        padding: 80px var(--spacing-xl) var(--spacing-xl);
-        box-shadow: var(--shadow-xl);
-        transform: translateX(100%);
+        padding: 5rem 1.5rem 3rem;
+        box-shadow: none;
+        transform: translateY(-100%);
         opacity: 0;
         visibility: hidden;
-        transition: all var(--transition-base);
+        transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         overflow-y: auto;
-        z-index: 1000;
+        z-index: 999;
         margin-left: 0;
-        justify-content: flex-start;
+        justify-content: center;
+        align-items: center;
+        gap: 2rem;
     }
     
     .navbar-menu.active {
-        transform: translateX(0);
+        transform: translateY(0);
         opacity: 1;
         visibility: visible;
     }
     
+    /* Remove old overlay pseudoelement since background is solid now */
+    .navbar-menu::before {
+        display: none;
+    }
+    
     .navbar-nav {
-        flex-direction: column;
         width: 100%;
-        gap: var(--spacing-xs);
-        margin-bottom: var(--spacing-xl);
+        gap: 2rem;
+        margin-bottom: 0;
+        flex-direction: column; /* Vertical stack */
+        overflow: visible;
+        padding: 0;
+        align-items: center;
+        text-align: center;
+    }
+    
+    .navbar-nav::-webkit-scrollbar {
+        display: none;
+    }
+    
+    .nav-item {
+        width: 100%;
+        border-bottom: none;
+        display: flex;
+        justify-content: center;
     }
     
     .nav-link {
+        display: inline-block;
+        width: auto;
+        padding: 0.5rem 0;
+        text-align: center;
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--text-primary);
+        background: transparent;
+        border: none;
+        position: relative;
+    }
+    
+    .nav-link::after {
+        content: '';
+        display: block;
+        width: 0;
+        height: 3px;
+        background: var(--primary-600);
+        transition: width 0.3s ease;
+        margin: 5px auto 0;
+        border-radius: 2px;
+    }
+    
+    .nav-link:hover::after,
+    .nav-link.active::after {
         width: 100%;
-        padding: var(--spacing-md);
-        text-align: left;
-        font-size: var(--font-size-lg);
+    }
+    
+    .nav-link:hover,
+    .nav-link.active {
+        background: transparent;
+        color: var(--primary-600);
+        transform: scale(1.05);
+        box-shadow: none;
+        padding-left: 0;
     }
     
     .navbar-actions {
         width: 100%;
         flex-direction: column;
-        gap: var(--spacing-md);
+        gap: 1rem;
+        padding-top: 1rem;
+        margin-top: 0;
+        border-top: none;
+        align-items: center;
     }
     
     .navbar-actions .btn {
-        width: 100%;
+        width: auto;
+        min-width: 200px;
         justify-content: center;
+        padding: 1rem 2rem;
+        font-size: 1.125rem;
+        font-weight: 600;
+        border-radius: 50px;
+        background: var(--primary-600);
+        color: white;
+        border: none;
+        box-shadow: 0 10px 20px -5px rgba(99, 102, 241, 0.4);
+    }
+    
+    .navbar-actions .btn:hover {
+        background: var(--primary-700);
+        transform: translateY(-2px);
+        box-shadow: 0 15px 30px -5px rgba(99, 102, 241, 0.5);
     }
 }
 
@@ -305,7 +402,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-   
+    padding: 0.875rem 1rem;
     gap: 1rem;
 }
 
@@ -343,7 +440,6 @@
 .dashboard-nav-right {
     display: flex;
     align-items: center;
-    gap: 1rem;
 }
 
 /* Search */
@@ -789,26 +885,47 @@
     color: #666;
 }
 
-/* Responsive */
+/* Mobile Dashboard Improvements */
 @media (max-width: 768px) {
     .dashboard-nav {
-        padding: 0.875rem 1rem;
+        padding: 0.75rem 0.5rem;
+        position: relative;
     }
     
-    .dashboard-search {
-        display: none;
+    .dashboard-nav-right {
+        gap: 0.5rem;
+    }
+
+    .dashboard-icon-btn {
+        width: 2.25rem;
+        height: 2.25rem;
+        background: rgba(255, 255, 255, 0.2);
+        border: none;
+    }
+
+    .dashboard-user-btn {
+        padding: 0;
+        background: transparent;
+        border: none;
+        min-width: unset;
     }
     
-    .dashboard-brand .brand-text {
-        display: none;
+    .dashboard-user-btn .user-avatar {
+        width: 2.25rem;
+        height: 2.25rem;
+        border: 2px solid rgba(255, 255, 255, 0.5);
     }
-    
-    .dashboard-user-btn .user-name {
-        display: none;
-    }
-    
+
+    /* Fix Dropdown Positioning on Mobile */
     .dashboard-dropdown-menu {
-        right: -1rem;
-        min-width: 260px;
+        position: fixed;
+        top: 60px; /* Below header */
+        left: 0.5rem;
+        right: 0.5rem;
+        width: auto;
+        min-width: unset;
+        max-width: unset;
+        border-radius: 12px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.15);
     }
 }

@@ -113,12 +113,12 @@
         }
 
         /* Words Grid */
-        .words-grid {
+        /* .words-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
             gap: 1.5rem;
             margin-bottom: 2rem;
-        }
+        } */
 
         .word-card-modern {
             background: white;
@@ -954,7 +954,7 @@
         </section>
 
         <!-- Words List -->
-        <div id="wordsList" class="words-grid"></div>
+        <div id="wordsList" class="row g-4 mb-4"></div>
         
         <!-- Loading State -->
         <div id="loading" class="loading" style="display: none;">
@@ -1243,7 +1243,11 @@
             const endIndex = startIndex + WORDS_PER_PAGE;
             const wordsToDisplay = filteredWords.slice(startIndex, endIndex);
             
-            wordsList.innerHTML = wordsToDisplay.map(word => createWordCard(word)).join('');
+            wordsList.innerHTML = wordsToDisplay.map(word => `
+                <div class="col-12 col-md-6 col-lg-4">
+                    ${createWordCard(word)}
+                </div>
+            `).join('');
             
             document.getElementById('wordsOnPageCount').textContent = wordsToDisplay.length;
         }

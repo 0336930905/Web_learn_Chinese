@@ -219,9 +219,7 @@
 
         /* Options Grid */
         .options-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 0.75rem;
+            /* display: grid; removed via bootstrap */
         }
 
         .option-card {
@@ -433,9 +431,7 @@
         }
 
         .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 1.5rem;
+            /* display: grid; removed via bootstrap */
             margin-bottom: 2rem;
         }
 
@@ -779,11 +775,11 @@
                     </div>
 
                     <!-- Options Grid -->
-                    <div class="options-grid" id="optionsGrid">
-                        <div class="option-card" data-index="0">Xin chào</div>
-                        <div class="option-card" data-index="1">Tạm biệt</div>
-                        <div class="option-card" data-index="2">Cảm ơn</div>
-                        <div class="option-card" data-index="3">Xin lỗi</div>
+                    <div class="options-grid row g-3" id="optionsGrid">
+                        <div class="col-12 col-md-6"><div class="option-card" data-index="0">Xin chào</div></div>
+                        <div class="col-12 col-md-6"><div class="option-card" data-index="1">Tạm biệt</div></div>
+                        <div class="col-12 col-md-6"><div class="option-card" data-index="2">Cảm ơn</div></div>
+                        <div class="col-12 col-md-6"><div class="option-card" data-index="3">Xin lỗi</div></div>
                     </div>
 
                     <!-- Navigation -->
@@ -828,22 +824,30 @@
 
                 <div class="results-body">
                     <!-- Stats Grid -->
-                    <div class="stats-grid">
-                        <div class="stat-card">
-                            <div class="stat-value accuracy" id="scorePercent">85%</div>
-                            <div class="stat-label">Điểm số</div>
+                    <div class="stats-grid row g-3">
+                        <div class="col-6 col-md-3">
+                            <div class="stat-card">
+                                <div class="stat-value accuracy" id="scorePercent">85%</div>
+                                <div class="stat-label">Điểm số</div>
+                            </div>
                         </div>
-                        <div class="stat-card">
-                            <div class="stat-value correct" id="correctCount">17</div>
-                            <div class="stat-label">Đúng</div>
+                        <div class="col-6 col-md-3">
+                            <div class="stat-card">
+                                <div class="stat-value correct" id="correctCount">17</div>
+                                <div class="stat-label">Đúng</div>
+                            </div>
                         </div>
-                        <div class="stat-card">
-                            <div class="stat-value incorrect" id="incorrectCount">3</div>
-                            <div class="stat-label">Sai</div>
+                        <div class="col-6 col-md-3">
+                            <div class="stat-card">
+                                <div class="stat-value incorrect" id="incorrectCount">3</div>
+                                <div class="stat-label">Sai</div>
+                            </div>
                         </div>
-                        <div class="stat-card">
-                            <div class="stat-value" id="timeSpent">5:23</div>
-                            <div class="stat-label">Thời gian</div>
+                        <div class="col-6 col-md-3">
+                            <div class="stat-card">
+                                <div class="stat-value" id="timeSpent">5:23</div>
+                                <div class="stat-label">Thời gian</div>
+                            </div>
                         </div>
                     </div>
 
@@ -1063,11 +1067,17 @@
             optionsGrid.innerHTML = '';
             
             question.options.forEach((option, index) => {
+                const colWrapper = document.createElement('div');
+                colWrapper.className = 'col-12 col-md-6';
+                
                 const optionCard = document.createElement('div');
                 optionCard.className = 'option-card';
                 optionCard.dataset.index = index;
                 optionCard.textContent = option;
-                optionsGrid.appendChild(optionCard);
+                optionCard.style.height = '100%'; // Ensure full height
+                
+                colWrapper.appendChild(optionCard);
+                optionsGrid.appendChild(colWrapper);
             });
             
             // Reset buttons

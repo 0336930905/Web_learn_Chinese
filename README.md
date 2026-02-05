@@ -3,6 +3,7 @@
 Ứng dụng web để tự học tiếng Đài Loan/Trung Quốc với Node.js, MongoDB Atlas và Vercel.
 
 ## Tài khoản Admin
+- truy cập vào https://web-learn-chinese1.vercel.app/ 
 - **Email:** admin@example.com
 - **Mật khẩu:** admin123456
 -- node scripts/clear-all-database.js xóa tất cả dữ liệu 

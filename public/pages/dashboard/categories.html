@@ -119,10 +119,7 @@
 
         /* Stats Cards - Like Dashboard */
         .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 2rem;
+            /* Bootstrap row handles this */
         }
 
         .stat-card-modern {
@@ -135,6 +132,7 @@
             align-items: center;
             gap: 1rem;
             border: 1px solid rgba(0, 0, 0, 0.05);
+            height: 100%;
         }
 
         .stat-card-modern:hover {
@@ -250,9 +248,9 @@
 
         /* Categories Grid */
         .categories-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 1.5rem;
+            /* display: grid; removed for bootstrap row */
+            /* grid-template-columns: repeat(3, 1fr); removed for bootstrap row */
+            /* gap: 1.5rem; handled by g-4 class */
             margin-top: 1.5rem;
         }
 
@@ -265,6 +263,7 @@
             border: 2px solid transparent;
             position: relative;
             overflow: hidden;
+            height: 100%; /* Ensure full height in column */
         }
 
         .category-card::before {
@@ -825,34 +824,40 @@
         </section>
 
         <!-- Stats Cards -->
-        <div class="stats-grid">
-            <div class="stat-card-modern">
-                <div class="stat-icon-wrapper bg-gradient-primary">
-                    <i class="fas fa-folder"></i>
-                </div>
-                <div class="stat-content">
-                    <div class="stat-label">Tổng danh mục</div>
-                    <div class="stat-value" id="totalCategories">0</div>
-                </div>
-            </div>
-
-            <div class="stat-card-modern">
-                <div class="stat-icon-wrapper bg-gradient-success">
-                    <i class="fas fa-book"></i>
-                </div>
-                <div class="stat-content">
-                    <div class="stat-label">Tổng từ vựng</div>
-                    <div class="stat-value" id="totalWords">0</div>
+        <div class="row g-4 mb-4">
+            <div class="col-12 col-md-4">
+                <div class="stat-card-modern">
+                    <div class="stat-icon-wrapper bg-gradient-primary">
+                        <i class="fas fa-folder"></i>
+                    </div>
+                    <div class="stat-content">
+                        <div class="stat-label">Tổng danh mục</div>
+                        <div class="stat-value" id="totalCategories">0</div>
+                    </div>
                 </div>
             </div>
 
-            <div class="stat-card-modern">
-                <div class="stat-icon-wrapper bg-gradient-warning">
-                    <i class="fas fa-chart-line"></i>
+            <div class="col-12 col-md-4">
+                <div class="stat-card-modern">
+                    <div class="stat-icon-wrapper bg-gradient-success">
+                        <i class="fas fa-book"></i>
+                    </div>
+                    <div class="stat-content">
+                        <div class="stat-label">Tổng từ vựng</div>
+                        <div class="stat-value" id="totalWords">0</div>
+                    </div>
                 </div>
-                <div class="stat-content">
-                    <div class="stat-label">Danh mục đang dùng</div>
-                    <div class="stat-value" id="activeCategories">0</div>
+            </div>
+
+            <div class="col-12 col-md-4">
+                <div class="stat-card-modern">
+                    <div class="stat-icon-wrapper bg-gradient-warning">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <div class="stat-content">
+                        <div class="stat-label">Danh mục đang dùng</div>
+                        <div class="stat-value" id="activeCategories">0</div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -871,7 +876,7 @@
             </div>
 
             <!-- Categories Grid -->
-            <div class="categories-grid" id="categoriesGrid">
+            <div class="row g-4" id="categoriesGrid">
                 <!-- Categories will be loaded here -->
             </div>
 
@@ -1068,42 +1073,44 @@
                 return;
             }
 
-            grid.style.display = 'grid';
+            grid.style.display = 'flex'; // Changed from grid to flex for row
             emptyState.style.display = 'none';
 
             grid.innerHTML = categoriesToRender.map(cat => `
-                <div class="category-card">
-                    <div class="category-header">
-                        <div class="category-icon">${cat.icon || '📚'}</div>
-                        <div class="category-info">
-                            <div class="category-name">${cat.name}</div>
-                            <div class="category-slug">${cat.slug}</div>
+                <div class="col-12 col-md-6 col-lg-4">
+                    <div class="category-card">
+                        <div class="category-header">
+                            <div class="category-icon">${cat.icon || '📚'}</div>
+                            <div class="category-info">
+                                <div class="category-name">${cat.name}</div>
+                                <div class="category-slug">${cat.slug}</div>
+                            </div>
                         </div>
-                    </div>
-                    
-                    <div class="category-desc">
-                        ${cat.description || 'Chưa có mô tả'}
-                    </div>
-                    
-                    <div class="category-stats">
-                        <div class="category-stat">
-                            <i class="fas fa-book"></i>
-                            <span><strong>${cat.wordCount || 0}</strong> từ vựng</span>
+                        
+                        <div class="category-desc">
+                            ${cat.description || 'Chưa có mô tả'}
                         </div>
-                        ${cat.isSystem ? '<div class="category-stat"><i class="fas fa-shield-alt"></i><span>Hệ thống</span></div>' : ''}
-                    </div>
-                    
-                    <div class="category-actions">
-                        <button class="btn-action btn-edit" onclick="editCategory('${cat._id}')">
-                            <i class="fas fa-edit"></i>
-                            Chỉnh sửa
-                        </button>
-                        ${!cat.isSystem ? `
-                            <button class="btn-action btn-delete" onclick="deleteCategory('${cat._id}')">
-                                <i class="fas fa-trash"></i>
-                                Xóa
+                        
+                        <div class="category-stats">
+                            <div class="category-stat">
+                                <i class="fas fa-book"></i>
+                                <span><strong>${cat.wordCount || 0}</strong> từ vựng</span>
+                            </div>
+                            ${cat.isSystem ? '<div class="category-stat"><i class="fas fa-shield-alt"></i><span>Hệ thống</span></div>' : ''}
+                        </div>
+                        
+                        <div class="category-actions">
+                            <button class="btn-action btn-edit" onclick="editCategory('${cat._id}')">
+                                <i class="fas fa-edit"></i>
+                                Chỉnh sửa
                             </button>
-                        ` : ''}
+                            ${!cat.isSystem ? `
+                                <button class="btn-action btn-delete" onclick="deleteCategory('${cat._id}')">
+                                    <i class="fas fa-trash"></i>
+                                    Xóa
+                                </button>
+                            ` : ''}
+                        </div>
                     </div>
                 </div>
             `).join('');

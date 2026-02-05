@@ -167,11 +167,11 @@
             cursor: not-allowed;
         }
 
-        .form-row {
+        /* .form-row {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 1.5rem;
-        }
+        } */
 
         .btn {
             padding: 0.75rem 1.5rem;
@@ -277,9 +277,9 @@
                 justify-content: center;
             }
 
-            .form-row {
+            /* .form-row {
                 grid-template-columns: 1fr;
-            }
+            } */
 
             .btn-group {
                 flex-direction: column;
@@ -347,12 +347,12 @@
                 Thông tin cá nhân
             </h2>
             <form id="profileForm">
-                <div class="form-row">
-                    <div class="form-group">
+                <div class="row g-3">
+                    <div class="col-12 col-md-6 form-group">
                         <label class="form-label">Tên hiển thị *</label>
                         <input type="text" class="form-input" id="displayName" required>
                     </div>
-                    <div class="form-group">
+                    <div class="col-12 col-md-6 form-group">
                         <label class="form-label">Username</label>
                         <input type="text" class="form-input" id="username" disabled>
                     </div>
@@ -385,12 +385,12 @@
                     <label class="form-label">Mật khẩu hiện tại *</label>
                     <input type="password" class="form-input" id="currentPassword" required>
                 </div>
-                <div class="form-row">
-                    <div class="form-group">
+                <div class="row g-3">
+                    <div class="col-12 col-md-6 form-group">
                         <label class="form-label">Mật khẩu mới *</label>
                         <input type="password" class="form-input" id="newPassword" required minlength="6">
                     </div>
-                    <div class="form-group">
+                    <div class="col-12 col-md-6 form-group">
                         <label class="form-label">Xác nhận mật khẩu *</label>
                         <input type="password" class="form-input" id="confirmPassword" required minlength="6">
                     </div>

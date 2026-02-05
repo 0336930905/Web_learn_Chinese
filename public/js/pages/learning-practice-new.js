@@ -211,7 +211,7 @@ function showListeningQuestion(word, questionArea, optionsArea) {
     
     const options = generateOptions(word, 4);
     optionsArea.innerHTML = options.map(opt => `
-        <div class="col-md-6">
+        <div class="col-12 col-md-6">
             <button class="btn btn-outline-primary w-100 option-btn" data-word-id="${opt._id}">
                 <h5 class="mb-1">${opt.traditional}</h5>
                 <small class="text-muted">${opt.simplified || ''}</small>
@@ -242,7 +242,7 @@ function showMemoryQuestion(word, questionArea, optionsArea) {
     
     const options = generateMeaningOptions(word, 4);
     optionsArea.innerHTML = options.map(opt => `
-        <div class="col-md-6">
+        <div class="col-12 col-md-6">
             <button class="btn btn-outline-success w-100 option-btn" data-meaning="${opt.meaning}">
                 <h6 class="mb-0">${opt.meaning}</h6>
             </button>
@@ -279,7 +279,7 @@ function showQuizQuestion(word, questionArea, optionsArea) {
         
         const options = generateOptions(word, 4);
         optionsArea.innerHTML = options.map(opt => `
-            <div class="col-md-6">
+            <div class="col-12 col-md-6">
                 <button class="btn btn-outline-warning w-100 option-btn" data-word-id="${opt._id}">
                     <h5 class="mb-1">${opt.traditional}</h5>
                     <small class="text-muted">${opt.pinyin}</small>

@@ -107,12 +107,12 @@
         }
 
         /* Modes Grid */
-        .modes-grid {
+        /* .modes-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 1.5rem;
             margin-bottom: 2rem;
-        }
+        } */
 
         .mode-card {
             background: white;
@@ -247,9 +247,9 @@
         }
 
         @media (max-width: 768px) {
-            .modes-grid {
+            /* .modes-grid {
                 grid-template-columns: 1fr;
-            }
+            } */
         }
 
         @keyframes fadeInUp {
@@ -295,114 +295,124 @@
         </section>
 
         <!-- Modes Grid -->
-        <div class="modes-grid">
+        <div class="row g-4 mb-5">
             <!-- Mode 1: Viết Chữ Đài -->
-            <div class="mode-card" onclick="startMode('write-character')">
-                <div class="mode-header bg-gradient-blue">
-                    <div class="mode-icon">
-                        <i class="fas fa-pen-fancy"></i>
+            <div class="col-12 col-md-6 col-lg-4">
+                <div class="mode-card" onclick="startMode('write-character')">
+                    <div class="mode-header bg-gradient-blue">
+                        <div class="mode-icon">
+                            <i class="fas fa-pen-fancy"></i>
+                        </div>
+                        <h3 class="mode-name">Viết Chữ Đài</h3>
                     </div>
-                    <h3 class="mode-name">Viết Chữ Đài</h3>
-                </div>
-                <div class="mode-body">
-                    <p class="mode-description">Nghe/Nhìn từ và gõ chữ Đài chính xác</p>
-                    <ul class="mode-features">
-                        <li><i class="fas fa-check-circle"></i> Nghe phát âm chuẩn</li>
-                        <li><i class="fas fa-check-circle"></i> Gõ chữ Hán phồn thể</li>
-                        <li><i class="fas fa-check-circle"></i> Kiểm tra chính xác</li>
-                    </ul>
-                    <button class="btn-start-mode">
-                        <i class="fas fa-play-circle"></i>
-                        Bắt đầu học
-                    </button>
+                    <div class="mode-body">
+                        <p class="mode-description">Nghe/Nhìn từ và gõ chữ Đài chính xác</p>
+                        <ul class="mode-features">
+                            <li><i class="fas fa-check-circle"></i> Nghe phát âm chuẩn</li>
+                            <li><i class="fas fa-check-circle"></i> Gõ chữ Hán phồn thể</li>
+                            <li><i class="fas fa-check-circle"></i> Kiểm tra chính xác</li>
+                        </ul>
+                        <button class="btn-start-mode">
+                            <i class="fas fa-play-circle"></i>
+                            Bắt đầu học
+                        </button>
+                    </div>
                 </div>
             </div>
 
             <!-- Mode 2: Nghe và Viết Tiếng Việt -->
-            <div class="mode-card" onclick="startMode('listen-write')">
-                <div class="mode-header bg-gradient-green">
-                    <div class="mode-icon">
-                        <i class="fas fa-headphones"></i>
+            <div class="col-12 col-md-6 col-lg-4">
+                <div class="mode-card" onclick="startMode('listen-write')">
+                    <div class="mode-header bg-gradient-green">
+                        <div class="mode-icon">
+                            <i class="fas fa-headphones"></i>
+                        </div>
+                        <h3 class="mode-name">Nghe & Viết Việt</h3>
                     </div>
-                    <h3 class="mode-name">Nghe & Viết Việt</h3>
-                </div>
-                <div class="mode-body">
-                    <p class="mode-description">Nghe phát âm tiếng Đài, viết nghĩa tiếng Việt</p>
-                    <ul class="mode-features">
-                        <li><i class="fas fa-check-circle"></i> Luyện nghe phát âm</li>
-                        <li><i class="fas fa-check-circle"></i> Nhớ nghĩa tiếng Việt</li>
-                        <li><i class="fas fa-check-circle"></i> Trắc nghiệm 4 đáp án</li>
-                    </ul>
-                    <button class="btn-start-mode">
-                        <i class="fas fa-play-circle"></i>
-                        Bắt đầu học
-                    </button>
+                    <div class="mode-body">
+                        <p class="mode-description">Nghe phát âm tiếng Đài, viết nghĩa tiếng Việt</p>
+                        <ul class="mode-features">
+                            <li><i class="fas fa-check-circle"></i> Luyện nghe phát âm</li>
+                            <li><i class="fas fa-check-circle"></i> Nhớ nghĩa tiếng Việt</li>
+                            <li><i class="fas fa-check-circle"></i> Trắc nghiệm 4 đáp án</li>
+                        </ul>
+                        <button class="btn-start-mode">
+                            <i class="fas fa-play-circle"></i>
+                            Bắt đầu học
+                        </button>
+                    </div>
                 </div>
             </div>
 
             <!-- Mode 3: Nhìn Chữ Đài Viết Nghĩa -->
-            <div class="mode-card" onclick="startMode('read-meaning')">
-                <div class="mode-header bg-gradient-purple">
-                    <div class="mode-icon">
-                        <i class="fas fa-book-open"></i>
+            <div class="col-12 col-md-6 col-lg-4">
+                <div class="mode-card" onclick="startMode('read-meaning')">
+                    <div class="mode-header bg-gradient-purple">
+                        <div class="mode-icon">
+                            <i class="fas fa-book-open"></i>
+                        </div>
+                        <h3 class="mode-name">Nhìn & Viết Nghĩa</h3>
                     </div>
-                    <h3 class="mode-name">Nhìn & Viết Nghĩa</h3>
-                </div>
-                <div class="mode-body">
-                    <p class="mode-description">Nhìn chữ Hán, chọn nghĩa tiếng Việt đúng</p>
-                    <ul class="mode-features">
-                        <li><i class="fas fa-check-circle"></i> Nhận biết chữ Hán</li>
-                        <li><i class="fas fa-check-circle"></i> Nhớ nghĩa chính xác</li>
-                        <li><i class="fas fa-check-circle"></i> Trắc nghiệm 4 đáp án</li>
-                    </ul>
-                    <button class="btn-start-mode">
-                        <i class="fas fa-play-circle"></i>
-                        Bắt đầu học
-                    </button>
+                    <div class="mode-body">
+                        <p class="mode-description">Nhìn chữ Hán, chọn nghĩa tiếng Việt đúng</p>
+                        <ul class="mode-features">
+                            <li><i class="fas fa-check-circle"></i> Nhận biết chữ Hán</li>
+                            <li><i class="fas fa-check-circle"></i> Nhớ nghĩa chính xác</li>
+                            <li><i class="fas fa-check-circle"></i> Trắc nghiệm 4 đáp án</li>
+                        </ul>
+                        <button class="btn-start-mode">
+                            <i class="fas fa-play-circle"></i>
+                            Bắt đầu học
+                        </button>
+                    </div>
                 </div>
             </div>
 
             <!-- Mode 4: Luyện Phát Âm -->
-            <div class="mode-card" onclick="startMode('speaking')">
-                <div class="mode-header bg-gradient-orange">
-                    <div class="mode-icon">
-                        <i class="fas fa-microphone"></i>
+            <div class="col-12 col-md-6 col-lg-4">
+                <div class="mode-card" onclick="startMode('speaking')">
+                    <div class="mode-header bg-gradient-orange">
+                        <div class="mode-icon">
+                            <i class="fas fa-microphone"></i>
+                        </div>
+                        <h3 class="mode-name">Luyện Phát Âm</h3>
                     </div>
-                    <h3 class="mode-name">Luyện Phát Âm</h3>
-                </div>
-                <div class="mode-body">
-                    <p class="mode-description">Nhìn từ và nói phát âm tiếng Đài</p>
-                    <ul class="mode-features">
-                        <li><i class="fas fa-check-circle"></i> Nhận diện giọng nói</li>
-                        <li><i class="fas fa-check-circle"></i> Đọc tiếng Đài chuẩn</li>
-                        <li><i class="fas fa-check-circle"></i> Tự động kiểm tra</li>
-                    </ul>
-                    <button class="btn-start-mode">
-                        <i class="fas fa-play-circle"></i>
-                        Bắt đầu học
-                    </button>
+                    <div class="mode-body">
+                        <p class="mode-description">Nhìn từ và nói phát âm tiếng Đài</p>
+                        <ul class="mode-features">
+                            <li><i class="fas fa-check-circle"></i> Nhận diện giọng nói</li>
+                            <li><i class="fas fa-check-circle"></i> Đọc tiếng Đài chuẩn</li>
+                            <li><i class="fas fa-check-circle"></i> Tự động kiểm tra</li>
+                        </ul>
+                        <button class="btn-start-mode">
+                            <i class="fas fa-play-circle"></i>
+                            Bắt đầu học
+                        </button>
+                    </div>
                 </div>
             </div>
 
             <!-- Mode 5: Trắc Nghiệm Quiz -->
-            <div class="mode-card" onclick="startMode('quiz')">
-                <div class="mode-header bg-gradient-pink">
-                    <div class="mode-icon">
-                        <i class="fas fa-question-circle"></i>
+            <div class="col-12 col-md-6 col-lg-4">
+                <div class="mode-card" onclick="startMode('quiz')">
+                    <div class="mode-header bg-gradient-pink">
+                        <div class="mode-icon">
+                            <i class="fas fa-question-circle"></i>
+                        </div>
+                        <h3 class="mode-name">Trắc Nghiệm Quiz</h3>
                     </div>
-                    <h3 class="mode-name">Trắc Nghiệm Quiz</h3>
-                </div>
-                <div class="mode-body">
-                    <p class="mode-description">Kiểm tra tổng hợp tất cả kỹ năng</p>
-                    <ul class="mode-features">
-                        <li><i class="fas fa-check-circle"></i> Câu hỏi đa dạng</li>
-                        <li><i class="fas fa-check-circle"></i> 4 đáp án trắc nghiệm</li>
-                        <li><i class="fas fa-check-circle"></i> Đánh giá tổng hợp</li>
-                    </ul>
-                    <button class="btn-start-mode">
-                        <i class="fas fa-play-circle"></i>
-                        Bắt đầu học
-                    </button>
+                    <div class="mode-body">
+                        <p class="mode-description">Kiểm tra tổng hợp tất cả kỹ năng</p>
+                        <ul class="mode-features">
+                            <li><i class="fas fa-check-circle"></i> Câu hỏi đa dạng</li>
+                            <li><i class="fas fa-check-circle"></i> 4 đáp án trắc nghiệm</li>
+                            <li><i class="fas fa-check-circle"></i> Đánh giá tổng hợp</li>
+                        </ul>
+                        <button class="btn-start-mode">
+                            <i class="fas fa-play-circle"></i>
+                            Bắt đầu học
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>

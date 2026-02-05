@@ -8,7 +8,6 @@ const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
-const { createStarterWords } = require('../utils/starterWords');
 
 // Serialize user for session
 passport.serializeUser((user, done) => {
@@ -95,15 +94,6 @@ passport.use(new GoogleStrategy({
         
         user = await User.create(userData);
         console.log('✅ User created:', user._id);
-        
-        // Create starter words for new user
-        try {
-          await createStarterWords(user._id);
-          console.log('✅ Starter words created for new user');
-        } catch (wordError) {
-          console.error('⚠️ Error creating starter words:', wordError.message);
-          // Don't fail auth if starter words fail
-        }
       }
 
       return done(null, user);

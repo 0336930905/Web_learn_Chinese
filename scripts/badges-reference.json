@@ -1,0 +1,279 @@
+{
+  "badges": {
+    "learning": [
+      {
+        "badgeId": "first_word",
+        "name": "Bước Đầu Tiên",
+        "icon": "🌱",
+        "rarity": "common",
+        "points": 10,
+        "target": 1,
+        "description": "Học từ đầu tiên của bạn"
+      },
+      {
+        "badgeId": "vocab_novice",
+        "name": "Người Mới",
+        "icon": "📖",
+        "rarity": "common",
+        "points": 25,
+        "target": 10,
+        "description": "Học được 10 từ vựng"
+      },
+      {
+        "badgeId": "vocab_apprentice",
+        "name": "Học Viên",
+        "icon": "📚",
+        "rarity": "rare",
+        "points": 50,
+        "target": 50,
+        "description": "Học được 50 từ vựng"
+      },
+      {
+        "badgeId": "vocab_scholar",
+        "name": "Học Giả",
+        "icon": "🎓",
+        "rarity": "epic",
+        "points": 100,
+        "target": 100,
+        "description": "Học được 100 từ vựng"
+      },
+      {
+        "badgeId": "vocab_master",
+        "name": "Bậc Thầy Từ Vựng",
+        "icon": "👑",
+        "rarity": "legendary",
+        "points": 200,
+        "target": 200,
+        "description": "Học được 200 từ vựng"
+      },
+      {
+        "badgeId": "polyglot",
+        "name": "Đa Ngôn Ngữ",
+        "icon": "🌍",
+        "rarity": "legendary",
+        "points": 500,
+        "target": 500,
+        "description": "Học được 500 từ vựng"
+      }
+    ],
+    "streak": [
+      {
+        "badgeId": "streak_starter",
+        "name": "Bắt Đầu Streak",
+        "icon": "🔥",
+        "rarity": "common",
+        "points": 20,
+        "target": 3,
+        "description": "Học liên tục 3 ngày"
+      },
+      {
+        "badgeId": "week_warrior",
+        "name": "Chiến Binh Tuần",
+        "icon": "⚡",
+        "rarity": "rare",
+        "points": 50,
+        "target": 7,
+        "description": "Học liên tục 7 ngày"
+      },
+      {
+        "badgeId": "dedication",
+        "name": "Kiên Trì",
+        "icon": "💪",
+        "rarity": "epic",
+        "points": 150,
+        "target": 30,
+        "description": "Học liên tục 30 ngày"
+      },
+      {
+        "badgeId": "unstoppable",
+        "name": "Không Thể Ngăn Cản",
+        "icon": "🌟",
+        "rarity": "legendary",
+        "points": 500,
+        "target": 100,
+        "description": "Học liên tục 100 ngày"
+      },
+      {
+        "badgeId": "year_legend",
+        "name": "Huyền Thoại Năm",
+        "icon": "🏆",
+        "rarity": "legendary",
+        "points": 1000,
+        "target": 365,
+        "description": "Học liên tục 365 ngày"
+      }
+    ],
+    "test": [
+      {
+        "badgeId": "first_test",
+        "name": "Bài Test Đầu Tiên",
+        "icon": "📝",
+        "rarity": "common",
+        "points": 15,
+        "target": 1,
+        "description": "Hoàn thành bài test đầu tiên"
+      },
+      {
+        "badgeId": "test_taker",
+        "name": "Người Làm Bài",
+        "icon": "✍️",
+        "rarity": "rare",
+        "points": 50,
+        "target": 10,
+        "description": "Hoàn thành 10 bài test"
+      },
+      {
+        "badgeId": "perfect_score",
+        "name": "Điểm Tuyệt Đối",
+        "icon": "💯",
+        "rarity": "epic",
+        "points": 100,
+        "target": 1,
+        "description": "Đạt điểm tuyệt đối trong 1 bài test"
+      },
+      {
+        "badgeId": "perfectionist",
+        "name": "Người Hoàn Hảo",
+        "icon": "⭐",
+        "rarity": "legendary",
+        "points": 250,
+        "target": 5,
+        "description": "Đạt điểm tuyệt đối trong 5 bài test"
+      },
+      {
+        "badgeId": "test_master",
+        "name": "Bậc Thầy Kiểm Tra",
+        "icon": "🎯",
+        "rarity": "legendary",
+        "points": 300,
+        "target": 50,
+        "description": "Hoàn thành 50 bài test"
+      }
+    ],
+    "milestone": [
+      {
+        "badgeId": "beginner",
+        "name": "Người Mới Bắt Đầu",
+        "icon": "🌟",
+        "rarity": "common",
+        "points": 50,
+        "description": "Hoàn thành tất cả từ Beginner"
+      },
+      {
+        "badgeId": "intermediate",
+        "name": "Trung Cấp",
+        "icon": "🎖️",
+        "rarity": "rare",
+        "points": 100,
+        "description": "Hoàn thành tất cả từ Intermediate"
+      },
+      {
+        "badgeId": "advanced",
+        "name": "Nâng Cao",
+        "icon": "🏅",
+        "rarity": "epic",
+        "points": 200,
+        "description": "Hoàn thành tất cả từ Advanced"
+      },
+      {
+        "badgeId": "study_1hour",
+        "name": "Giờ Đầu Tiên",
+        "icon": "⏰",
+        "rarity": "common",
+        "points": 25,
+        "target": 1,
+        "description": "Học tổng cộng 1 giờ"
+      },
+      {
+        "badgeId": "study_10hours",
+        "name": "Thời Gian Vàng",
+        "icon": "⏳",
+        "rarity": "rare",
+        "points": 100,
+        "target": 10,
+        "description": "Học tổng cộng 10 giờ"
+      },
+      {
+        "badgeId": "study_50hours",
+        "name": "Người Cần Cù",
+        "icon": "📖",
+        "rarity": "epic",
+        "points": 250,
+        "target": 50,
+        "description": "Học tổng cộng 50 giờ"
+      },
+      {
+        "badgeId": "study_100hours",
+        "name": "Chuyên Gia Thời Gian",
+        "icon": "🎓",
+        "rarity": "legendary",
+        "points": 500,
+        "target": 100,
+        "description": "Học tổng cộng 100 giờ"
+      }
+    ],
+    "special": [
+      {
+        "badgeId": "early_bird",
+        "name": "Chim Sớm",
+        "icon": "🌅",
+        "rarity": "rare",
+        "points": 30,
+        "description": "Học trước 6h sáng"
+      },
+      {
+        "badgeId": "night_owl",
+        "name": "Cú Đêm",
+        "icon": "🦉",
+        "rarity": "rare",
+        "points": 30,
+        "description": "Học sau 11h đêm"
+      },
+      {
+        "badgeId": "weekend_warrior",
+        "name": "Chiến Binh Cuối Tuần",
+        "icon": "🎉",
+        "rarity": "epic",
+        "points": 50,
+        "description": "Học vào cả thứ 7 và chủ nhật"
+      },
+      {
+        "badgeId": "speed_learner",
+        "name": "Học Nhanh",
+        "icon": "⚡",
+        "rarity": "legendary",
+        "points": 100,
+        "target": 20,
+        "description": "Học 20 từ trong 1 ngày"
+      },
+      {
+        "badgeId": "cultural_explorer",
+        "name": "Khám Phá Văn Hóa",
+        "icon": "🎭",
+        "rarity": "epic",
+        "points": 75,
+        "description": "Hoàn thành category văn hóa"
+      }
+    ]
+  },
+  "stats": {
+    "total": 33,
+    "byCategory": {
+      "learning": 6,
+      "streak": 5,
+      "test": 5,
+      "milestone": 7,
+      "special": 5,
+      "social": 0
+    },
+    "byRarity": {
+      "common": 8,
+      "rare": 10,
+      "epic": 9,
+      "legendary": 6
+    },
+    "totalPoints": 4510,
+    "totalXP": 22525,
+    "totalCoins": 4510
+  }
+}

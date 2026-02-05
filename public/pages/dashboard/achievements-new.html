@@ -41,10 +41,7 @@
         }
 
         .stats-summary {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1rem;
-            margin-bottom: 2rem;
+            /* Bootstrap row handles layout */
         }
 
         .stat-card {
@@ -53,6 +50,7 @@
             padding: 1.5rem;
             text-align: center;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            height: 100%;
         }
 
         .stat-icon {
@@ -111,10 +109,7 @@
         }
 
         .achievements-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 2rem;
+            /* Bootstrap row handles layout */
         }
 
         .achievement-card {
@@ -125,6 +120,7 @@
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             position: relative;
             overflow: hidden;
+            height: 100%;
         }
 
         .achievement-card:hover {
@@ -290,14 +286,6 @@
         }
 
         @media (max-width: 768px) {
-            .stats-summary {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .achievements-grid {
-                grid-template-columns: 1fr;
-            }
-
             .page-title {
                 font-size: 1.5rem;
             }
@@ -318,26 +306,34 @@
         </div>
 
         <!-- Stats Summary -->
-        <div class="stats-summary">
-            <div class="stat-card">
-                <div class="stat-icon">🏆</div>
-                <div class="stat-value" id="totalBadgesEarned">0</div>
-                <div class="stat-label">Huy Hiệu Đã Đạt</div>
+        <div class="stats-summary row g-3 mb-4">
+            <div class="col-6 col-md-3">
+                <div class="stat-card">
+                    <div class="stat-icon">🏆</div>
+                    <div class="stat-value" id="totalBadgesEarned">0</div>
+                    <div class="stat-label">Huy Hiệu Đã Đạt</div>
+                </div>
             </div>
-            <div class="stat-card">
-                <div class="stat-icon">⭐</div>
-                <div class="stat-value" id="totalPoints">0</div>
-                <div class="stat-label">Tổng Điểm</div>
+            <div class="col-6 col-md-3">
+                <div class="stat-card">
+                    <div class="stat-icon">⭐</div>
+                    <div class="stat-value" id="totalPoints">0</div>
+                    <div class="stat-label">Tổng Điểm</div>
+                </div>
             </div>
-            <div class="stat-card">
-                <div class="stat-icon">📚</div>
-                <div class="stat-value" id="totalWordsLearned">0</div>
-                <div class="stat-label">Từ Đã Học</div>
+            <div class="col-6 col-md-3">
+                <div class="stat-card">
+                    <div class="stat-icon">📚</div>
+                    <div class="stat-value" id="totalWordsLearned">0</div>
+                    <div class="stat-label">Từ Đã Học</div>
+                </div>
             </div>
-            <div class="stat-card">
-                <div class="stat-icon">🔥</div>
-                <div class="stat-value" id="studyStreak">0</div>
-                <div class="stat-label">Ngày Liên Tiếp</div>
+            <div class="col-6 col-md-3">
+                <div class="stat-card">
+                    <div class="stat-icon">🔥</div>
+                    <div class="stat-value" id="studyStreak">0</div>
+                    <div class="stat-label">Ngày Liên Tiếp</div>
+                </div>
             </div>
         </div>
 
@@ -388,15 +384,15 @@
             <h2 class="section-title">
                 <i class="fas fa-star"></i> Đã Đạt Được
             </h2>
-            <div class="achievements-grid" id="earnedAchievements"></div>
+            <div class="row g-4 mb-4" id="earnedAchievements"></div>
         </div>
 
         <!-- Available Achievements -->
         <div id="availableSection" style="display: none;">
             <h2 class="section-title">
-                <i class="fas fa-lock"></i> Chưa Đạt Được
+                <i class="fas fa-lock text-muted"></i> Huy hiệu chưa đạt
             </h2>
-            <div class="achievements-grid" id="availableAchievements"></div>
+            <div class="row g-4 mb-4" id="availableAchievements"></div>
         </div>
 
         <!-- Empty State -->
@@ -506,6 +502,9 @@
         }
 
         function createAchievementCard(achievement, isEarned) {
+            const col = document.createElement('div');
+            col.className = 'col-12 col-md-6 col-lg-4';
+
             const card = document.createElement('div');
             card.className = `achievement-card ${!isEarned ? 'locked' : ''}`;
 
@@ -556,7 +555,8 @@
                 `}
             `;
 
-            return card;
+            col.appendChild(card);
+            return col;
         }
 
         function showError(message) {

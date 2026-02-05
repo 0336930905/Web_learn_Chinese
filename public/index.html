@@ -19,19 +19,6 @@
     <!-- CSS -->
     <link rel="stylesheet" href="/css/main.css">
     <link rel="stylesheet" href="/css/pages/landing.css">
-    
-    <!-- Auth Check Script -->
-    <script>
-        // Immediate auth check before page loads
-        (function() {
-            const token = localStorage.getItem('token');
-            if (token) {
-                // User is authenticated, redirect to dashboard
-                console.log('✅ Authenticated user detected, redirecting to dashboard...');
-                window.location.href = '/pages/dashboard/dashboard.html';
-            }
-        })();
-    </script>
 </head>
 <body>
     <!-- Header -->
@@ -44,8 +31,9 @@
             <div class="hero-orb hero-orb-2"></div>
         </div>
         <div class="container">
-            <div class="hero-content">
-                <div class="hero-text">
+            <div class="row align-items-center gy-5">
+                <div class="col-12 col-lg-7">
+                    <div class="hero-text">
                     <h1 class="hero-title">
                         Học Tiếng Trung <br>
                         <span class="gradient-text">Dễ Dàng & Hiệu Quả</span>
@@ -76,8 +64,10 @@
                             <div class="stat-label">Đánh giá</div>
                         </div>
                     </div>
+                    </div>
                 </div>
-                <div class="hero-image">
+                <div class="col-12 col-lg-5">
+                    <div class="hero-image">
                     <div class="hero-card">
                         <div class="card-header">
                             <i class="fas fa-book-open"></i>
@@ -109,8 +99,9 @@
                 </p>
             </div>
 
-            <div class="features-grid">
-                <div class="feature-card">
+            <div class="row g-4">
+                <div class="col-12 col-md-6 col-lg-4">
+                    <div class="feature-card">
                     <div class="feature-icon">
                         <i class="fas fa-brain"></i>
                     </div>
@@ -118,9 +109,11 @@
                     <p class="feature-description">
                         Thuật toán AI cá nhân hóa lộ trình học tập phù hợp với trình độ và tiến độ của bạn.
                     </p>
+                    </div>
                 </div>
 
-                <div class="feature-card">
+                <div class="col-12 col-md-6 col-lg-4">
+                    <div class="feature-card">
                     <div class="feature-icon">
                         <i class="fas fa-gamepad"></i>
                     </div>
@@ -128,9 +121,11 @@
                     <p class="feature-description">
                         Học như chơi game với XP, streak, thành tích và bảng xếp hạng.
                     </p>
+                    </div>
                 </div>
 
-                <div class="feature-card">
+                <div class="col-12 col-md-6 col-lg-4">
+                    <div class="feature-card">
                     <div class="feature-icon">
                         <i class="fas fa-volume-up"></i>
                     </div>
@@ -138,9 +133,11 @@
                     <p class="feature-description">
                         Âm thanh người bản ngữ, luyện tập thanh điệu chính xác.
                     </p>
+                    </div>
                 </div>
 
-                <div class="feature-card">
+                <div class="col-12 col-md-6 col-lg-4">
+                    <div class="feature-card">
                     <div class="feature-icon">
                         <i class="fas fa-mobile-alt"></i>
                     </div>
@@ -148,9 +145,11 @@
                     <p class="feature-description">
                         Responsive design, học trên mọi thiết bị, mọi lúc mọi nơi.
                     </p>
+                    </div>
                 </div>
 
-                <div class="feature-card">
+                <div class="col-12 col-md-6 col-lg-4">
+                    <div class="feature-card">
                     <div class="feature-icon">
                         <i class="fas fa-chart-line"></i>
                     </div>
@@ -158,9 +157,11 @@
                     <p class="feature-description">
                         Dashboard chi tiết, thống kê học tập, biểu đồ phát triển.
                     </p>
+                    </div>
                 </div>
 
-                <div class="feature-card">
+                <div class="col-12 col-md-6 col-lg-4">
+                    <div class="feature-card">
                     <div class="feature-icon">
                         <i class="fas fa-users"></i>
                     </div>
@@ -168,6 +169,7 @@
                     <p class="feature-description">
                         Kết nối với học viên khác, thi đấu và học tập cùng nhau.
                     </p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -183,8 +185,9 @@
                 </p>
             </div>
 
-            <div class="steps-grid">
-                <div class="step-card">
+            <div class="row g-5">
+                <div class="col-12 col-md-4">
+                    <div class="step-card">
                     <div class="step-number">1</div>
                     <div class="step-icon">
                         <i class="fas fa-user-plus"></i>
@@ -193,9 +196,11 @@
                     <p class="step-description">
                         Tạo tài khoản miễn phí chỉ trong 30 giây
                     </p>
+                    </div>
                 </div>
 
-                <div class="step-card">
+                <div class="col-12 col-md-4">
+                    <div class="step-card">
                     <div class="step-number">2</div>
                     <div class="step-icon">
                         <i class="fas fa-clipboard-check"></i>
@@ -204,9 +209,11 @@
                     <p class="step-description">
                         Làm bài test ngắn để xác định level phù hợp
                     </p>
+                    </div>
                 </div>
 
-                <div class="step-card">
+                <div class="col-12 col-md-4">
+                    <div class="step-card">
                     <div class="step-number">3</div>
                     <div class="step-icon">
                         <i class="fas fa-graduation-cap"></i>
@@ -215,6 +222,7 @@
                     <p class="step-description">
                         Học theo lộ trình cá nhân hóa, 15 phút mỗi ngày
                     </p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -230,8 +238,9 @@
                 </p>
             </div>
 
-            <div class="testimonials-grid">
-                <div class="testimonial-card">
+            <div class="row g-4">
+                <div class="col-12 col-md-6 col-lg-4">
+                    <div class="testimonial-card">
                     <div class="testimonial-rating">
                         <i class="fas fa-star"></i>
                         <i class="fas fa-star"></i>
@@ -250,9 +259,11 @@
                             <div class="author-role">Kỹ sư phần mềm</div>
                         </div>
                     </div>
+                    </div>
                 </div>
 
-                <div class="testimonial-card">
+                <div class="col-12 col-md-6 col-lg-4">
+                    <div class="testimonial-card">
                     <div class="testimonial-rating">
                         <i class="fas fa-star"></i>
                         <i class="fas fa-star"></i>
@@ -271,9 +282,11 @@
                             <div class="author-role">Sinh viên</div>
                         </div>
                     </div>
+                    </div>
                 </div>
 
-                <div class="testimonial-card">
+                <div class="col-12 col-md-6 col-lg-4">
+                    <div class="testimonial-card">
                     <div class="testimonial-rating">
                         <i class="fas fa-star"></i>
                         <i class="fas fa-star"></i>
@@ -291,7 +304,7 @@
                             <div class="author-name">Lê Văn C</div>
                             <div class="author-role">Nhân viên kinh doanh</div>
                         </div>
-                    </div>
+                    </div>                    </div>                    </div>
                 </div>
             </div>
         </div>
@@ -307,8 +320,9 @@
                 </p>
             </div>
 
-            <div class="pricing-grid">
-                <div class="pricing-card">
+            <div class="row g-4 justify-content-center">
+                <div class="col-12 col-md-6 col-lg-4">
+                    <div class="pricing-card">
                     <div class="pricing-header">
                         <h3 class="pricing-title">Miễn phí</h3>
                         <div class="pricing-price">
@@ -324,9 +338,11 @@
                         <li class="disabled"><i class="fas fa-times"></i> Hỗ trợ ưu tiên</li>
                     </ul>
                     <a href="/pages/auth/login.html?mode=register" class="btn btn-outline btn-block">Bắt đầu</a>
+                    </div>
                 </div>
 
-                <div class="pricing-card featured">
+                <div class="col-12 col-md-6 col-lg-4">
+                    <div class="pricing-card featured">
                     <div class="pricing-badge">Phổ biến</div>
                     <div class="pricing-header">
                         <h3 class="pricing-title">Premium</h3>
@@ -343,9 +359,11 @@
                         <li><i class="fas fa-check"></i> Hỗ trợ ưu tiên</li>
                     </ul>
                     <a href="/pages/auth/login.html?mode=register" class="btn btn-primary btn-block">Nâng cấp ngay</a>
+                    </div>
                 </div>
 
-                <div class="pricing-card">
+                <div class="col-12 col-md-6 col-lg-4">
+                    <div class="pricing-card">
                     <div class="pricing-header">
                         <h3 class="pricing-title">Doanh nghiệp</h3>
                         <div class="pricing-price">
@@ -360,6 +378,7 @@
                         <li><i class="fas fa-check"></i> Hỗ trợ 24/7</li>
                     </ul>
                     <a href="#contact" class="btn btn-outline btn-block">Liên hệ</a>
+                    </div>
                 </div>
             </div>
         </div>

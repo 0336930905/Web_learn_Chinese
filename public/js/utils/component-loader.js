@@ -64,19 +64,66 @@ export async function loadFooter() {
 function initializeHeader() {
     const toggle = document.getElementById('navbarToggle');
     const menu = document.getElementById('navbarMenu');
+    const body = document.body;
     
     if (toggle && menu) {
-        toggle.addEventListener('click', () => {
-            menu.classList.toggle('active');
+        // Toggle menu
+        toggle.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const isActive = menu.classList.toggle('active');
             toggle.classList.toggle('active');
+            
+            // Change icon
+            const icon = toggle.querySelector('i');
+            if (icon) {
+                if (isActive) {
+                    icon.classList.remove('fa-bars');
+                    icon.classList.add('fa-times');
+                } else {
+                    icon.classList.remove('fa-times');
+                    icon.classList.add('fa-bars');
+                }
+            }
+            
+            // Prevent body scroll when menu is open
+            if (isActive) {
+                body.style.overflow = 'hidden';
+            } else {
+                body.style.overflow = '';
+            }
         });
         
-        // Close menu when clicking outside
-        document.addEventListener('click', (e) => {
-            if (!toggle.contains(e.target) && !menu.contains(e.target)) {
+        // Close menu when clicking on menu overlay
+        menu.addEventListener('click', (e) => {
+            if (e.target === menu) {
                 menu.classList.remove('active');
                 toggle.classList.remove('active');
+                body.style.overflow = '';
+                
+                // Reset icon
+                const icon = toggle.querySelector('i');
+                if (icon) {
+                    icon.classList.remove('fa-times');
+                    icon.classList.add('fa-bars');
+                }
             }
+        });
+        
+        // Close menu when clicking nav links
+        const navLinks = menu.querySelectorAll('.nav-link');
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                menu.classList.remove('active');
+                toggle.classList.remove('active');
+                body.style.overflow = '';
+                
+                // Reset icon
+                const icon = toggle.querySelector('i');
+                if (icon) {
+                    icon.classList.remove('fa-times');
+                    icon.classList.add('fa-bars');
+                }
+            });
         });
         
         // Smooth scroll for anchor links
@@ -87,13 +134,46 @@ function initializeHeader() {
                     e.preventDefault();
                     const target = document.querySelector(href);
                     if (target) {
-                        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                        // Close mobile menu
+                        // Close mobile menu first
                         menu.classList.remove('active');
                         toggle.classList.remove('active');
+                        body.style.overflow = '';
+                        
+                        // Reset icon
+                        const icon = toggle.querySelector('i');
+                        if (icon) {
+                            icon.classList.remove('fa-times');
+                            icon.classList.add('fa-bars');
+                        }
+                        
+                        // Then scroll with offset for fixed header
+                        const headerOffset = 80;
+                        const elementPosition = target.getBoundingClientRect().top;
+                        const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+                        window.scrollTo({
+                            top: offsetPosition,
+                            behavior: 'smooth'
+                        });
                     }
                 }
             });
+        });
+        
+        // Add scroll effect to header
+        let lastScroll = 0;
+        const header = document.querySelector('.site-header');
+        
+        window.addEventListener('scroll', () => {
+            const currentScroll = window.pageYOffset;
+            
+            if (currentScroll > 100) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+            
+            lastScroll = currentScroll;
         });
     }
 }

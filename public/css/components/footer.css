@@ -42,9 +42,6 @@
    ======================================== */
 
 .footer-content {
-    display: grid;
-    grid-template-columns: 2fr repeat(4, 1fr);
-    gap: var(--spacing-3xl);
     margin-bottom: var(--spacing-3xl);
     max-width: 1400px;
     margin-left: auto;
@@ -250,9 +247,6 @@
    ======================================== */
 
 .footer-bottom {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
     padding-top: var(--spacing-xl);
     margin-top: var(--spacing-3xl);
     border-top: 1px solid rgba(102, 126, 234, 0.2);
@@ -275,11 +269,6 @@
     color: rgba(255, 255, 255, 0.6);
 }
 
-.footer-bottom-links {
-    display: flex;
-    gap: var(--spacing-lg);
-}
-
 .footer-bottom-links a {
     color: rgba(255, 255, 255, 0.6);
     text-decoration: none;
@@ -288,6 +277,7 @@
     position: relative;
     padding: var(--spacing-xs) var(--spacing-sm);
     border-radius: var(--radius-md);
+    white-space: nowrap;
 }
 
 .footer-bottom-links a::after {
@@ -313,38 +303,37 @@
 }
 
 /* ========================================
-   RESPONSIVE - TABLET
-   ======================================== */
-
-@media (max-width: 1024px) {
-    .footer-content {
-        grid-template-columns: repeat(2, 1fr);
-        gap: var(--spacing-2xl);
-    }
-    
-    .footer-section:first-child {
-        grid-column: 1 / -1;
-    }
-}
-
-/* ========================================
-   RESPONSIVE - MOBILE
+   RESPONSIVE - TABLET & MOBILE
    ======================================== */
 
 @media (max-width: 768px) {
-    .footer-content {
-        grid-template-columns: 1fr;
-        gap: var(--spacing-2xl);
+    .site-footer {
+        padding: var(--spacing-3xl) 0 var(--spacing-lg);
     }
     
-    .footer-bottom {
-        flex-direction: column;
-        gap: var(--spacing-lg);
+    .footer-brand {
+        justify-content: center;
         text-align: center;
     }
     
-    .footer-bottom-links {
-        flex-wrap: wrap;
+    .footer-description {
+        text-align: center;
+    }
+    
+    .social-links {
+        justify-content: center;
+    }
+    
+    .footer-title {
+        text-align: center;
+    }
+    
+    .footer-links,
+    .footer-contact {
+        text-align: center;
+    }
+    
+    .footer-contact li {
         justify-content: center;
     }
 }

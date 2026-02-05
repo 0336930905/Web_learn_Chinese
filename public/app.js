@@ -372,33 +372,7 @@ async function loadCategories() {
         const data = await response.json();
         
         if (data.success) {
-            let categories = data.data || [];
-            
-            // If no categories, initialize defaults
-            if (categories.length === 0) {
-                console.log('No categories found, initializing defaults...');
-                const initResponse = await fetch(`${API_URL}/categories/init-defaults`, {
-                    method: 'POST',
-                    headers: {
-                        'Authorization': `Bearer ${authToken}`,
-                        'Content-Type': 'application/json'
-                    }
-                });
-                
-                if (initResponse.ok) {
-                    const initData = await initResponse.json();
-                    console.log('✅ Initialized default categories');
-                    
-                    // Reload categories
-                    const reloadResponse = await fetch(`${API_URL}/categories`, {
-                        headers: {
-                            'Authorization': `Bearer ${authToken}`
-                        }
-                    });
-                    const reloadData = await reloadResponse.json();
-                    categories = reloadData.data || [];
-                }
-            }
+            const categories = data.data || [];
             
             // Update category filter dropdown
             const categoryFilter = document.getElementById('categoryFilter');

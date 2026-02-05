@@ -6,7 +6,6 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
-const { createStarterWords } = require('../utils/starterWords');
 
 /**
  * Generate JWT token
@@ -74,15 +73,6 @@ exports.register = async (req, res) => {
       displayName: displayName,
       lastLoginAt: new Date()
     });
-
-    // Create starter words for new user
-    try {
-      await createStarterWords(newUser._id);
-      console.log('✅ Starter words created for new user:', newUser.username);
-    } catch (wordError) {
-      console.error('⚠️ Error creating starter words:', wordError.message);
-      // Don't fail registration if starter words fail
-    }
 
     // Remove password from response
     const userResponse = newUser.toObject();

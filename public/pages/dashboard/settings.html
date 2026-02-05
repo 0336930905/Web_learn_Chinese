@@ -65,12 +65,12 @@
             margin: 0;
         }
 
-        .settings-content {
+        /* .settings-content {
             display: grid;
             grid-template-columns: 280px 1fr;
             gap: 2rem;
             margin-bottom: 2rem;
-        }
+        } */
 
         .settings-sidebar {
             position: sticky;
@@ -432,12 +432,12 @@
         }
 
         /* Data Export Section */
-        .export-options {
+        /* .export-options {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 1rem;
             margin-top: 1.5rem;
-        }
+        } */
 
         .export-card {
             background: white;
@@ -514,9 +514,9 @@
 
         /* Responsive */
         @media (max-width: 992px) {
-            .settings-content {
+            /* .settings-content {
                 grid-template-columns: 1fr;
-            }
+            } */
 
             .settings-sidebar {
                 position: static;
@@ -562,9 +562,9 @@
                 padding: 1.5rem;
             }
 
-            .export-options {
+            /* .export-options {
                 grid-template-columns: 1fr;
-            }
+            } */
         }
     </style>
 </head>
@@ -585,9 +585,9 @@
             <span>Cài đặt đã được lưu thành công!</span>
         </div>
 
-        <div class="settings-content">
+        <div class="row g-4 mb-4"> <!-- settings-content replacement -->
             <!-- Sidebar Menu -->
-            <div class="settings-sidebar">
+            <div class="col-12 col-lg-3 settings-sidebar">
                 <div class="settings-menu">
                     <button class="menu-item active" data-panel="general">
                         <i class="fas fa-sliders-h"></i>
@@ -613,7 +613,7 @@
             </div>
 
             <!-- Main Content -->
-            <div class="settings-main">
+            <div class="col-12 col-lg-9 settings-main">
                 <!-- General Panel -->
                 <div class="settings-panel active" id="general-panel">
                     <h2 class="panel-title">
@@ -1120,23 +1120,29 @@
                             Xuất dữ liệu
                         </div>
 
-                        <div class="export-options">
-                            <div class="export-card" onclick="exportData('json')">
-                                <i class="fas fa-file-code"></i>
-                                <h4>Xuất JSON</h4>
-                                <p>Định dạng dữ liệu JSON</p>
+                        <div class="row g-3 mt-4">
+                            <div class="col-12 col-md-4">
+                                <div class="export-card" onclick="exportData('json')">
+                                    <i class="fas fa-file-code"></i>
+                                    <h4>Xuất JSON</h4>
+                                    <p>Định dạng dữ liệu JSON</p>
+                                </div>
                             </div>
 
-                            <div class="export-card" onclick="exportData('csv')">
-                                <i class="fas fa-file-csv"></i>
-                                <h4>Xuất CSV</h4>
-                                <p>Định dạng bảng tính</p>
+                            <div class="col-12 col-md-4">
+                                <div class="export-card" onclick="exportData('csv')">
+                                    <i class="fas fa-file-csv"></i>
+                                    <h4>Xuất CSV</h4>
+                                    <p>Định dạng bảng tính</p>
+                                </div>
                             </div>
 
-                            <div class="export-card" onclick="exportData('pdf')">
-                                <i class="fas fa-file-pdf"></i>
-                                <h4>Xuất PDF</h4>
-                                <p>Báo cáo học tập PDF</p>
+                            <div class="col-12 col-md-4">
+                                <div class="export-card" onclick="exportData('pdf')">
+                                    <i class="fas fa-file-pdf"></i>
+                                    <h4>Xuất PDF</h4>
+                                    <p>Báo cáo học tập PDF</p>
+                                </div>
                             </div>
                         </div>
                     </div>
