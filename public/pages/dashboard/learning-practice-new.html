@@ -697,7 +697,7 @@
             .practice-card-header,
             .practice-card-body,
             .results-body {
-                padding: 1.5rem;
+                padding: 1.25rem;
             }
 
             .options-grid {
@@ -720,6 +720,64 @@
             .btn-nav {
                 width: 100%;
                 justify-content: center;
+            }
+
+            /* Results screen mobile improvements */
+            .results-header {
+                padding: 1.25rem 1rem;
+            }
+
+            .trophy-icon {
+                font-size: 2.5rem;
+            }
+
+            .results-title {
+                font-size: 1.5rem;
+            }
+
+            .results-subtitle {
+                font-size: 0.875rem;
+            }
+
+            .stat-card {
+                padding: 1rem;
+            }
+
+            .stat-value {
+                font-size: 1.75rem;
+            }
+
+            .stat-label {
+                font-size: 0.8rem;
+            }
+
+            .review-section {
+                padding: 1rem;
+            }
+
+            .review-title {
+                font-size: 1rem;
+            }
+
+            .review-item {
+                padding: 0.875rem;
+            }
+
+            .review-word {
+                font-size: 1.1rem;
+            }
+
+            .review-details {
+                gap: 1rem;
+            }
+
+            .results-actions {
+                flex-direction: column;
+                gap: 0.75rem;
+            }
+
+            .results-actions .btn-nav {
+                width: 100%;
             }
         }
 
@@ -1003,20 +1061,20 @@
             <div class="results-body">
                 <!-- Statistics -->
                 <div class="stats-grid row g-3">
-                    <div class="col-4">
-                        <div class="stat-card">
+                    <div class="col-12 col-sm-4">
+                        <div class="stat-card h-100">
                             <div class="stat-value correct" id="correctCount">0</div>
                             <div class="stat-label">Đúng</div>
                         </div>
                     </div>
-                    <div class="col-4">
-                        <div class="stat-card">
+                    <div class="col-12 col-sm-4">
+                        <div class="stat-card h-100">
                             <div class="stat-value incorrect" id="wrongCount">0</div>
                             <div class="stat-label">Sai</div>
                         </div>
                     </div>
-                    <div class="col-4">
-                        <div class="stat-card">
+                    <div class="col-12 col-sm-4">
+                        <div class="stat-card h-100">
                             <div class="stat-value accuracy" id="accuracyPercent">0%</div>
                             <div class="stat-label">Độ Chính Xác</div>
                         </div>

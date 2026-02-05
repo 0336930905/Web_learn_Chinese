@@ -712,7 +712,8 @@ function setupEventListeners() {
     const returnBtn = document.getElementById('returnToModesBtn');
     if (returnBtn) {
         returnBtn.addEventListener('click', () => {
-            window.location.href = `learning-practice-new.html?category=${categorySlug}&name=${encodeURIComponent(categoryName)}`;
+            // Redirect to learning modes page with category info
+            window.location.href = `learning-modes.html?category=${categorySlug}&name=${encodeURIComponent(categoryName)}`;
         });
     }
 }
