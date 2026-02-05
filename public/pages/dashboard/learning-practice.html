@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Luyện Tập - Học Tiếng Đài Loan</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <script src="https://kit.fontawesome.com/8b9a27d5a0.js" crossorigin="anonymous"></script>
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/pages/dashboard.css">
+    <link rel="stylesheet" href="/css/pages/learning-practice.css">
+    
+    <!-- Auth Protection Script -->
+    <script>
+        const hasToken = localStorage.getItem('token');
+        if (!hasToken) {
+            sessionStorage.clear();
+            localStorage.clear();
+            window.location.href = '/pages/auth/login.html';
+        }
+    </script>
+</head>
+<body>
+    <!-- Header -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/pages/dashboard/dashboard.html">
+                <i class="fas fa-language"></i> Học Tiếng Đài Loan
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/pages/dashboard/dashboard.html">
+                            <i class="fas fa-home"></i> Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/pages/dashboard/learning-practice.html">
+                            <i class="fas fa-graduation-cap"></i> Luyện Tập
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/pages/dashboard/profile.html">
+                            <i class="fas fa-user"></i> Hồ Sơ
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" id="logoutBtn">
+                            <i class="fas fa-sign-out-alt"></i> Đăng Xuất
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container-fluid mt-4">
+        <!-- Practice Info Header -->
+        <div class="practice-info-header mb-4">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h3 class="mb-2">
+                        <i class="fas fa-book-open me-2"></i>
+                        <span id="categoryNameDisplay">Luyện Tập</span>
+                    </h3>
+                    <div class="d-flex align-items-center gap-3">
+                        <span class="badge bg-primary" id="modeDisplay">
+                            <i class="fas fa-headphones"></i> Luyện Nghe
+                        </span>
+                        <span class="text-muted" id="wordCountDisplay">
+                            <i class="fas fa-layer-group"></i> Đang tải...
+                        </span>
+                    </div>
+                </div>
+                <div>
+                    <button class="btn btn-outline-primary" onclick="history.back()">
+                        <i class="fas fa-arrow-left"></i> Quay lại
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Practice Area (Full Width) -->
+        <div class="row">
+            <div class="col-12">
+                <!-- Welcome Screen -->
+                <div id="welcomeScreen" class="card shadow-sm">
+                    <div class="card-body text-center py-5">
+                        <i class="fas fa-graduation-cap fa-5x text-primary mb-4"></i>
+                        <h2>Chào Mừng Đến Với Luyện Tập</h2>
+                        <p class="lead text-muted">Chọn chế độ luyện tập và nhấn "Bắt Đầu" để bắt đầu học</p>
+                        <div class="row mt-5">
+                            <div class="col-md-4">
+                                <div class="p-4 border rounded">
+                                    <i class="fas fa-headphones fa-3x text-primary mb-3"></i>
+                                    <h5>Luyện Nghe</h5>
+                                    <p class="text-muted">Nghe và chọn từ đúng</p>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="p-4 border rounded">
+                                    <i class="fas fa-brain fa-3x text-success mb-3"></i>
+                                    <h5>Nhớ Nghĩa</h5>
+                                    <p class="text-muted">Nhớ nghĩa tiếng Việt của từ</p>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="p-4 border rounded">
+                                    <i class="fas fa-question-circle fa-3x text-warning mb-3"></i>
+                                    <h5>Trắc Nghiệm</h5>
+                                    <p class="text-muted">Kiểm tra kiến thức tổng hợp</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Practice Screen -->
+                <div id="practiceScreen" class="card shadow-sm" style="display: none;">
+                    <div class="card-header bg-light">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h5 class="mb-0" id="practiceTitle">
+                                    <i class="fas fa-headphones"></i> Luyện Nghe Phát Âm
+                                </h5>
+                            </div>
+                            <div class="text-end">
+                                <span class="badge bg-primary" id="questionProgress">1/10</span>
+                                <button class="btn btn-sm btn-danger ms-2" id="exitPracticeBtn">
+                                    <i class="fas fa-times"></i> Thoát
+                                </button>
+                            </div>
+                        </div>
+                        <div class="progress mt-2" style="height: 5px;">
+                            <div class="progress-bar" id="progressBar" role="progressbar" style="width: 0%"></div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <!-- Question Display -->
+                        <div id="questionArea" class="text-center mb-4">
+                            <!-- Will be populated by JavaScript -->
+                        </div>
+
+                        <!-- Options -->
+                        <div id="optionsArea" class="row g-3">
+                            <!-- Will be populated by JavaScript -->
+                        </div>
+
+                        <!-- Navigation -->
+                        <div class="d-flex justify-content-between mt-4">
+                            <button class="btn btn-secondary" id="prevQuestionBtn" disabled>
+                                <i class="fas fa-arrow-left"></i> Câu Trước
+                            </button>
+                            <button class="btn btn-primary" id="nextQuestionBtn" style="display: none;">
+                                <i class="fas fa-arrow-right"></i> Câu Tiếp
+                            </button>
+                            <button class="btn btn-success" id="finishPracticeBtn" style="display: none;">
+                                <i class="fas fa-check"></i> Hoàn Thành
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Results Screen -->
+                <div id="resultsScreen" class="card shadow-sm" style="display: none;">
+                    <div class="card-header bg-success text-white">
+                        <h5 class="mb-0"><i class="fas fa-trophy"></i> Kết Quả Luyện Tập</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="text-center mb-4">
+                            <div class="display-1 mb-3" id="resultIcon">
+                                <i class="fas fa-trophy text-warning"></i>
+                            </div>
+                            <h2 id="resultTitle">Xuất Sắc!</h2>
+                            <p class="lead text-muted" id="resultMessage">Bạn đã hoàn thành bài luyện tập</p>
+                        </div>
+
+                        <div class="row text-center mb-4">
+                            <div class="col-md-4">
+                                <div class="card bg-light">
+                                    <div class="card-body">
+                                        <h3 class="text-success" id="correctCount">0</h3>
+                                        <p class="text-muted mb-0">Đúng</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="card bg-light">
+                                    <div class="card-body">
+                                        <h3 class="text-danger" id="wrongCount">0</h3>
+                                        <p class="text-muted mb-0">Sai</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="card bg-light">
+                                    <div class="card-body">
+                                        <h3 class="text-primary" id="accuracyPercent">0%</h3>
+                                        <p class="text-muted mb-0">Độ Chính Xác</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Review Section -->
+                        <div id="reviewSection" class="mb-4">
+                            <h5 class="mb-3">Xem Lại Các Câu Sai</h5>
+                            <div id="reviewList">
+                                <!-- Will be populated by JavaScript -->
+                            </div>
+                        </div>
+
+                        <div class="text-center">
+                            <button class="btn btn-primary me-2" id="practiceAgainBtn">
+                                <i class="fas fa-redo"></i> Luyện Lại
+                            </button>
+                            <button class="btn btn-outline-primary" id="backToHomeBtn">
+                                <i class="fas fa-home"></i> Về Dashboard
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Practice Logic -->
+    <script type="module" src="/js/pages/learning-practice.js"></script>
+</body>
+</html>

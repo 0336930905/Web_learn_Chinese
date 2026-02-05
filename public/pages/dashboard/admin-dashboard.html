@@ -1,0 +1,1154 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Quản Trị Hệ Thống</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    
+    <!-- Font Awesome Kit -->
+    <script src="https://kit.fontawesome.com/8b9a27d5a0.js" crossorigin="anonymous"></script>
+    
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Auth Protection Script -->
+    <script>
+        console.log('═══════════════════════════════════════════════');
+        console.log('👑 ADMIN DASHBOARD LOADED');
+        console.log('═══════════════════════════════════════════════');
+        
+        const hasToken = localStorage.getItem('token');
+        console.log('🎫 Token check:', hasToken ? '✅ TOKEN EXISTS' : '❌ NO TOKEN');
+        
+        if (!hasToken) {
+            console.log('❌ No token - redirecting to login');
+            sessionStorage.clear();
+            localStorage.clear();
+            window.location.href = '/pages/auth/login.html';
+        }
+        console.log('═══════════════════════════════════════════════');
+    </script>
+    
+    <style>
+        :root {
+            --primary: #111827;
+            --secondary: #6B7280;
+            --background: #FFFFFF;
+            --accent: #22C55E;
+            --border: #E5E7EB;
+            
+            /* Gradients sáng tạo */
+            --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-success: linear-gradient(135deg, #22C55E 0%, #84cc16 100%);
+            --gradient-danger: linear-gradient(135deg, #ef4444 0%, #f59e0b 100%);
+            --gradient-warning: linear-gradient(135deg, #f59e0b 0%, #eab308 100%);
+            --gradient-info: linear-gradient(135deg, #3b82f6 0%, #06b6d4 100%);
+            --gradient-purple: linear-gradient(135deg, #a855f7 0%, #ec4899 100%);
+            --gradient-orange: linear-gradient(135deg, #f97316 0%, #fb923c 100%);
+            --gradient-teal: linear-gradient(135deg, #14b8a6 0%, #06b6d4 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0e7ff 25%, #fae8ff 50%, #fef3c7 75%, #ecfccb 100%);
+            background-size: 400% 400%;
+            animation: gradientShift 20s ease infinite;
+            background-attachment: fixed;
+            min-height: 100vh;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(255, 255, 255, 0.15) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .container, .admin-header {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ========== HEADER ========== */
+        .admin-header {
+            background: var(--gradient-primary);
+            backdrop-filter: blur(10px);
+            color: white;
+            padding: 1.75rem 0;
+            box-shadow: 0 8px 32px rgba(102, 126, 234, 0.3);
+            margin-bottom: 2.5rem;
+            border-bottom: 3px solid rgba(255, 255, 255, 0.2);
+            animation: slideDown 0.6s ease-out;
+        }
+
+        @keyframes slideDown {
+            from {
+                transform: translateY(-100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .admin-header h1 {
+            font-size: 2rem;
+            font-weight: 800;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            background: linear-gradient(135deg, #fff 0%, #a8edea 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .admin-header h1 i {
+            background: linear-gradient(135deg, var(--warning-start), var(--warning-end));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .admin-header .user-info {
+            display: flex;
+            align-items: center;
+            gap: 1.25rem;
+        }
+
+        .admin-header .user-info span {
+            font-weight: 600;
+            padding: 0.5rem 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 25px;
+            backdrop-filter: blur(10px);
+        }
+
+        .admin-header .btn-outline-light {
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            font-weight: 600;
+            padding: 0.5rem 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .admin-header .btn-outline-light:hover {
+            background: linear-gradient(135deg, var(--danger-start), var(--danger-end));
+            border-color: transparent;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(238, 9, 121, 0.4);
+        }
+
+        /* ========== STAT CARDS ========== */
+        .stat-card-admin {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 
+                0 8px 32px rgba(0, 0, 0, 0.1),
+                0 0 0 1px rgba(255, 255, 255, 0.2);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            height: 100%;
+            overflow: hidden;
+            position: relative;
+            animation: fadeInUp 0.6s ease-out backwards;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .stat-card-admin:nth-child(1) { animation-delay: 0.1s; }
+        .stat-card-admin:nth-child(2) { animation-delay: 0.2s; }
+        .stat-card-admin:nth-child(3) { animation-delay: 0.3s; }
+        .stat-card-admin:nth-child(4) { animation-delay: 0.4s; }
+
+        .stat-card-admin::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, transparent 0%, rgba(255, 255, 255, 0.3) 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .stat-card-admin:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 
+                0 20px 60px rgba(0, 0, 0, 0.2),
+                0 0 0 1px rgba(255, 255, 255, 0.3);
+        }
+
+        .stat-card-admin:hover::before {
+            opacity: 1;
+        }
+
+        .stat-icon {
+            width: 70px;
+            height: 70px;
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            margin-bottom: 1.25rem;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+            position: relative;
+            z-index: 1;
+        }
+
+        .stat-icon::after {
+            content: '';
+            position: absolute;
+            inset: -3px;
+            border-radius: 20px;
+            background: inherit;
+            opacity: 0.3;
+            filter: blur(10px);
+            z-index: -1;
+        }
+
+        .stat-icon.bg-gradient-primary {
+            background: var(--gradient-primary);
+            color: white;
+            animation: iconFloat 3s ease-in-out infinite;
+        }
+
+        .stat-icon.bg-gradient-success {
+            background: var(--gradient-success);
+            color: white;
+            animation: iconFloat 3s ease-in-out infinite 0.5s;
+        }
+
+        .stat-icon.bg-gradient-danger {
+            background: var(--gradient-danger);
+            color: white;
+            animation: iconFloat 3s ease-in-out infinite 1s;
+        }
+
+        .stat-icon.bg-gradient-warning {
+            background: var(--gradient-warning);
+            color: white;
+            animation: iconFloat 3s ease-in-out infinite 1.5s;
+        }
+
+        @keyframes iconFloat {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-5px); }
+        }
+
+        .stat-label {
+            color: #6b7280;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #1f2937 0%, #4b5563 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-card-admin small {
+            color: #9ca3af;
+            font-weight: 500;
+        }
+
+        /* ========== SECTION CARDS ========== */
+        .section-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 
+                0 8px 32px rgba(0, 0, 0, 0.1),
+                0 0 0 1px rgba(255, 255, 255, 0.2);
+            margin-bottom: 2rem;
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1.75rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .section-title i {
+            background: var(--gradient-purple);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* ========== NAVIGATION TABS ========== */
+        .nav-tabs-modern {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 15px;
+            padding: 0.75rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            border: none;
+            margin-bottom: 2rem;
+        }
+
+        .nav-tabs-modern .nav-link {
+            border: none;
+            color: #6b7280;
+            font-weight: 600;
+            padding: 0.875rem 1.75rem;
+            transition: all 0.3s ease;
+            border-radius: 10px;
+            position: relative;
+        }
+
+        .nav-tabs-modern .nav-link i {
+            margin-right: 0.5rem;
+        }
+
+        .nav-tabs-modern .nav-link:hover {
+            color: #667eea;
+            background: rgba(102, 126, 234, 0.1);
+        }
+
+        .nav-tabs-modern .nav-link.active {
+            background: var(--gradient-primary);
+            color: white;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        /* ========== TABLES ========== */
+        .table-modern {
+            border-collapse: separate;
+            border-spacing: 0;
+        }
+
+        .table-modern thead {
+            background: linear-gradient(135deg, #f9fafb 0%, #e5e7eb 100%);
+        }
+
+        .table-modern thead th {
+            font-weight: 700;
+            color: #374151;
+            border: none;
+            padding: 1.25rem;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 0.5px;
+            border-bottom: 2px solid #e5e7eb;
+        }
+
+        .table-modern tbody tr {
+            transition: all 0.3s ease;
+            border-bottom: 1px solid #f3f4f6;
+        }
+
+        .table-modern tbody tr:hover {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
+            transform: scale(1.002);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .table-modern tbody td {
+            padding: 1rem 0.75rem;
+            vertical-align: middle;
+            border-bottom: 1px solid #f3f4f6;
+        }
+
+        .table-modern tbody td:last-child {
+            white-space: nowrap;
+        }
+
+        .table-modern tbody td:nth-last-child(2) {
+            min-width: 140px;
+        }
+
+        /* ========== BADGES ========== */
+        .badge-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.375rem;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            white-space: nowrap;
+        }
+
+        .badge-active {
+            background: var(--gradient-success);
+            color: white;
+            box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3);
+        }
+
+        .badge-inactive {
+            background: var(--gradient-danger);
+            color: white;
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+        }
+
+        /* ========== BUTTONS ========== */
+        .action-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 36px;
+            height: 36px;
+            padding: 0.5rem;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin: 0 0.2rem;
+            position: relative;
+            z-index: 10;
+        }
+
+        .action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .btn-edit {
+            background: linear-gradient(135deg, #bfdbfe 0%, #60a5fa 100%);
+            color: #1e40af;
+        }
+
+        .btn-edit:hover {
+            background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%);
+            color: white;
+        }
+
+        .btn-lock {
+            background: linear-gradient(135deg, #fed7aa 0%, #fbbf24 100%);
+            color: #92400e;
+        }
+
+        .btn-lock:hover {
+            background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+            color: white;
+        }
+
+        .btn-unlock {
+            background: linear-gradient(135deg, #d1fae5 0%, #6ee7b7 100%);
+            color: #065f46;
+        }
+
+        .btn-unlock:hover {
+            background: linear-gradient(135deg, #6ee7b7 0%, #34d399 100%);
+            color: white;
+        }
+
+        .btn-view {
+            background: linear-gradient(135deg, #ddd6fe 0%, #a78bfa 100%);
+            color: #5b21b6;
+        }
+
+        .btn-view:hover {
+            background: linear-gradient(135deg, #a78bfa 0%, #8b5cf6 100%);
+            color: white;
+        }
+
+        .btn-delete {
+            background: linear-gradient(135deg, #fecaca 0%, #f87171 100%);
+            color: #991b1b;
+        }
+
+        .btn-delete:hover {
+            background: linear-gradient(135deg, #f87171 0%, #ef4444 100%);
+            color: white;
+        }
+
+        .quick-action-btn {
+            background: var(--gradient-primary);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 12px;
+            font-weight: 700;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .quick-action-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.5);
+        }
+
+        .quick-action-btn i {
+            margin-right: 0.5rem;
+        }
+
+        /* ========== FORM CONTROLS ========== */
+        .form-control, .form-select {
+            border: 2px solid #e5e7eb;
+            border-radius: 10px;
+            padding: 0.75rem 1rem;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .form-control:focus, .form-select:focus {
+            border-color: var(--primary-start);
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+        }
+
+        .search-box {
+            max-width: 400px;
+            width: auto !important;
+        }
+
+        /* ========== ACTIVITY LOG ========== */
+        .activity-item {
+            padding: 1.25rem;
+            border-left: 4px solid #e5e7eb;
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+            border-radius: 8px;
+            background: rgba(249, 250, 251, 0.5);
+        }
+
+        .activity-item:hover {
+            border-left-color: #667eea;
+            background: rgba(102, 126, 234, 0.05);
+            transform: translateX(5px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        .activity-time {
+            font-size: 0.75rem;
+            color: #9ca3af;
+            font-weight: 600;
+        }
+
+        /* ========== SPINNERS ========== */
+        .spinner-border {
+            width: 3rem;
+            height: 3rem;
+            border-width: 0.3rem;
+        }
+
+        /* ========== SYSTEM BUTTONS ========== */
+        .btn-outline-primary, .btn-outline-info, .btn-outline-warning, .btn-outline-danger {
+            font-weight: 600;
+            padding: 0.75rem;
+            border-width: 2px;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-outline-primary:hover {
+            background: var(--gradient-primary);
+            border-color: transparent;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-outline-info:hover {
+            background: var(--gradient-info);
+            border-color: transparent;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+        }
+
+        .btn-outline-warning:hover {
+            background: var(--gradient-warning);
+            border-color: transparent;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(245, 158, 11, 0.4);
+        }
+
+        .btn-outline-danger:hover {
+            background: var(--gradient-danger);
+            border-color: transparent;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(239, 68, 68, 0.4);
+        }
+
+        /* ========== RESPONSIVE ========== */
+        @media (max-width: 768px) {
+            .stat-value {
+                font-size: 1.75rem;
+            }
+            
+            .section-card {
+                padding: 1.25rem;
+            }
+
+            .admin-header h1 {
+                font-size: 1.5rem;
+            }
+
+            .nav-tabs-modern .nav-link {
+                padding: 0.625rem 1rem;
+                font-size: 0.875rem;
+            }
+        }
+
+        /* ========== SCROLL BAR ========== */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--gradient-primary);
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--gradient-purple);
+        }
+
+        /* ========== PAGINATION ========== */
+        .pagination-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 2px solid var(--border);
+        }
+
+        .pagination {
+            display: flex;
+            gap: 0.5rem;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .pagination .page-item {
+            display: inline-block;
+        }
+
+        .pagination .page-link {
+            padding: 0.5rem 0.75rem;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            color: var(--primary);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            background: white;
+        }
+
+        .pagination .page-link:hover {
+            background: var(--gradient-primary);
+            color: white;
+            border-color: transparent;
+            transform: translateY(-2px);
+        }
+
+        .pagination .page-item.active .page-link {
+            background: var(--gradient-primary);
+            color: white;
+            border-color: transparent;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+
+        .pagination .page-item.disabled .page-link {
+            opacity: 0.5;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
+        .pagination-info {
+            color: var(--secondary);
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <!-- Admin Header -->
+    <div class="admin-header">
+        <div class="container">
+            <div class="d-flex justify-content-between align-items-center">
+                <h1>
+                    <i class="fas fa-shield-alt"></i>
+                    Admin Dashboard
+                </h1>
+                <div class="user-info">
+                    <span id="adminEmail" class="text-light"></span>
+                    <button class="btn btn-outline-light btn-sm" onclick="logout()">
+                        <i class="fas fa-sign-out-alt"></i> Đăng xuất
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container pb-5">
+        <!-- Statistics Cards -->
+        <div class="row g-4 mb-4">
+            <div class="col-md-6 col-xl-3">
+                <div class="stat-card-admin">
+                    <div class="stat-icon bg-gradient-primary">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="stat-label">Tổng người dùng</div>
+                    <div class="stat-value" id="totalUsers">0</div>
+                    <small class="text-muted">Đã đăng ký</small>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-xl-3">
+                <div class="stat-card-admin">
+                    <div class="stat-icon bg-gradient-success">
+                        <i class="fas fa-book"></i>
+                    </div>
+                    <div class="stat-label">Tổng từ vựng</div>
+                    <div class="stat-value" id="totalWords">0</div>
+                    <small class="text-muted">Trong hệ thống</small>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-xl-3">
+                <div class="stat-card-admin">
+                    <div class="stat-icon bg-gradient-danger">
+                        <i class="fas fa-list"></i>
+                    </div>
+                    <div class="stat-label">Tổng danh mục</div>
+                    <div class="stat-value" id="totalCategories">0</div>
+                    <small class="text-muted">Đã tạo</small>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-xl-3">
+                <div class="stat-card-admin">
+                    <div class="stat-icon bg-gradient-warning">
+                        <i class="fas fa-user-check"></i>
+                    </div>
+                    <div class="stat-label">Hoạt động hôm nay</div>
+                    <div class="stat-value" id="activeToday">0</div>
+                    <small class="text-muted">Người dùng</small>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation Tabs -->
+        <ul class="nav nav-tabs nav-tabs-modern mb-4" id="adminTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="users-tab" data-bs-toggle="tab" data-bs-target="#users-panel" type="button">
+                    <i class="fas fa-users"></i> Người dùng
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="words-tab" data-bs-toggle="tab" data-bs-target="#words-panel" type="button">
+                    <i class="fas fa-book"></i> Từ vựng
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="categories-tab" data-bs-toggle="tab" data-bs-target="#categories-panel" type="button">
+                    <i class="fas fa-folder"></i> Danh mục
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="activity-tab" data-bs-toggle="tab" data-bs-target="#activity-panel" type="button">
+                    <i class="fas fa-chart-line"></i> Hoạt động
+                </button>
+            </li>
+        </ul>
+
+        <!-- Tab Content -->
+        <div class="tab-content" id="adminTabContent">
+            <!-- Users Panel -->
+            <div class="tab-pane fade show active" id="users-panel">
+                <div class="section-card">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h2 class="section-title mb-0">
+                            <i class="fas fa-users"></i>
+                            Quản lý người dùng
+                        </h2>
+                        <div class="d-flex gap-2">
+                            <input type="search" class="form-control search-box" id="searchUsers" placeholder="Tìm kiếm người dùng...">
+                            <button class="quick-action-btn" onclick="exportUsers()">
+                                <i class="fas fa-download"></i> Xuất danh sách
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="table table-modern">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Email</th>
+                                    <th>Tên</th>
+                                    <th>Ngày đăng ký</th>
+                                    <th>Số từ vựng</th>
+                                    <th>Trạng thái</th>
+                                    <th>Thao tác</th>
+                                </tr>
+                            </thead>
+                            <tbody id="usersTableBody">
+                                <tr>
+                                    <td colspan="7" class="text-center">
+                                        <div class="spinner-border text-primary" role="status">
+                                            <span class="visually-hidden">Đang tải...</span>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Pagination -->
+                    <div class="pagination-container" id="usersPagination" style="display: none;">
+                        <div class="pagination-info">
+                            Hiển thị <span id="usersShowingStart">1</span>-<span id="usersShowingEnd">10</span> 
+                            trong tổng số <span id="usersTotalCount">0</span> người dùng
+                        </div>
+                        <ul class="pagination" id="usersPaginationList"></ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Words Panel -->
+            <div class="tab-pane fade" id="words-panel">
+                <div class="section-card">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h2 class="section-title mb-0">
+                            <i class="fas fa-book"></i>
+                            Quản lý từ vựng
+                        </h2>
+                        <div class="d-flex gap-2">
+                            <button class="quick-action-btn" onclick="showAddWordModal()">
+                                <i class="fas fa-plus"></i> Thêm từ vựng
+                            </button>
+                            <select class="form-select" id="filterCategory" style="width: 200px;">
+                                <option value="">Tất cả danh mục</option>
+                            </select>
+                            <input type="search" class="form-control search-box" id="searchWords" placeholder="Tìm từ vựng...">
+                        </div>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="table table-modern">
+                            <thead>
+                                <tr>
+                                    <th>STT</th>
+                                    <th>Từ truyền thống</th>
+                                    <th>Pinyin</th>
+                                    <th>Tiếng Việt</th>
+                                    <th>Danh mục</th>
+                                    <th>Người tạo</th>
+                                    <th>Độ khó</th>
+                                    <th>Thao tác</th>
+                                </tr>
+                            </thead>
+                            <tbody id="wordsTableBody">
+                                <tr>
+                                    <td colspan="8" class="text-center">
+                                        <div class="spinner-border text-primary" role="status">
+                                            <span class="visually-hidden">Đang tải...</span>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Pagination -->
+                    <div class="pagination-container" id="wordsPagination" style="display: none;">
+                        <div class="pagination-info">
+                            Hiển thị <span id="wordsShowingStart">1</span>-<span id="wordsShowingEnd">20</span> 
+                            trong tổng số <span id="wordsTotalCount">0</span> từ vựng
+                        </div>
+                        <ul class="pagination" id="wordsPaginationList"></ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Categories Panel -->
+            <div class="tab-pane fade" id="categories-panel">
+                <div class="section-card">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h2 class="section-title mb-0">
+                            <i class="fas fa-folder"></i>
+                            Quản lý danh mục
+                        </h2>
+                        <button class="quick-action-btn" onclick="showAddCategoryModal()">
+                            <i class="fas fa-plus"></i> Thêm danh mục hệ thống
+                        </button>
+                    </div>
+
+                    <div class="row g-4" id="categoriesGrid">
+                        <div class="col-12 text-center">
+                            <div class="spinner-border text-primary" role="status">
+                                <span class="visually-hidden">Đang tải...</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Activity Panel -->
+            <div class="tab-pane fade" id="activity-panel">
+                <div class="row g-4">
+                    <div class="col-lg-8">
+                        <div class="section-card">
+                            <h2 class="section-title">
+                                <i class="fas fa-chart-line"></i>
+                                Hoạt động gần đây
+                            </h2>
+                            <div id="activityLog">
+                                <div class="text-center">
+                                    <div class="spinner-border text-primary" role="status">
+                                        <span class="visually-hidden">Đang tải...</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4">
+                        <div class="section-card">
+                            <h2 class="section-title">
+                                <i class="fas fa-cog"></i>
+                                Hệ thống
+                            </h2>
+                            <div class="d-grid gap-2">
+                                <button class="btn btn-outline-primary" onclick="initDefaultCategories()">
+                                    <i class="fas fa-sync"></i> Khởi tạo danh mục mặc định
+                                </button>
+                                <button class="btn btn-outline-info" onclick="viewSystemLogs()">
+                                    <i class="fas fa-file-alt"></i> Xem logs hệ thống
+                                </button>
+                                <button class="btn btn-outline-warning" onclick="clearCache()">
+                                    <i class="fas fa-trash-alt"></i> Xóa cache
+                                </button>
+                                <button class="btn btn-outline-danger" onclick="backupDatabase()">
+                                    <i class="fas fa-database"></i> Sao lưu dữ liệu
+                                </button>
+                                <button class="btn btn-outline-danger" onclick="restoreDefaultSettings()">
+                                    <i class="fas fa-undo-alt"></i> Khôi phục cài đặt gốc
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Word Modal -->
+    <div class="modal fade" id="addWordModal" tabindex="-1" aria-labelledby="addWordModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content" style="border-radius: 20px; border: none; box-shadow: 0 10px 40px rgba(0,0,0,0.1);">
+                <div class="modal-header" style="background: var(--gradient-primary); color: white; border-radius: 20px 20px 0 0;">
+                    <h5 class="modal-title" id="addWordModalLabel">
+                        <i class="fas fa-plus-circle"></i> Thêm từ vựng mới
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" style="padding: 2rem;">
+                    <form id="addWordForm">
+                        <div class="row g-3">
+                            <!-- Traditional Chinese -->
+                            <div class="col-md-6">
+                                <label for="wordTraditional" class="form-label">
+                                    <i class="fas fa-language"></i> Từ truyền thống <span class="text-danger">*</span>
+                                </label>
+                                <input type="text" class="form-control" id="wordTraditional" required placeholder="你好">
+                            </div>
+
+                            <!-- Simplified Chinese -->
+                            <div class="col-md-6">
+                                <label for="wordSimplified" class="form-label">
+                                    <i class="fas fa-language"></i> Từ giản thể
+                                </label>
+                                <input type="text" class="form-control" id="wordSimplified" placeholder="你好">
+                            </div>
+
+                            <!-- Pinyin -->
+                            <div class="col-md-6">
+                                <label for="wordPinyin" class="form-label">
+                                    <i class="fas fa-font"></i> Pinyin
+                                </label>
+                                <input type="text" class="form-control" id="wordPinyin" placeholder="nǐ hǎo">
+                            </div>
+
+                            <!-- Zhuyin -->
+                            <div class="col-md-6">
+                                <label for="wordZhuyin" class="form-label">
+                                    <i class="fas fa-font"></i> Zhuyin (注音)
+                                </label>
+                                <input type="text" class="form-control" id="wordZhuyin" placeholder="ㄋㄧˇ ㄏㄠˇ">
+                            </div>
+
+                            <!-- Vietnamese -->
+                            <div class="col-md-6">
+                                <label for="wordVietnamese" class="form-label">
+                                    <i class="fas fa-flag"></i> Tiếng Việt
+                                </label>
+                                <input type="text" class="form-control" id="wordVietnamese" placeholder="Xin chào">
+                            </div>
+
+                            <!-- English -->
+                            <div class="col-md-6">
+                                <label for="wordEnglish" class="form-label">
+                                    <i class="fas fa-globe"></i> English
+                                </label>
+                                <input type="text" class="form-control" id="wordEnglish" placeholder="Hello">
+                            </div>
+
+                            <!-- Category -->
+                            <div class="col-md-6">
+                                <label for="wordCategory" class="form-label">
+                                    <i class="fas fa-folder"></i> Danh mục
+                                </label>
+                                <select class="form-select" id="wordCategory">
+                                    <option value="">Đang tải...</option>
+                                </select>
+                            </div>
+
+                            <!-- Difficulty -->
+                            <div class="col-md-6">
+                                <label for="wordDifficulty" class="form-label">
+                                    <i class="fas fa-signal"></i> Độ khó (1-5)
+                                </label>
+                                <div class="d-flex align-items-center gap-3">
+                                    <input type="range" class="form-range" id="wordDifficulty" min="1" max="5" value="3" style="flex: 1;">
+                                    <span class="badge" id="difficultyBadge" style="min-width: 40px; background: var(--gradient-accent);">3</span>
+                                </div>
+                            </div>
+
+                            <!-- Image File -->
+                            <div class="col-12">
+                                <label for="wordImageFile" class="form-label">
+                                    <i class="fas fa-image"></i> Hình ảnh
+                                </label>
+                                <input type="file" class="form-control" id="wordImageFile" accept="image/*">
+                                <small class="text-muted">Chấp nhận: JPG, PNG, GIF, WebP, SVG. Tối đa: 5MB</small>
+                                <div class="mt-2" id="imagePreview" style="display: none;">
+                                    <img id="previewImg" src="" alt="Preview" style="max-width: 200px; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+                                    <div class="mt-1">
+                                        <button type="button" class="btn btn-sm btn-outline-danger" onclick="clearImagePreview()">
+                                            <i class="fas fa-times"></i> Xóa ảnh
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Examples -->
+                            <div class="col-12">
+                                <label class="form-label">
+                                    <i class="fas fa-list"></i> Ví dụ
+                                </label>
+                                <div id="examplesContainer">
+                                    <div class="example-item mb-2">
+                                        <div class="input-group">
+                                            <input type="text" class="form-control example-input" placeholder="Nhập câu ví dụ...">
+                                            <button class="btn btn-outline-danger" type="button" onclick="removeExample(this)" style="display: none;">
+                                                <i class="fas fa-times"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <button type="button" class="btn btn-sm btn-outline-primary mt-2" onclick="addExample()">
+                                    <i class="fas fa-plus"></i> Thêm ví dụ
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer" style="border-top: 1px solid #E5E7EB; padding: 1.5rem;">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        <i class="fas fa-times"></i> Hủy
+                    </button>
+                    <button type="button" class="btn btn-primary" onclick="handleAddWord()" style="background: var(--gradient-primary); border: none;">
+                        <i class="fas fa-save"></i> Lưu từ vựng
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    
+    <!-- Admin Dashboard Script -->
+    <script src="/js/admin-dashboard.js"></script>
+</body>
+</html>

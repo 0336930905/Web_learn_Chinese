@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thành Tích & Huy Hiệu - Học Tiếng Trung</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="/css/main.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 2rem 0;
+        }
+
+        .achievements-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        .page-header {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+        }
+
+        .page-title {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #667eea;
+            margin-bottom: 0.5rem;
+        }
+
+        .page-subtitle {
+            color: #6c757d;
+            font-size: 1rem;
+        }
+
+        .stats-summary {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .stat-icon {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #667eea;
+        }
+
+        .stat-label {
+            color: #6c757d;
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        .filters-section {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .filter-tabs {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin-bottom: 1rem;
+        }
+
+        .filter-btn {
+            padding: 0.5rem 1.5rem;
+            border-radius: 20px;
+            border: 2px solid #e9ecef;
+            background: white;
+            color: #6c757d;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .filter-btn:hover {
+            border-color: #667eea;
+            color: #667eea;
+        }
+
+        .filter-btn.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-color: transparent;
+        }
+
+        .achievements-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .achievement-card {
+            background: white;
+            border-radius: 16px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .achievement-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+        }
+
+        .achievement-card.locked {
+            opacity: 0.6;
+        }
+
+        .achievement-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .achievement-icon {
+            font-size: 3rem;
+            filter: grayscale(0);
+        }
+
+        .achievement-card.locked .achievement-icon {
+            filter: grayscale(100%);
+            opacity: 0.5;
+        }
+
+        .achievement-info {
+            flex: 1;
+        }
+
+        .achievement-name {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #212529;
+            margin-bottom: 0.25rem;
+        }
+
+        .achievement-desc {
+            font-size: 0.875rem;
+            color: #6c757d;
+        }
+
+        .achievement-rarity {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: white;
+        }
+
+        .rarity-common {
+            background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+        }
+
+        .rarity-rare {
+            background: linear-gradient(135deg, #2196F3 0%, #1976D2 100%);
+        }
+
+        .rarity-epic {
+            background: linear-gradient(135deg, #9C27B0 0%, #7B1FA2 100%);
+        }
+
+        .rarity-legendary {
+            background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+        }
+
+        .achievement-progress {
+            margin-top: 1rem;
+        }
+
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.875rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .progress-bar-container {
+            height: 8px;
+            background: #e9ecef;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            border-radius: 4px;
+            transition: width 0.5s ease;
+        }
+
+        .achievement-points {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            color: #667eea;
+            font-weight: 700;
+        }
+
+        .earned-date {
+            font-size: 0.75rem;
+            color: #6c757d;
+            margin-top: 0.5rem;
+            font-style: italic;
+        }
+
+        .locked-badge {
+            background: #6c757d;
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            display: inline-block;
+            margin-top: 0.5rem;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .loading-spinner {
+            text-align: center;
+            padding: 3rem;
+        }
+
+        .spinner-border {
+            width: 3rem;
+            height: 3rem;
+            color: white;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .empty-icon {
+            font-size: 4rem;
+            color: #e9ecef;
+            margin-bottom: 1rem;
+        }
+
+        .empty-text {
+            color: #6c757d;
+            font-size: 1.25rem;
+        }
+
+        @media (max-width: 768px) {
+            .stats-summary {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .achievements-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .page-title {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header Component -->
+    <div id="header-placeholder"></div>
+
+    <div class="achievements-container">
+        <!-- Page Header -->
+        <div class="page-header">
+            <h1 class="page-title">
+                <i class="fas fa-trophy"></i> Thành Tích & Huy Hiệu
+            </h1>
+            <p class="page-subtitle">Khám phá và thu thập các huy hiệu qua quá trình học tập</p>
+        </div>
+
+        <!-- Stats Summary -->
+        <div class="stats-summary">
+            <div class="stat-card">
+                <div class="stat-icon">🏆</div>
+                <div class="stat-value" id="totalBadgesEarned">0</div>
+                <div class="stat-label">Huy Hiệu Đã Đạt</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">⭐</div>
+                <div class="stat-value" id="totalPoints">0</div>
+                <div class="stat-label">Tổng Điểm</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">📚</div>
+                <div class="stat-value" id="totalWordsLearned">0</div>
+                <div class="stat-label">Từ Đã Học</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">🔥</div>
+                <div class="stat-value" id="studyStreak">0</div>
+                <div class="stat-label">Ngày Liên Tiếp</div>
+            </div>
+        </div>
+
+        <!-- Filters -->
+        <div class="filters-section">
+            <div class="filter-tabs">
+                <button class="filter-btn active" data-category="all">
+                    <i class="fas fa-th"></i> Tất Cả
+                </button>
+                <button class="filter-btn" data-category="learning">
+                    <i class="fas fa-book"></i> Học Tập
+                </button>
+                <button class="filter-btn" data-category="streak">
+                    <i class="fas fa-fire"></i> Streak
+                </button>
+                <button class="filter-btn" data-category="milestone">
+                    <i class="fas fa-flag"></i> Cột Mốc
+                </button>
+            </div>
+            <div class="filter-tabs">
+                <button class="filter-btn active" data-rarity="all">
+                    Tất Cả Độ Hiếm
+                </button>
+                <button class="filter-btn" data-rarity="common">
+                    <i class="fas fa-circle" style="color: #4CAF50;"></i> Phổ Biến
+                </button>
+                <button class="filter-btn" data-rarity="rare">
+                    <i class="fas fa-circle" style="color: #2196F3;"></i> Hiếm
+                </button>
+                <button class="filter-btn" data-rarity="epic">
+                    <i class="fas fa-circle" style="color: #9C27B0;"></i> Sử Thi
+                </button>
+                <button class="filter-btn" data-rarity="legendary">
+                    <i class="fas fa-circle" style="color: #FFD700;"></i> Huyền Thoại
+                </button>
+            </div>
+        </div>
+
+        <!-- Loading State -->
+        <div class="loading-spinner" id="loadingSpinner">
+            <div class="spinner-border" role="status">
+                <span class="visually-hidden">Đang tải...</span>
+            </div>
+        </div>
+
+        <!-- Earned Achievements -->
+        <div id="earnedSection" style="display: none;">
+            <h2 class="section-title">
+                <i class="fas fa-star"></i> Đã Đạt Được
+            </h2>
+            <div class="achievements-grid" id="earnedAchievements"></div>
+        </div>
+
+        <!-- Available Achievements -->
+        <div id="availableSection" style="display: none;">
+            <h2 class="section-title">
+                <i class="fas fa-lock"></i> Chưa Đạt Được
+            </h2>
+            <div class="achievements-grid" id="availableAchievements"></div>
+        </div>
+
+        <!-- Empty State -->
+        <div class="empty-state" id="emptyState" style="display: none;">
+            <div class="empty-icon">
+                <i class="fas fa-trophy"></i>
+            </div>
+            <div class="empty-text">Không tìm thấy huy hiệu nào</div>
+        </div>
+    </div>
+
+    <!-- Footer Component -->
+    <div id="footer-placeholder"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script type="module">
+        import { loadComponent } from '/js/utils/component-loader.js';
+        import { checkAuth, getToken } from '/js/utils/auth.js';
+        import { apiCall } from '/js/utils/api.js';
+
+        // Check authentication
+        checkAuth();
+
+        // Load components
+        await loadComponent('header-placeholder', '/components/header-dashboard.html');
+
+        let allAchievements = [];
+        let allProgress = {};
+        let currentCategoryFilter = 'all';
+        let currentRarityFilter = 'all';
+
+        // Load achievements
+        async function loadAchievements() {
+            try {
+                const token = getToken();
+                
+                // Get achievements and progress
+                const [achievementsRes, progressRes, statsRes] = await Promise.all([
+                    apiCall('/api/achievements', { token }),
+                    apiCall('/api/achievements/progress', { token }),
+                    apiCall('/api/achievements/stats-summary', { token })
+                ]);
+
+                if (achievementsRes.success && progressRes.success && statsRes.success) {
+                    allAchievements = achievementsRes.data;
+                    allProgress = progressRes.data.progress || {};
+                    
+                    // Update stats
+                    updateStats(statsRes.data, achievementsRes.data);
+                    
+                    // Render achievements
+                    renderAchievements();
+                }
+            } catch (error) {
+                console.error('Error loading achievements:', error);
+                showError('Không thể tải dữ liệu thành tích');
+            } finally {
+                document.getElementById('loadingSpinner').style.display = 'none';
+            }
+        }
+
+        function updateStats(stats, achievements) {
+            const earned = achievements.earned || [];
+            const totalPoints = earned.reduce((sum, a) => sum + (a.points || 0), 0);
+            
+            document.getElementById('totalBadgesEarned').textContent = earned.length;
+            document.getElementById('totalPoints').textContent = totalPoints;
+            document.getElementById('totalWordsLearned').textContent = stats.totalWordsLearned || 0;
+            document.getElementById('studyStreak').textContent = stats.studyStreak || 0;
+        }
+
+        function renderAchievements() {
+            const earned = allAchievements.earned || [];
+            const available = allAchievements.available || [];
+
+            // Filter achievements
+            const filteredEarned = filterAchievements(earned);
+            const filteredAvailable = filterAchievements(available);
+
+            // Render sections
+            renderSection('earnedAchievements', filteredEarned, true);
+            renderSection('availableAchievements', filteredAvailable, false);
+
+            // Show/hide sections
+            document.getElementById('earnedSection').style.display = filteredEarned.length > 0 ? 'block' : 'none';
+            document.getElementById('availableSection').style.display = filteredAvailable.length > 0 ? 'block' : 'none';
+            document.getElementById('emptyState').style.display = 
+                (filteredEarned.length === 0 && filteredAvailable.length === 0) ? 'block' : 'none';
+        }
+
+        function filterAchievements(achievements) {
+            return achievements.filter(achievement => {
+                const categoryMatch = currentCategoryFilter === 'all' || achievement.category === currentCategoryFilter;
+                const rarityMatch = currentRarityFilter === 'all' || achievement.rarity === currentRarityFilter;
+                return categoryMatch && rarityMatch;
+            });
+        }
+
+        function renderSection(containerId, achievements, isEarned) {
+            const container = document.getElementById(containerId);
+            container.innerHTML = '';
+
+            achievements.forEach(achievement => {
+                const card = createAchievementCard(achievement, isEarned);
+                container.appendChild(card);
+            });
+        }
+
+        function createAchievementCard(achievement, isEarned) {
+            const card = document.createElement('div');
+            card.className = `achievement-card ${!isEarned ? 'locked' : ''}`;
+
+            const progress = allProgress[achievement.badgeId] || {};
+            const progressPercent = Math.min(100, progress.progressPercent || 0);
+
+            const rarityText = {
+                'common': 'Phổ Biến',
+                'rare': 'Hiếm',
+                'epic': 'Sử Thi',
+                'legendary': 'Huyền Thoại'
+            };
+
+            card.innerHTML = `
+                <div class="achievement-rarity rarity-${achievement.rarity}">
+                    ${rarityText[achievement.rarity] || achievement.rarity}
+                </div>
+                <div class="achievement-header">
+                    <div class="achievement-icon">${achievement.icon}</div>
+                    <div class="achievement-info">
+                        <div class="achievement-name">${achievement.name}</div>
+                        <div class="achievement-desc">${achievement.description}</div>
+                    </div>
+                </div>
+                ${!isEarned ? `
+                    <div class="achievement-progress">
+                        <div class="progress-label">
+                            <span>Tiến độ</span>
+                            <span>${progress.current || 0} / ${progress.target || 0}</span>
+                        </div>
+                        <div class="progress-bar-container">
+                            <div class="progress-bar-fill" style="width: ${progressPercent}%"></div>
+                        </div>
+                    </div>
+                    <div class="locked-badge">
+                        <i class="fas fa-lock"></i> Chưa Đạt Được
+                    </div>
+                ` : `
+                    <div class="achievement-points">
+                        <i class="fas fa-star"></i>
+                        <span>+${achievement.points} điểm</span>
+                    </div>
+                    ${achievement.earnedAt ? `
+                        <div class="earned-date">
+                            Đạt được: ${new Date(achievement.earnedAt).toLocaleDateString('vi-VN')}
+                        </div>
+                    ` : ''}
+                `}
+            `;
+
+            return card;
+        }
+
+        function showError(message) {
+            const container = document.querySelector('.achievements-container');
+            const alert = document.createElement('div');
+            alert.className = 'alert alert-danger alert-dismissible fade show';
+            alert.innerHTML = `
+                ${message}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            `;
+            container.insertBefore(alert, container.firstChild);
+        }
+
+        // Filter event listeners
+        document.querySelectorAll('[data-category]').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('[data-category]').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                currentCategoryFilter = btn.dataset.category;
+                renderAchievements();
+            });
+        });
+
+        document.querySelectorAll('[data-rarity]').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('[data-rarity]').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                currentRarityFilter = btn.dataset.rarity;
+                renderAchievements();
+            });
+        });
+
+        // Initialize
+        loadAchievements();
+    </script>
+</body>
+</html>

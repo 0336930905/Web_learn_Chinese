@@ -1,0 +1,2086 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Học Tiếng Đài Loan</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    
+    <!-- Font Awesome Kit -->
+    <script src="https://kit.fontawesome.com/8b9a27d5a0.js" crossorigin="anonymous"></script>
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/pages/dashboard.css">
+    
+    <!-- Auth Protection Script -->
+    <script>
+        console.log('═══════════════════════════════════════════════');
+        console.log('📄 DASHBOARD.HTML LOADED');
+        console.log('═══════════════════════════════════════════════');
+        console.log('📍 Current URL:', window.location.href);
+        
+        // Check if token exists
+        const hasToken = localStorage.getItem('token');
+        console.log('🎫 Token check:', hasToken ? '✅ TOKEN EXISTS' : '❌ NO TOKEN');
+        
+        if (hasToken) {
+            console.log('🎫 Token preview:', hasToken.substring(0, 50) + '...');
+            console.log('✅ Proceeding to auth verification in app.js');
+            
+            // Clear any redirect counters since we have a token
+            sessionStorage.removeItem('redirectCount');
+            console.log('🗑️ Redirect counter cleared (has token)');
+            
+        } else {
+            console.log('❌ No token found');
+            console.log('🔄 Redirecting to login page...');
+            
+            // Clear everything and force login
+            sessionStorage.clear();
+            localStorage.clear();
+            
+            window.location.href = '/pages/auth/login.html';
+        }
+        
+        console.log('═══════════════════════════════════════════════');
+    </script>
+    
+    <style>
+        /* Auth loading overlay */
+        #authLoading {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+        }
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #3498db;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* ============================================
+           MODERN DASHBOARD STYLES
+           ============================================ */
+
+        /* Body and Container */
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .container {
+            padding-top: 2rem;
+            padding-bottom: 3rem;
+        }
+
+        /* ============================================
+           WELCOME BANNER
+           ============================================ */
+        .welcome-banner {
+            margin-bottom: 2rem;
+        }
+
+        .welcome-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 20px;
+            padding: 2.5rem;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .welcome-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -10%;
+            width: 400px;
+            height: 400px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+        }
+
+        .welcome-card::after {
+            content: '';
+            position: absolute;
+            bottom: -30%;
+            left: -5%;
+            width: 300px;
+            height: 300px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 50%;
+        }
+
+        .welcome-content {
+            flex: 1;
+            position: relative;
+            z-index: 1;
+        }
+
+        .welcome-title {
+            font-size: 2rem;
+            font-weight: 800;
+            color: white;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .welcome-title span {
+            color: #fee140;
+        }
+
+        .welcome-subtitle {
+            font-size: 1rem;
+            color: rgba(255, 255, 255, 0.9);
+            margin: 0;
+        }
+
+        .welcome-stats {
+            display: flex;
+            gap: 1.5rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .mini-stat {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .mini-stat:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: translateY(-3px);
+        }
+
+        .mini-stat-icon {
+            width: 48px;
+            height: 48px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            color: white;
+        }
+
+        .mini-stat-info {
+            text-align: left;
+        }
+
+        .mini-stat-value {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: white;
+            line-height: 1;
+            margin-bottom: 0.25rem;
+        }
+
+        .mini-stat-label {
+            font-size: 0.813rem;
+            color: rgba(255, 255, 255, 0.9);
+            font-weight: 500;
+        }
+
+        @media (max-width: 992px) {
+            .welcome-card {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .welcome-stats {
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .welcome-stats {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .mini-stat {
+                width: 100%;
+            }
+        }
+
+        /* ============================================
+           MODERN DASHBOARD STYLES
+           ============================================ */
+        .stat-card-modern {
+            background: white;
+            border-radius: 16px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .stat-card-modern:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+        }
+
+        .stat-icon-wrapper {
+            width: 64px;
+            height: 64px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            color: white;
+            flex-shrink: 0;
+        }
+
+        .bg-gradient-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .bg-gradient-danger {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+
+        .bg-gradient-success {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+
+        .bg-gradient-warning {
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+        }
+
+        .stat-content {
+            flex: 1;
+        }
+
+        .stat-label {
+            font-size: 0.875rem;
+            color: #6c757d;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #2d3748;
+            margin-bottom: 0.25rem;
+            line-height: 1;
+        }
+
+        .stat-trend {
+            font-size: 0.813rem;
+            margin-bottom: 0;
+            font-weight: 500;
+        }
+
+        /* Filter Section Card */
+        .filter-section .card {
+            border-radius: 12px;
+            background: white;
+        }
+
+        .filter-section .form-select,
+        .filter-section .form-control {
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+            padding: 0.625rem 1rem;
+            transition: all 0.2s;
+        }
+
+        .filter-section .form-select:focus,
+        .filter-section .form-control:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .filter-section .input-group-text {
+            border: 1px solid #e2e8f0;
+            border-radius: 8px 0 0 8px;
+        }
+
+        .filter-section .btn {
+            border-radius: 8px;
+            padding: 0.625rem 1.25rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .filter-section .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+        }
+
+        .filter-section .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+
+        /* Words Section */
+        .words-section h2 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: #2d3748;
+            margin-bottom: 1.5rem;
+        }
+
+        .words-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 1.5rem;
+        }
+
+        /* Modern Word Cards */
+        .word-card-modern {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .word-card-modern:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+        }
+
+        .word-image-container {
+            width: 100%;
+            height: 180px;
+            overflow: hidden;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            position: relative;
+        }
+
+        .word-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .word-card-modern:hover .word-image {
+            transform: scale(1.1);
+        }
+
+        .word-content {
+            padding: 1.5rem;
+        }
+
+        .word-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .word-traditional {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #2d3748;
+            margin: 0;
+        }
+
+        .btn-speak {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            color: white;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-speak:hover {
+            transform: scale(1.1);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-speak:active {
+            transform: scale(0.95);
+        }
+
+        .word-phonetics {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .word-pinyin,
+        .word-zhuyin {
+            font-size: 0.938rem;
+            color: #667eea;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+        }
+
+        .word-meanings {
+            margin-bottom: 1rem;
+        }
+
+        .word-vietnamese,
+        .word-english {
+            font-size: 0.938rem;
+            color: #4a5568;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .word-vietnamese strong,
+        .word-english strong {
+            color: #2d3748;
+        }
+
+        .word-meta {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin-bottom: 1rem;
+        }
+
+        .word-meta .badge {
+            padding: 0.375rem 0.75rem;
+            font-weight: 500;
+            font-size: 0.813rem;
+        }
+
+        .word-actions {
+            display: flex;
+            gap: 0.5rem;
+            padding: 1rem 1.5rem;
+            background: #f7fafc;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .word-actions .btn {
+            flex: 1;
+            border-radius: 8px;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .word-card-modern {
+            animation: fadeInUp 0.5s ease-out;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .words-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stat-value {
+                font-size: 1.5rem;
+            }
+
+            .word-traditional {
+                font-size: 1.5rem;
+            }
+        }
+         /* Toast Notifications */
+        .toast-notification {
+            position: fixed;
+            top: -100px;
+            right: 2rem;
+            background: white;
+            padding: 1.25rem 1.75rem;
+            border-radius: 0.75rem;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+            z-index: 10001;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            font-weight: 600;
+            font-size: 1rem;
+            min-width: 300px;
+            transition: all 0.3s ease;
+            border-left: 4px solid;
+        }
+
+        .toast-notification.show {
+            top: 2rem;
+        }
+
+        .toast-notification.success {
+            border-color: #4caf50;
+            color: #2e7d32;
+        }
+
+        .toast-notification.success i {
+            color: #4caf50;
+            font-size: 1.5rem;
+        }
+
+        .toast-notification.error {
+            border-color: #ff6b6b;
+            color: #c62828;
+        }
+
+        .toast-notification.error i {
+            color: #ff6b6b;
+            font-size: 1.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .toast-notification {
+                right: 1rem;
+                left: 1rem;
+                min-width: auto;
+            }
+
+            .toast-notification.show {
+                top: 1rem;
+            }
+        }
+
+        /* ============================================
+           FEATURES SECTION STYLES
+           ============================================ */
+        
+        .features-section {
+            margin-bottom: 3rem;
+        }
+
+        .feature-icon-wrapper {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .feature-icon-wrapper i {
+            font-size: 2.5rem;
+            color: white;
+        }
+
+        .feature-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #667eea;
+            margin-bottom: 0.5rem;
+        }
+
+        .feature-subtitle {
+            font-size: 1.125rem;
+            color: #6c757d;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .feature-card {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.15);
+            border-color: rgba(102, 126, 234, 0.3);
+        }
+
+        .feature-card-header {
+            padding: 2rem 1.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card-header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -30%;
+            width: 200px;
+            height: 200px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+        }
+
+        .feature-icon {
+            width: 64px;
+            height: 64px;
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .feature-icon i {
+            font-size: 2rem;
+            color: white;
+        }
+
+        .feature-card-body {
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .feature-card-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 0.75rem;
+        }
+
+        .feature-card-count {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #667eea;
+            margin-bottom: 0.25rem;
+            line-height: 1;
+        }
+
+        .feature-card-desc {
+            font-size: 0.875rem;
+            color: #6c757d;
+            margin-bottom: 0;
+        }
+
+        /* Gradient Backgrounds */
+        .bg-gradient-blue {
+            background: linear-gradient(135deg, #4e73df 0%, #224abe 100%);
+        }
+
+        .bg-gradient-green {
+            background: linear-gradient(135deg, #1cc88a 0%, #13855c 100%);
+        }
+
+        .bg-gradient-purple {
+            background: linear-gradient(135deg, #6f42c1 0%, #4e2a84 100%);
+        }
+
+        .bg-gradient-orange {
+            background: linear-gradient(135deg, #f6c23e 0%, #dda20a 100%);
+        }
+
+        .bg-gradient-pink {
+            background: linear-gradient(135deg, #e74a3b 0%, #be2617 100%);
+        }
+
+        .bg-gradient-cyan {
+            background: linear-gradient(135deg, #36d1dc 0%, #5b86e5 100%);
+        }
+
+        /* Responsive Features Grid */
+        @media (max-width: 1200px) {
+            .features-grid {
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            }
+        }
+
+        @media (max-width: 768px) {
+            .features-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1rem;
+            }
+
+            .feature-card-header {
+                padding: 1.5rem 1rem;
+            }
+
+            .feature-icon {
+                width: 48px;
+                height: 48px;
+            }
+
+            .feature-icon i {
+                font-size: 1.5rem;
+            }
+
+            .feature-card-count {
+                font-size: 2rem;
+            }
+
+            .feature-title {
+                font-size: 1.5rem;
+            }
+
+            .feature-subtitle {
+                font-size: 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Auth Loading Overlay -->
+    <div id="authLoading">
+        <div class="spinner"></div>
+    </div>
+    
+    <!-- Header -->
+    <div id="header-placeholder"></div>
+    
+    <div class="container" style="display: none;" id="mainContent">
+
+        <!-- Welcome Banner -->
+        <section class="welcome-banner mb-4">
+            <div class="welcome-card">
+                <div class="welcome-content">
+                    <h1 class="welcome-title">Xin chào, <span id="userName">Học viên</span>! 👋</h1>
+                    <p class="welcome-subtitle">Chúc bạn một ngày học tập hiệu quả!</p>
+                </div>
+                <div class="welcome-stats">
+                    <div class="mini-stat">
+                        <div class="mini-stat-icon">
+                            <i class="fas fa-book-open"></i>
+                        </div>
+                        <div class="mini-stat-info">
+                            <div class="mini-stat-value" id="totalWords">0</div>
+                            <div class="mini-stat-label">Từ vựng</div>
+                        </div>
+                    </div>
+                    <div class="mini-stat">
+                        <div class="mini-stat-icon">
+                            <i class="fas fa-fire"></i>
+                        </div>
+                        <div class="mini-stat-info">
+                            <div class="mini-stat-value" id="studyStreak">0</div>
+                            <div class="mini-stat-label">Ngày liên tục</div>
+                        </div>
+                    </div>
+                    <div class="mini-stat">
+                        <div class="mini-stat-icon">
+                            <i class="fas fa-trophy"></i>
+                        </div>
+                        <div class="mini-stat-info">
+                            <div class="mini-stat-value" id="averageMastery">0%</div>
+                            <div class="mini-stat-label">Thành thạo</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section class="features-section mb-4">
+            <div class="text-center mb-4">
+                <div class="feature-icon-wrapper mx-auto mb-3">
+                    <i class="fas fa-book-open"></i>
+                </div>
+                <h2 class="feature-title">Quản lý từ vựng & Học tập</h2>
+                <p class="feature-subtitle text-muted">Quản lý và luyện tập từ vựng tiếng Đài theo kỹ năng</p>
+            </div>
+            
+            <div class="features-grid">
+                <!-- Feature Card 1: Thêm từ mới -->
+                <div class="feature-card" id="addWordBtn" style="cursor: pointer;">
+                    <div class="feature-card-header bg-gradient-blue">
+                        <div class="feature-icon">
+                            <i class="fas fa-plus-circle"></i>
+                        </div>
+                    </div>
+                    <div class="feature-card-body">
+                        <h3 class="feature-card-title">Thêm từ mới</h3>
+                        <p class="feature-card-desc">Từ vựng của bạn</p>
+                    </div>
+                </div>
+
+                <!-- Feature Card 2: Học theo danh mục -->
+                <div class="feature-card" onclick="window.location.href='/pages/dashboard/learning-categories.html'" style="cursor: pointer;">
+                    <div class="feature-card-header bg-gradient-green">
+                        <div class="feature-icon">
+                            <i class="fas fa-layer-group"></i>
+                        </div>
+                    </div>
+                    <div class="feature-card-body">
+                        <h3 class="feature-card-title">Học theo danh mục</h3>
+                        <p class="feature-card-desc">Danh mục có sẵn</p>
+                    </div>
+                </div>
+
+                <!-- Feature Card 3: Từ Admin -->
+                <div class="feature-card" onclick="window.location.href='/pages/dashboard/admin-words-study.html'" style="cursor: pointer;">
+                    <div class="feature-card-header bg-gradient-purple">
+                        <div class="feature-icon">
+                            <i class="fas fa-graduation-cap"></i>
+                        </div>
+                    </div>
+                    <div class="feature-card-body">
+                        <h3 class="feature-card-title">Từ vựng Admin</h3>
+                        <p class="feature-card-desc">Tài liệu giảng dạy</p>
+                    </div>
+                </div>
+
+                <!-- Feature Card 4: Kiểm tra thành tích -->
+                <div class="feature-card" id="assessmentBtn" onclick="openAssessmentModal()" style="cursor: pointer;">
+                    <div class="feature-card-header bg-gradient-orange">
+                        <div class="feature-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                    </div>
+                    <div class="feature-card-body">
+                        <h3 class="feature-card-title">Kiểm tra thành tích</h3>
+                        <p class="feature-card-desc">Luyện tập & đánh giá</p>
+                    </div>
+                </div>
+
+                <!-- Feature Card 5: Quản lý danh mục -->
+                <div class="feature-card" onclick="window.location.href='/pages/dashboard/categories.html'" style="cursor: pointer;">
+                    <div class="feature-card-header bg-gradient-pink">
+                        <div class="feature-icon">
+                            <i class="fas fa-folder-open"></i>
+                        </div>
+                    </div>
+                    <div class="feature-card-body">
+                        <h3 class="feature-card-title">Quản lý danh mục cá nhân</h3>
+                        <p class="feature-card-desc">Danh mục của tôi</p>
+                    </div>
+                </div>
+
+                <!-- Feature Card 6: Danh sách từ vựng cá nhân -->
+                <div class="feature-card" onclick="window.location.href='/pages/dashboard/my-words.html'" style="cursor: pointer;">
+                    <div class="feature-card-header bg-gradient-cyan">
+                        <div class="feature-icon">
+                            <i class="fas fa-list-ul"></i>
+                        </div>
+                    </div>
+                    <div class="feature-card-body">
+                        <h3 class="feature-card-title">Từ vựng cá nhân</h3>
+                        <p class="feature-card-desc">Danh sách từ của tôi</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Filter Section - Hidden (moved to my-words.html) -->
+        <section class="filter-section mb-4" style="display: none;">
+            <div class="card shadow-sm border-0">
+                <div class="card-body">
+                    <div class="row g-3 align-items-center">
+                        <div class="col-md-4">
+                            <label class="form-label fw-semibold text-muted mb-2">
+                                <i class="fas fa-filter me-2"></i>Lọc theo danh mục
+                            </label>
+                            <select id="categoryFilter" class="form-select">
+                                <option value="">🏷️ Tất cả danh mục</option>
+                                <option value="beginner">📚 Cơ bản</option>
+                                <option value="intermediate">📖 Trung cấp</option>
+                                <option value="advanced">🎓 Nâng cao</option>
+                                <option value="common-phrases">💬 Cụm từ thường dùng</option>
+                                <option value="numbers">🔢 Số đếm</option>
+                                <option value="colors">🎨 Màu sắc</option>
+                                <option value="food">🍜 Đồ ăn</option>
+                                <option value="family">👨‍👩‍👧‍👦 Gia đình</option>
+                            </select>
+                        </div>
+                        
+                        <div class="col-md-8">
+                            <label class="form-label fw-semibold text-muted mb-2">
+                                <i class="fas fa-search me-2"></i>Tìm kiếm từ vựng
+                            </label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-white border-end-0">
+                                    <i class="fas fa-search text-muted"></i>
+                                </span>
+                                <input type="text" id="searchInput" class="form-control border-start-0" placeholder="Nhập từ vựng, nghĩa, pinyin...">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Words List - Hidden (moved to my-words.html) -->
+        <section class="words-section" style="display: none;">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2><i class="fas fa-book-reader me-2" style="color: #667eea;"></i>Danh sách từ vựng</h2>
+                <div class="badge bg-light text-dark" id="wordCount">0 từ</div>
+            </div>
+            <div id="wordsList" class="words-grid"></div>
+            <div id="loading" class="loading" style="display: none;">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Đang tải...</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Add Word Modal -->
+        <div id="addWordModal" class="modal-overlay">
+            <div class="modal-container">
+                <div class="modal-header">
+                    <h2>
+                        <i class="fas fa-plus-circle"></i>
+                        Thêm từ vựng mới
+                    </h2>
+                    <button class="modal-close" id="closeAddWordModal">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                
+                <form id="addWordForm" class="word-form">
+                    <!-- Main Information Section -->
+                    <div class="form-section">
+                        <div class="section-title">
+                            <i class="fas fa-language"></i>
+                            Thông tin từ vựng
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group full-width">
+                                <label for="traditional">
+                                    <i class="fas fa-font"></i>
+                                    Chữ Hán (繁體中文) <span class="required">*</span>
+                                </label>
+                                <input 
+                                    type="text" 
+                                    id="traditional" 
+                                    class="form-input traditional-input" 
+                                    placeholder="你好" 
+                                    required
+                                    autocomplete="off"
+                                >
+                                <small class="form-hint">Nhập chữ Hán phồn thể (Traditional Chinese)</small>
+                            </div>
+                        </div>
+
+                        <div class="form-row two-columns">
+                            <div class="form-group">
+                                <label for="pinyin">
+                                    <i class="fas fa-music"></i>
+                                    Pinyin <span class="required">*</span>
+                                </label>
+                                <input 
+                                    type="text" 
+                                    id="pinyin" 
+                                    class="form-input" 
+                                    placeholder="nǐ hǎo" 
+                                    required
+                                    autocomplete="off"
+                                >
+                                <small class="form-hint">Phiên âm La Mã</small>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="zhuyin">
+                                    <i class="fas fa-flag"></i>
+                                    Zhuyin (注音)
+                                </label>
+                                <input 
+                                    type="text" 
+                                    id="zhuyin" 
+                                    class="form-input" 
+                                    placeholder="ㄋㄧˇ ㄏㄠˇ"
+                                    autocomplete="off"
+                                >
+                                <small class="form-hint">Bopomofo (tùy chọn)</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Translation Section -->
+                    <div class="form-section">
+                        <div class="section-title">
+                            <i class="fas fa-globe"></i>
+                            Nghĩa từ vựng
+                        </div>
+
+                        <div class="form-row two-columns">
+                            <div class="form-group">
+                                <label for="vietnamese">
+                                    <i class="fas fa-flag"></i>
+                                    Tiếng Việt <span class="required">*</span>
+                                </label>
+                                <input 
+                                    type="text" 
+                                    id="vietnamese" 
+                                    class="form-input" 
+                                    placeholder="Xin chào" 
+                                    required
+                                    autocomplete="off"
+                                >
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="english">
+                                    <i class="fas fa-flag"></i>
+                                    English
+                                </label>
+                                <input 
+                                    type="text" 
+                                    id="english" 
+                                    class="form-input" 
+                                    placeholder="Hello"
+                                    autocomplete="off"
+                                >
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group full-width">
+                                <label for="example">
+                                    <i class="fas fa-comment-dots"></i>
+                                    Câu ví dụ
+                                </label>
+                                <textarea 
+                                    id="example" 
+                                    class="form-textarea" 
+                                    placeholder="你好，很高興認識你 (Xin chào, rất vui được gặp bạn)"
+                                    rows="2"
+                                ></textarea>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group full-width">
+                                <label for="imageUrl">
+                                    <i class="fas fa-image"></i>
+                                    Hình ảnh minh họa
+                                </label>
+                                <div class="image-upload-container">
+                                    <div class="image-preview" id="imagePreview">
+                                        <div class="preview-placeholder">
+                                            <i class="fas fa-image"></i>
+                                            <span>Chưa có hình ảnh</span>
+                                        </div>
+                                        <img class="preview-image" alt="Preview" style="display: none;">
+                                        <button type="button" class="image-remove-btn" style="display: none;">
+                                            <i class="fas fa-times"></i>
+                                        </button>
+                                    </div>
+                                    <div class="image-input-group">
+                                        <input 
+                                            type="url" 
+                                            id="imageUrl" 
+                                            class="form-input" 
+                                            placeholder="Nhập URL hình ảnh"
+                                            autocomplete="off"
+                                        >
+                                        <label for="imageFile" class="btn-upload-image" title="Tải lên hình ảnh">
+                                            <i class="fas fa-upload"></i>
+                                        </label>
+                                        <input 
+                                            type="file" 
+                                            id="imageFile" 
+                                            accept="image/*"
+                                            style="display: none;"
+                                        >
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Category & Settings Section -->
+                    <div class="form-section">
+                        <div class="section-title">
+                            <i class="fas fa-cog"></i>
+                            Phân loại & Cài đặt
+                        </div>
+
+                        <div class="form-row two-columns">
+                            <div class="form-group">
+                                <label for="category">
+                                    <i class="fas fa-folder"></i>
+                                    Danh mục <span class="required">*</span>
+                                </label>
+                                <select id="category" class="form-select" required>
+                                    <option value="">-- Chọn danh mục --</option>
+                                    <option value="beginner">📗 Cơ bản</option>
+                                    <option value="intermediate">📘 Trung cấp</option>
+                                    <option value="advanced">📕 Nâng cao</option>
+                                    <option value="common-phrases">💬 Cụm từ thường dùng</option>
+                                    <option value="numbers">🔢 Số đếm</option>
+                                    <option value="colors">🎨 Màu sắc</option>
+                                    <option value="food">🍜 Đồ ăn</option>
+                                    <option value="family">👨‍👩‍👧‍👦 Gia đình</option>
+                                    <option value="school">🏫 Trường học</option>
+                                    <option value="work">💼 Công việc</option>
+                                    <option value="travel">✈️ Du lịch</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="difficulty">
+                                    <i class="fas fa-signal"></i>
+                                    Độ khó <span class="required">*</span>
+                                </label>
+                                <div class="difficulty-selector">
+                                    <input 
+                                        type="range" 
+                                        id="difficulty" 
+                                        class="difficulty-range" 
+                                        min="1" 
+                                        max="5" 
+                                        value="1" 
+                                        required
+                                    >
+                                    <div class="difficulty-labels">
+                                        <span class="diff-label" data-level="1">
+                                            <span class="diff-icon">⭐</span>
+                                            <span class="diff-text">Dễ</span>
+                                        </span>
+                                        <span class="diff-label" data-level="2">
+                                            <span class="diff-icon">⭐⭐</span>
+                                            <span class="diff-text">TB</span>
+                                        </span>
+                                        <span class="diff-label active" data-level="3">
+                                            <span class="diff-icon">⭐⭐⭐</span>
+                                            <span class="diff-text">Khá</span>
+                                        </span>
+                                        <span class="diff-label" data-level="4">
+                                            <span class="diff-icon">⭐⭐⭐⭐</span>
+                                            <span class="diff-text">Khó</span>
+                                        </span>
+                                        <span class="diff-label" data-level="5">
+                                            <span class="diff-icon">⭐⭐⭐⭐⭐</span>
+                                            <span class="diff-text">RK</span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Form Actions -->
+                    <div class="form-actions">
+                        <button type="button" class="btn-cancel" id="cancelAddWord">
+                            <i class="fas fa-times"></i>
+                            Hủy bỏ
+                        </button>
+                        <button type="submit" class="btn-submit">
+                            <i class="fas fa-check"></i>
+                            Thêm từ vựng
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <style>
+            /* Modal Overlay */
+            .modal-overlay {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.6);
+                backdrop-filter: blur(5px);
+                z-index: 10000;
+                padding: 2rem;
+                overflow-y: auto;
+                animation: fadeIn 0.3s ease;
+            }
+
+            .modal-overlay.active {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            @keyframes fadeIn {
+                from { opacity: 0; }
+                to { opacity: 1; }
+            }
+
+            /* Modal Container */
+            .modal-container {
+                background: white;
+                border-radius: 1.5rem;
+                max-width: 800px;
+                width: 100%;
+                box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+                animation: slideUp 0.4s ease;
+                max-height: 90vh;
+                overflow-y: auto;
+            }
+
+            @keyframes slideUp {
+                from {
+                    opacity: 0;
+                    transform: translateY(30px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+
+            /* Modal Header */
+            .modal-header {
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                padding: 2rem;
+                border-radius: 1.5rem 1.5rem 0 0;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                position: relative;
+                overflow: hidden;
+            }
+
+            .modal-header::before {
+                content: '';
+                position: absolute;
+                top: -50%;
+                right: -10%;
+                width: 300px;
+                height: 300px;
+                background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 70%);
+                border-radius: 50%;
+            }
+
+            .modal-header h2 {
+                color: white;
+                font-size: 1.75rem;
+                font-weight: 700;
+                margin: 0;
+                display: flex;
+                align-items: center;
+                gap: 0.75rem;
+                position: relative;
+                z-index: 1;
+            }
+
+            .modal-header h2 i {
+                font-size: 1.5rem;
+            }
+
+            .modal-close {
+                background: rgba(255, 255, 255, 0.2);
+                border: none;
+                width: 40px;
+                height: 40px;
+                border-radius: 50%;
+                color: white;
+                font-size: 1.25rem;
+                cursor: pointer;
+                transition: all 0.3s ease;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                position: relative;
+                z-index: 1;
+            }
+
+            .modal-close:hover {
+                background: rgba(255, 255, 255, 0.3);
+                transform: rotate(90deg);
+            }
+
+            /* Word Form */
+            .word-form {
+                padding: 2rem;
+            }
+
+            .form-section {
+                background: #f8f9ff;
+                border-radius: 1rem;
+                padding: 1.5rem;
+                margin-bottom: 1.5rem;
+                border: 2px solid transparent;
+                transition: all 0.3s ease;
+            }
+
+            .form-section:hover {
+                border-color: #e8e8ff;
+                box-shadow: 0 4px 15px rgba(102, 126, 234, 0.1);
+            }
+
+            .section-title {
+                font-size: 1.125rem;
+                font-weight: 700;
+                color: #667eea;
+                margin-bottom: 1.25rem;
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+            }
+
+            .section-title i {
+                font-size: 1rem;
+            }
+
+            .form-row {
+                display: grid;
+                gap: 1.25rem;
+                margin-bottom: 1rem;
+            }
+
+            .form-row:last-child {
+                margin-bottom: 0;
+            }
+
+            .form-row.two-columns {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .form-group {
+                display: flex;
+                flex-direction: column;
+            }
+
+            .form-group.full-width {
+                width: 100%;
+            }
+
+            .form-group label {
+                font-weight: 600;
+                color: #1a1a1a;
+                margin-bottom: 0.5rem;
+                font-size: 0.9375rem;
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+            }
+
+            .form-group label i {
+                color: #667eea;
+                font-size: 0.875rem;
+            }
+
+            .required {
+                color: #ff6b6b;
+                font-weight: 700;
+            }
+
+            .form-input,
+            .form-select,
+            .form-textarea {
+                padding: 0.875rem 1rem;
+                border: 2px solid #e8e8ff;
+                border-radius: 0.75rem;
+                font-size: 1rem;
+                color: #1a1a1a;
+                background: white;
+                transition: all 0.3s ease;
+                font-family: inherit;
+            }
+
+            .form-input:focus,
+            .form-select:focus,
+            .form-textarea:focus {
+                outline: none;
+                border-color: #667eea;
+                box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+            }
+
+            .form-input::placeholder {
+                color: #999;
+            }
+
+            .traditional-input {
+                font-size: 2rem;
+                font-weight: 700;
+                text-align: center;
+                padding: 1.25rem;
+                background: linear-gradient(135deg, #fff 0%, #f8f9ff 100%);
+            }
+
+            .form-hint {
+                color: #666;
+                font-size: 0.8125rem;
+                margin-top: 0.375rem;
+                display: block;
+            }
+
+            .form-textarea {
+                resize: vertical;
+                min-height: 60px;
+                font-family: inherit;
+                line-height: 1.5;
+            }
+
+            .form-select {
+                cursor: pointer;
+                appearance: none;
+                background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23667eea' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+                background-repeat: no-repeat;
+                background-position: right 1rem center;
+                background-size: 12px;
+                padding-right: 2.5rem;
+            }
+
+            /* Difficulty Selector */
+            .difficulty-selector {
+                position: relative;
+            }
+
+            .difficulty-range {
+                width: 100%;
+                height: 8px;
+                border-radius: 5px;
+                background: #e8e8ff;
+                outline: none;
+                -webkit-appearance: none;
+                margin-bottom: 1rem;
+            }
+
+            .difficulty-range::-webkit-slider-thumb {
+                -webkit-appearance: none;
+                appearance: none;
+                width: 24px;
+                height: 24px;
+                border-radius: 50%;
+                background: linear-gradient(135deg, #667eea, #764ba2);
+                cursor: pointer;
+                box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+            }
+
+            .difficulty-range::-moz-range-thumb {
+                width: 24px;
+                height: 24px;
+                border-radius: 50%;
+                background: linear-gradient(135deg, #667eea, #764ba2);
+                cursor: pointer;
+                box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+                border: none;
+            }
+
+            .difficulty-labels {
+                display: flex;
+                justify-content: space-between;
+                gap: 0.5rem;
+            }
+
+            .diff-label {
+                flex: 1;
+                text-align: center;
+                padding: 0.5rem;
+                border-radius: 0.5rem;
+                background: white;
+                border: 2px solid #e8e8ff;
+                cursor: pointer;
+                transition: all 0.3s ease;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 0.25rem;
+            }
+
+            .diff-label:hover {
+                border-color: #667eea;
+                transform: translateY(-2px);
+            }
+
+            .diff-label.active {
+                background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+                border-color: #667eea;
+                box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+            }
+
+            .diff-icon {
+                font-size: 0.75rem;
+                line-height: 1;
+            }
+
+            .diff-text {
+                font-size: 0.75rem;
+                font-weight: 600;
+                color: #666;
+            }
+
+            .diff-label.active .diff-text {
+                color: #667eea;
+            }
+
+            /* Form Actions */
+            .form-actions {
+                display: flex;
+                gap: 1rem;
+                margin-top: 2rem;
+                padding-top: 2rem;
+                border-top: 2px solid #f0f0f0;
+            }
+
+            .btn-cancel,
+            .btn-submit {
+                flex: 1;
+                padding: 1rem 2rem;
+                border-radius: 0.75rem;
+                font-size: 1rem;
+                font-weight: 600;
+                cursor: pointer;
+                transition: all 0.3s ease;
+                border: none;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 0.5rem;
+            }
+
+            .btn-cancel {
+                background: white;
+                border: 2px solid #e8e8ff;
+                color: #666;
+            }
+
+            .btn-cancel:hover {
+                background: #f8f9ff;
+                border-color: #667eea;
+                color: #667eea;
+                transform: translateY(-2px);
+            }
+
+            .btn-submit {
+                background: linear-gradient(135deg, #667eea, #764ba2);
+                color: white;
+                box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+            }
+
+            .btn-submit:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 6px 25px rgba(102, 126, 234, 0.4);
+            }
+
+            /* Image Upload */
+            .image-upload-container {
+                margin-top: 0.5rem;
+            }
+
+            .image-preview {
+                width: 100%;
+                height: 200px;
+                border: 2px dashed #e8e8ff;
+                border-radius: 0.75rem;
+                background: linear-gradient(135deg, #f8f9ff 0%, #fff 100%);
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                gap: 0.75rem;
+                margin-bottom: 1rem;
+                transition: all 0.3s ease;
+                overflow: hidden;
+                position: relative;
+            }
+
+            .image-preview.has-image {
+                border-style: solid;
+                border-color: #667eea;
+            }
+
+            .image-preview i {
+                font-size: 3rem;
+                color: #e8e8ff;
+            }
+
+            .image-preview span {
+                color: #999;
+                font-size: 0.9375rem;
+            }
+
+            .image-preview img {
+                width: 100%;
+                height: 100%;
+                object-fit: contain;
+                display: none;
+            }
+
+            .image-preview.has-image img {
+                display: block;
+            }
+
+            .image-preview.has-image i,
+            .image-preview.has-image span {
+                display: none;
+            }
+
+            .image-remove-btn {
+                position: absolute;
+                top: 0.5rem;
+                right: 0.5rem;
+                background: rgba(255, 107, 107, 0.9);
+                color: white;
+                border: none;
+                width: 32px;
+                height: 32px;
+                border-radius: 50%;
+                cursor: pointer;
+                display: none;
+                align-items: center;
+                justify-content: center;
+                transition: all 0.3s ease;
+                z-index: 1;
+            }
+
+            .image-preview.has-image .image-remove-btn {
+                display: flex;
+            }
+
+            .image-remove-btn:hover {
+                background: #ff6b6b;
+                transform: scale(1.1);
+            }
+
+            .image-input-group {
+                display: flex;
+                gap: 0.75rem;
+            }
+
+            .image-input-group .form-input {
+                flex: 1;
+            }
+
+            .btn-upload-image {
+                background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+                border: 2px solid #e8e8ff;
+                color: #667eea;
+                padding: 0.875rem 1.5rem;
+                border-radius: 0.75rem;
+                font-weight: 600;
+                cursor: pointer;
+                transition: all 0.3s ease;
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+                white-space: nowrap;
+            }
+
+            .btn-upload-image:hover {
+                background: linear-gradient(135deg, rgba(102, 126, 234, 0.2), rgba(118, 75, 162, 0.2));
+                border-color: #667eea;
+                transform: translateY(-2px);
+            }
+
+            /* Responsive */
+            @media (max-width: 768px) {
+                .modal-overlay {
+                    padding: 1rem;
+                }
+
+                .modal-header {
+                    padding: 1.5rem;
+                }
+
+                .modal-header h2 {
+                    font-size: 1.375rem;
+                }
+
+                .word-form {
+                    padding: 1.5rem;
+                }
+
+                .form-section {
+                    padding: 1rem;
+                }
+
+                .form-row.two-columns {
+                    grid-template-columns: 1fr;
+                }
+
+                .form-actions {
+                    flex-direction: column;
+                }
+
+                .traditional-input {
+                    font-size: 1.5rem;
+                }
+
+                .diff-label {
+                    padding: 0.375rem;
+                }
+
+                .diff-text {
+                    font-size: 0.625rem;
+                }
+            }
+        </style>
+
+        <!-- Assessment Mode Selection Modal -->
+        <div id="assessmentModal" class="modal" style="display: none;">
+            <div class="modal-content" style="max-width: 600px;">
+                <span class="close assessment-close">&times;</span>
+                <h2 style="text-align: center; margin-bottom: 2rem; background: linear-gradient(135deg, #667eea, #764ba2); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+                    <i class="fas fa-chart-line"></i> Chọn chế độ kiểm tra
+                </h2>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 2rem;">
+                    <!-- Random Practice Mode -->
+                    <div class="mode-card" style="cursor: pointer; padding: 2rem; border-radius: 16px; background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); color: white; text-align: center; transition: all 0.3s; box-shadow: 0 4px 12px rgba(79, 172, 254, 0.3);" onclick="startRandomPractice()">
+                        <div style="font-size: 3rem; margin-bottom: 1rem;">🎲</div>
+                        <h3 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 0.75rem;">Luyện tập ngẫu nhiên</h3>
+                        <p style="font-size: 0.875rem; opacity: 0.9; margin: 0;">Ôn tập từ vựng với câu hỏi ngẫu nhiên từ tất cả danh mục</p>
+                        <div style="margin-top: 1rem; font-size: 0.813rem; opacity: 0.85;">
+                            <i class="fas fa-infinity"></i> Không giới hạn câu hỏi
+                        </div>
+                    </div>
+                    
+                    <!-- Assessment Test Mode -->
+                    <div class="mode-card" style="cursor: pointer; padding: 2rem; border-radius: 16px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; text-align: center; transition: all 0.3s; box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);" onclick="startAssessmentTest()">
+                        <div style="font-size: 3rem; margin-bottom: 1rem;">📊</div>
+                        <h3 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 0.75rem;">Kiểm tra đánh giá</h3>
+                        <p style="font-size: 0.875rem; opacity: 0.9; margin: 0;">Bài test chính thức để đánh giá năng lực và lưu kết quả</p>
+                        <div style="margin-top: 1rem; font-size: 0.813rem; opacity: 0.85;">
+                            <i class="fas fa-award"></i> Nhận thành tích & điểm
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Test Settings -->
+                <div id="testSettings" style="display: none; background: #f8f9fa; padding: 1.5rem; border-radius: 12px; margin-bottom: 1rem;">
+                    <h4 style="font-size: 1rem; margin-bottom: 1rem; color: #667eea;">
+                        <i class="fas fa-cog"></i> Cài đặt bài test
+                    </h4>
+                    <div style="display: grid; gap: 1rem;">
+                        <div>
+                            <label style="display: block; font-weight: 600; margin-bottom: 0.5rem; color: #4b5563;">
+                                <i class="fas fa-list-ol"></i> Số câu hỏi
+                            </label>
+                            <select id="questionCount" class="form-select" style="padding: 0.75rem; border-radius: 8px; border: 2px solid #e8e8ff;">
+                                <option value="10">10 câu</option>
+                                <option value="20" selected>20 câu</option>
+                                <option value="30">30 câu</option>
+                                <option value="50">50 câu</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label style="display: block; font-weight: 600; margin-bottom: 0.5rem; color: #4b5563;">
+                                <i class="fas fa-layer-group"></i> Độ khó
+                            </label>
+                            <select id="difficulty" class="form-select" style="padding: 0.75rem; border-radius: 8px; border: 2px solid #e8e8ff;">
+                                <option value="1">Dễ (Cấp 1-2)</option>
+                                <option value="2" selected>Trung bình (Cấp 2-4)</option>
+                                <option value="3">Khó (Cấp 4-5)</option>
+                                <option value="mixed">Hỗn hợp (Tất cả)</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <div style="text-align: center; color: #6c757d; font-size: 0.875rem;">
+                    <i class="fas fa-info-circle"></i> Kết quả sẽ được lưu vào lịch sử và ảnh hưởng đến thành tích của bạn
+                </div>
+            </div>
+        </div>
+        
+        <style>
+            .mode-card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 8px 24px rgba(102, 126, 234, 0.5) !important;
+            }
+            
+            .modal {
+                display: none;
+                position: fixed;
+                z-index: 9999;
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 100%;
+                overflow: auto;
+                background-color: rgba(0, 0, 0, 0.5);
+                backdrop-filter: blur(8px);
+            }
+            
+            .modal-content {
+                background-color: #fefefe;
+                margin: 5% auto;
+                padding: 2rem;
+                border: none;
+                border-radius: 20px;
+                width: 90%;
+                max-width: 500px;
+                box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+                animation: slideDown 0.3s ease;
+            }
+            
+            @keyframes slideDown {
+                from {
+                    opacity: 0;
+                    transform: translateY(-50px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+            
+            .close {
+                color: #aaa;
+                float: right;
+                font-size: 28px;
+                font-weight: bold;
+                cursor: pointer;
+                transition: color 0.3s;
+            }
+            
+            .close:hover,
+            .close:focus {
+                color: #667eea;
+            }
+        </style>
+
+        <!-- Practice Modal -->
+        <div id="practiceModal" class="modal">
+            <div class="modal-content">
+                <span class="close practice-close">&times;</span>
+                <h2>Luyện tập từ vựng</h2>
+                <div id="practiceArea">
+                    <div class="flashcard">
+                        <div class="flashcard-front" id="flashcardFront">
+                            <h1 id="practiceWord">你好</h1>
+                            <p id="practicePinyin">nǐ hǎo</p>
+                        </div>
+                        <div class="flashcard-back" id="flashcardBack" style="display: none;">
+                            <h2 id="practiceVietnamese">Xin chào</h2>
+                            <p id="practiceEnglish">Hello</p>
+                        </div>
+                    </div>
+                    <div class="practice-controls">
+                        <button id="flipCard" class="btn-secondary">🔄 Lật thẻ</button>
+                        <button id="knowWord" class="btn-success">✅ Biết rồi</button>
+                        <button id="dontKnowWord" class="btn-warning">❌ Chưa biết</button>
+                        <button id="nextWord" class="btn-primary">➡️ Tiếp theo</button>
+                    </div>
+                    <p class="practice-counter">Thẻ: <span id="currentCard">0</span>/<span id="totalCards">0</span></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div id="footer-placeholder"></div>
+
+
+
+    <script src="/app.js"></script>
+    
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    
+    <!-- Bootstrap 5 JS Bundle (includes Popper) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    
+    <!-- Component Loader -->
+    <script type="module" src="/js/utils/component-loader.js"></script>
+    
+    <!-- Modal Logic (Global) -->
+    <script>
+        // Open assessment modal
+        window.openAssessmentModal = function() {
+            console.log('Opening assessment modal');
+            const assessmentModal = document.getElementById('assessmentModal');
+            if (assessmentModal) {
+                // Ensure display is flex to match CSS centering
+                assessmentModal.style.display = 'flex';
+                // Add show class for visibility/opacity transition
+                // Small timeout to allow display change to register before transition
+                requestAnimationFrame(() => {
+                    assessmentModal.classList.add('show');
+                });
+            } else {
+                console.error('Assessment modal not found');
+            }
+        };
+        
+        // Close assessment modal
+        window.closeAssessmentModal = function() {
+            const assessmentModal = document.getElementById('assessmentModal');
+            if (assessmentModal) {
+                assessmentModal.classList.remove('show');
+                // Wait for transition to finish before hiding
+                setTimeout(() => {
+                    assessmentModal.style.display = 'none';
+                }, 300); // Matches standard transition time
+            }
+        };
+
+        // Initialize modal events when DOM is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            const assessmentClose = document.querySelector('.assessment-close');
+            const assessmentModal = document.getElementById('assessmentModal');
+
+            if (assessmentClose) {
+                assessmentClose.onclick = window.closeAssessmentModal;
+            }
+
+            if (assessmentModal) {
+                // Close when clicking outside content (backdrop)
+                window.addEventListener('click', (event) => {
+                    if (event.target === assessmentModal) {
+                        window.closeAssessmentModal();
+                    }
+                });
+            }
+        });
+    </script>
+    
+    <!-- Dashboard Stats Loader -->
+    <script type="module">
+        import { api } from '/js/utils/api.js';
+        
+        // Load dashboard statistics
+        async function loadDashboardStats() {
+            try {
+                // Fetch progress data
+                const progressResponse = await api.get('/progress');
+                
+                if (progressResponse.success) {
+                    const progress = progressResponse.data;
+                    
+                    // Update total words learned
+                    const totalWordsEl = document.getElementById('totalWords');
+                    if (totalWordsEl) {
+                        totalWordsEl.textContent = progress.totalWordsLearned || 0;
+                    }
+                    
+                    // Update study streak
+                    const studyStreakEl = document.getElementById('studyStreak');
+                    if (studyStreakEl) {
+                        studyStreakEl.textContent = progress.studyStreak || 0;
+                    }
+                    
+                    // Calculate average mastery
+                    const learnedWords = progress.learnedWords || [];
+                    let averageMastery = 0;
+                    
+                    if (learnedWords.length > 0) {
+                        const totalMastery = learnedWords.reduce((sum, word) => {
+                            return sum + (word.masteryLevel || 0);
+                        }, 0);
+                        averageMastery = Math.round(totalMastery / learnedWords.length);
+                    }
+                    
+                    const averageMasteryEl = document.getElementById('averageMastery');
+                    if (averageMasteryEl) {
+                        averageMasteryEl.textContent = `${averageMastery}%`;
+                    }
+                    
+                    console.log('✅ Dashboard stats loaded:', {
+                        totalWords: progress.totalWordsLearned,
+                        streak: progress.studyStreak,
+                        mastery: averageMastery
+                    });
+                }
+            } catch (error) {
+                console.error('❌ Failed to load dashboard stats:', error);
+                
+                // Set default values on error
+                const totalWordsEl = document.getElementById('totalWords');
+                const studyStreakEl = document.getElementById('studyStreak');
+                const averageMasteryEl = document.getElementById('averageMastery');
+                
+                if (totalWordsEl) totalWordsEl.textContent = '0';
+                if (studyStreakEl) studyStreakEl.textContent = '0';
+                if (averageMasteryEl) averageMasteryEl.textContent = '0%';
+            }
+        }
+        
+        // Random Practice Mode
+        window.startRandomPractice = function() {
+            window.location.href = '/pages/dashboard/assessment-test.html?mode=random';
+        };
+        
+        // Assessment Test Mode
+        window.startAssessmentTest = function() {
+            const testSettings = document.getElementById('testSettings');
+            
+            if (testSettings.style.display === 'none') {
+                // Show settings
+                testSettings.style.display = 'block';
+                
+                // Change the card to show "Start Test" button
+                const assessmentCard = document.querySelector('.mode-card:last-child');
+                assessmentCard.innerHTML = `
+                    <div style="font-size: 3rem; margin-bottom: 1rem;">📊</div>
+                    <h3 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 0.75rem;">Bắt đầu kiểm tra</h3>
+                    <p style="font-size: 0.875rem; opacity: 0.9; margin: 0;">Nhấn để bắt đầu bài test với cài đặt bên dưới</p>
+                `;
+                assessmentCard.onclick = function() {
+                    const questionCount = document.getElementById('questionCount').value;
+                    const difficulty = document.getElementById('difficulty').value;
+                    window.location.href = `/pages/dashboard/assessment-test.html?mode=test&count=${questionCount}&difficulty=${difficulty}`;
+                };
+            } else {
+                // Start test immediately
+                const questionCount = document.getElementById('questionCount').value;
+                const difficulty = document.getElementById('difficulty').value;
+                window.location.href = `/pages/dashboard/assessment-test.html?mode=test&count=${questionCount}&difficulty=${difficulty}`;
+            }
+        };
+        
+        // Initialize everything when DOM is ready
+        function initDashboard() {
+            loadDashboardStats();
+            // Modal setup is handled in global script now
+        }
+        
+        // Load stats when DOM is ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initDashboard);
+        } else {
+            initDashboard();
+        }
+    </script>
+</body>
+</html>

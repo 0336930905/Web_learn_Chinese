@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Học Theo Danh Mục - Học Tiếng Đài Loan</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <script src="https://kit.fontawesome.com/8b9a27d5a0.js" crossorigin="anonymous"></script>
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/pages/dashboard.css">
+    
+    <style>
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .container {
+            padding-top: 2rem;
+            padding-bottom: 3rem;
+        }
+
+        /* Welcome Banner - Matching Dashboard */
+        .welcome-banner {
+            margin-bottom: 2rem;
+        }
+
+        .welcome-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 20px;
+            padding: 2.5rem;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .welcome-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -10%;
+            width: 400px;
+            height: 400px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+        }
+
+        .welcome-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .welcome-title {
+            font-size: 2rem;
+            font-weight: 800;
+            color: white;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .welcome-subtitle {
+            font-size: 1rem;
+            color: rgba(255, 255, 255, 0.9);
+            margin: 0;
+        }
+
+        .btn-back {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            padding: 0.75rem 1.75rem;
+            border-radius: 12px;
+            font-weight: 700;
+            text-decoration: none;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .btn-back:hover {
+            background: rgba(255, 255, 255, 0.3);
+            color: white;
+            transform: translateY(-3px);
+        }
+
+        /* Filter Section */
+        .filter-section {
+            background: white;
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        .filter-section .form-select {
+            border-radius: 10px;
+            border: 2px solid #e8e8ff;
+            padding: 0.75rem 1rem;
+            font-weight: 600;
+        }
+
+        .filter-section .form-select:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        /* Categories Grid - Matching Dashboard Features Grid */
+        .categories-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .category-card {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            cursor: pointer;
+        }
+
+        .category-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.15);
+            border-color: rgba(102, 126, 234, 0.3);
+        }
+
+        .category-header {
+            padding: 2rem 1.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .category-header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -30%;
+            width: 200px;
+            height: 200px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+        }
+
+        .category-icon {
+            width: 64px;
+            height: 64px;
+            margin: 0 auto 1rem;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: white;
+            position: relative;
+            z-index: 1;
+        }
+
+        .category-name {
+            text-align: center;
+            font-size: 1.375rem;
+            font-weight: 700;
+            color: white;
+            margin: 0;
+            position: relative;
+            z-index: 1;
+        }
+
+        .category-body {
+            padding: 1.5rem;
+        }
+
+        .category-stats {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 2px solid #f3f4f6;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: #667eea;
+        }
+
+        .stat-label {
+            font-size: 0.813rem;
+            color: #6c757d;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        .progress-section {
+            margin-bottom: 1.5rem;
+        }
+
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: #4b5563;
+        }
+
+        .progress-bar-custom {
+            height: 10px;
+            border-radius: 10px;
+            background: #e5e7eb;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            transition: width 0.6s ease;
+            border-radius: 10px;
+        }
+
+        .btn-start-learning {
+            width: 100%;
+            padding: 1rem;
+            border: none;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .btn-start-learning:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(102, 126, 234, 0.4);
+        }
+
+        /* Gradient Backgrounds */
+        .bg-gradient-blue {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .bg-gradient-green {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+
+        .bg-gradient-purple {
+            background: linear-gradient(135deg, #a855f7 0%, #ec4899 100%);
+        }
+
+        .bg-gradient-orange {
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+        }
+
+        .bg-gradient-pink {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+
+        .bg-gradient-cyan {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+
+        /* Loading & Empty States */
+        .loading {
+            text-align: center;
+            padding: 4rem;
+        }
+
+        .spinner-border {
+            width: 3rem;
+            height: 3rem;
+            color: #667eea;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 4rem;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        .empty-state i {
+            font-size: 5rem;
+            color: #e8e8ff;
+            margin-bottom: 1.5rem;
+        }
+
+        .empty-state h3 {
+            color: #667eea;
+            margin-bottom: 1rem;
+        }
+
+        .empty-state p {
+            color: #6c757d;
+        }
+
+        /* Pagination */
+        .pagination-container {
+            background: white;
+            border-radius: 16px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        .pagination {
+            margin: 0;
+        }
+
+        .page-link {
+            border-radius: 8px;
+            margin: 0 0.25rem;
+            border: 2px solid #e8e8ff;
+            color: #667eea;
+            font-weight: 600;
+        }
+
+        .page-link:hover {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+
+        .page-item.active .page-link {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-color: #667eea;
+        }
+
+        @media (max-width: 768px) {
+            .categories-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .category-card {
+            animation: fadeInUp 0.5s ease-out;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div id="header-placeholder"></div>
+
+    <div class="container">
+        <!-- Welcome Banner -->
+        <section class="welcome-banner">
+            <div class="welcome-card">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div class="welcome-content">
+                        <h1 class="welcome-title">
+                            <i class="fas fa-book-open me-3"></i>Học Theo Danh Mục
+                        </h1>
+                        <p class="welcome-subtitle">Chọn danh mục bạn muốn học và bắt đầu hành trình chinh phục tiếng Đài!</p>
+                    </div>
+                    <button class="btn-back" onclick="history.back()">
+                        <i class="fas fa-arrow-left"></i> Quay lại
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Filter Section -->
+        <section class="filter-section">
+            <div class="row align-items-center">
+                <div class="col-md-3">
+                    <label class="form-label fw-semibold">
+                        <i class="fas fa-user-shield me-2"></i>Lọc theo Admin
+                    </label>
+                </div>
+                <div class="col-md-9">
+                    <select id="filterAdmin" class="form-select">
+                        <option value="">Tất cả Admin</option>
+                    </select>
+                </div>
+            </div>
+        </section>
+
+        <!-- Categories Grid -->
+        <div id="categoriesGrid" class="categories-grid">
+            <div class="loading">
+                <div class="spinner-border" role="status">
+                    <span class="visually-hidden">Đang tải...</span>
+                </div>
+                <p class="mt-3 text-muted">Đang tải danh mục...</p>
+            </div>
+        </div>
+
+        <!-- Pagination -->
+        <div id="paginationContainer" class="pagination-container" style="display: none;">
+            <nav>
+                <ul class="pagination justify-content-center mb-0" id="pagination"></ul>
+            </nav>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div id="footer-placeholder"></div>
+
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script type="module" src="/js/utils/component-loader.js"></script>
+    
+    <script>
+        const API_URL = 'http://localhost:3000/api';
+        let authToken = sessionStorage.getItem('currentToken') || localStorage.getItem('token');
+        let allCategories = [];
+        let adminWords = [];
+        let allAdminWords = [];
+        let userOwnWords = []; // Words created by current user
+        let userProgress = {};
+        let adminUsers = [];
+        let currentUser = null;
+        
+        const CARDS_PER_PAGE = 6;
+        let currentPage = 1;
+        let activeCategories = [];
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            if (!authToken) {
+                window.location.href = '/pages/auth/login.html';
+                return;
+            }
+
+            await loadCurrentUser();
+            await loadData();
+            document.getElementById('filterAdmin').addEventListener('change', filterByAdmin);
+        });
+        
+        async function loadCurrentUser() {
+            try {
+                const response = await fetch(`${API_URL}/auth/me`, {
+                    headers: { 'Authorization': `Bearer ${authToken}` }
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    currentUser = data.user;
+                    console.log('✅ Current user loaded:', currentUser.username);
+                } else {
+                    console.error('❌ Failed to load current user');
+                }
+            } catch (error) {
+                console.error('Error loading current user:', error);
+            }
+        }
+
+        async function loadData() {
+            try {
+                // Tải cả danh mục công khai và danh mục cá nhân của user
+                const [publicCatsRes, myCatsRes, adminWordsRes, userWordsRes, progressRes] = await Promise.all([
+                    fetch(`${API_URL}/categories/public`, {
+                        headers: { 'Authorization': `Bearer ${authToken}` }
+                    }),
+                    fetch(`${API_URL}/categories`, { // Fetch private categories
+                        headers: { 'Authorization': `Bearer ${authToken}` }
+                    }),
+                    fetch(`${API_URL}/words/admin-words`, {
+                        headers: { 'Authorization': `Bearer ${authToken}` }
+                    }),
+                    fetch(`${API_URL}/words`, {
+                        headers: { 'Authorization': `Bearer ${authToken}` }
+                    }),
+                    fetch(`${API_URL}/progress`, {
+                        headers: { 'Authorization': `Bearer ${authToken}` }
+                    })
+                ]);
+
+                // Xử lý Categories
+                let publicCategories = [];
+                let myCategories = [];
+
+                if (publicCatsRes.ok) {
+                    const data = await publicCatsRes.json();
+                    publicCategories = Array.isArray(data.data) ? data.data : (Array.isArray(data) ? data : []);
+                }
+
+                if (myCatsRes.ok) {
+                    const data = await myCatsRes.json();
+                    myCategories = Array.isArray(data.data) ? data.data : (Array.isArray(data) ? data : []);
+                }
+
+                // Gộp và khử trùng lặp categories theo _id
+                const catMap = new Map();
+                [...publicCategories, ...myCategories].forEach(cat => {
+                    catMap.set(cat._id, cat);
+                });
+                allCategories = Array.from(catMap.values());
+                console.log('✅ Total categories loaded:', allCategories.length);
+
+                if (adminWordsRes.ok) {
+                    const data = await adminWordsRes.json();
+                    allAdminWords = Array.isArray(data.data) ? data.data : (Array.isArray(data) ? data : []);
+                    adminWords = [...allAdminWords];
+                    console.log('✅ Admin words loaded:', allAdminWords.length);
+
+                    const admins = [...new Set(allAdminWords.map(w => w.createdBy?.username).filter(Boolean))];
+                    adminUsers = admins;
+
+                    const filterSelect = document.getElementById('filterAdmin');
+                    
+                    // Add current user's option first
+                    if (currentUser) {
+                        const myOption = document.createElement('option');
+                        myOption.value = '__MY_WORDS__';
+                        myOption.textContent = '📝 Của tôi (' + currentUser.username + ')';
+                        filterSelect.appendChild(myOption);
+                        
+                        // Add separator
+                        const separator = document.createElement('option');
+                        separator.disabled = true;
+                        separator.textContent = '──────────';
+                        filterSelect.appendChild(separator);
+                    }
+                    
+                    admins.forEach(admin => {
+                        const option = document.createElement('option');
+                        option.value = admin;
+                        option.textContent = '👨‍🏫 ' + admin;
+                        filterSelect.appendChild(option);
+                    });
+                } else {
+                    console.error('❌ Failed to load admin words:', adminWordsRes.status);
+                    try {
+                        const errorText = await adminWordsRes.text();
+                        console.error('Error response:', errorText);
+                    } catch (e) {
+                        console.error('Could not read error response');
+                    }
+                    // Continue anyway - categories can still be shown without words
+                }
+                
+                // Load user's own words
+                if (userWordsRes.ok) {
+                    const data = await userWordsRes.json();
+                    const allWords = Array.isArray(data.data) ? data.data : (Array.isArray(data) ? data : []);
+                    
+                    // Filter only words created by current user (not admin words)
+                    if (currentUser) {
+                        userOwnWords = allWords.filter(word => {
+                            const createdById = word.createdBy?._id || word.createdBy;
+                            return createdById === currentUser._id && !word.isPublic;
+                        });
+                        console.log('✅ User own words loaded:', userOwnWords.length);
+                    }
+                } else {
+                    console.error('Failed to load user words:', userWordsRes.status);
+                }
+
+                if (progressRes.ok) {
+                    const data = await progressRes.json();
+                    const progressData = Array.isArray(data.data) ? data.data : (Array.isArray(data) ? data : []);
+                    console.log('✅ Progress loaded:', progressData.length);
+                    progressData.forEach(p => {
+                        userProgress[p.category] = p;
+                    });
+                } else {
+                    console.error('Failed to load progress:', progressRes.status);
+                }
+
+                renderCategories();
+                
+            } catch (error) {
+                console.error('Error loading data:', error);
+                showError('Lỗi khi tải dữ liệu! Vui lòng thử lại sau.');
+            }
+        }
+
+        function renderCategories() {
+            const grid = document.getElementById('categoriesGrid');
+            const selectedAdmin = document.getElementById('filterAdmin').value;
+            
+            if (allCategories.length === 0) {
+                grid.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-folder-open"></i>
+                        <h3>Chưa có danh mục nào</h3>
+                        <p>Hệ thống chưa có danh mục học tập nào</p>
+                    </div>
+                `;
+                return;
+            }
+
+            // Determine which words to consider based on filter
+            let currentWords = [];
+            if (selectedAdmin === '__MY_WORDS__') {
+                currentWords = userOwnWords;
+            } else if (selectedAdmin) {
+                // Specific admin
+                currentWords = allAdminWords.filter(w => w.createdBy?.username === selectedAdmin);
+            } else {
+                // Show all: My words + All Admin words
+                currentWords = [...userOwnWords, ...allAdminWords];
+            }
+
+            const wordsByCategory = {};
+            currentWords.forEach(word => {
+                const cat = word.category;
+                if (!wordsByCategory[cat]) {
+                    wordsByCategory[cat] = [];
+                }
+                wordsByCategory[cat].push(word);
+            });
+
+            activeCategories = allCategories.filter(cat => {
+                // 1. Must have words in current context
+                const hasWords = wordsByCategory[cat.slug] && wordsByCategory[cat.slug].length > 0;
+                if (!hasWords) return false;
+
+                const catCreatorId = cat.userId?._id || cat.userId;
+                const catCreatorRole = cat.userId?.role;
+                const currentUserId = currentUser?._id;
+
+                // 2. Filter logic
+                if (selectedAdmin === '__MY_WORDS__') {
+                    // Strict: Must be created by current user
+                    return catCreatorId === currentUserId;
+                } 
+                
+                if (selectedAdmin) {
+                    // Strict: Must be created by selected admin
+                    // (Note: We use username match for admins as we might not have their ID in dropdown value)
+                    return cat.userId?.username === selectedAdmin && catCreatorRole === 'admin';
+                }
+
+                // Default (All): Show if it's My Category OR (Admin Category AND isPublic)
+                const isMyCategory = catCreatorId === currentUserId;
+                const isAdminCategory = catCreatorRole === 'admin';
+
+                return isMyCategory || isAdminCategory;
+            });
+
+            // Deduplicate by slug
+            // Priority: If "All", maybe prioritize "My" categories? 
+            // Current list order depends on fetch order.
+            // Let's sort to put My Categories first if possible, or just accept first match.
+            // We'll keep existing dedupe logic but ensure we select the most relevant one.
+            
+            const uniqueSlugs = new Set();
+            activeCategories = activeCategories.filter(cat => {
+                if (uniqueSlugs.has(cat.slug)) return false;
+                uniqueSlugs.add(cat.slug);
+                return true;
+            });
+
+            if (activeCategories.length === 0) {
+                grid.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-search"></i>
+                        <h3>Không tìm thấy danh mục</h3>
+                        <p>Không có danh mục nào phù hợp</p>
+                    </div>
+                `;
+                return;
+            }
+
+            displayPaginatedCategories();
+        }
+
+        function displayPaginatedCategories() {
+            const grid = document.getElementById('categoriesGrid');
+            const startIndex = (currentPage - 1) * CARDS_PER_PAGE;
+            const endIndex = startIndex + CARDS_PER_PAGE;
+            const categoriesToDisplay = activeCategories.slice(startIndex, endIndex);
+
+            const selectedAdmin = document.getElementById('filterAdmin').value;
+            
+            // Re-calculate words for display based on current selection
+            let displayWordsSource = [];
+             if (selectedAdmin === '__MY_WORDS__') {
+                displayWordsSource = userOwnWords;
+            } else if (selectedAdmin) {
+                displayWordsSource = allAdminWords.filter(w => w.createdBy?.username === selectedAdmin);
+            } else {
+                displayWordsSource = [...userOwnWords, ...allAdminWords];
+            }
+
+            const wordsByCategory = {};
+            displayWordsSource.forEach(word => {
+                const cat = word.category;
+                if (!wordsByCategory[cat]) {
+                    wordsByCategory[cat] = [];
+                }
+                wordsByCategory[cat].push(word);
+            });
+
+            grid.innerHTML = categoriesToDisplay.map(category => {
+                const words = wordsByCategory[category.slug] || [];
+                const totalWords = words.length;
+                const progress = userProgress[category.slug] || {};
+                const learnedWords = progress.learnedWords || 0;
+                const progressPercent = totalWords > 0 ? Math.round((learnedWords / totalWords) * 100) : 0;
+
+                const gradients = ['bg-gradient-blue', 'bg-gradient-green', 'bg-gradient-purple', 'bg-gradient-orange', 'bg-gradient-pink', 'bg-gradient-cyan'];
+                const gradient = gradients[Math.floor(Math.random() * gradients.length)];
+
+                // Add owner badge if showing mixed view
+                const isOwner = (category.userId?._id || category.userId) === currentUser?._id;
+                const ownerBadge = !selectedAdmin && isOwner ? '<span class="badge bg-light text-dark ms-2" style="font-size: 0.7rem;">Của tôi</span>' : '';
+
+                return `
+                    <div class="category-card" onclick="startLearning('${category.slug}', '${escapeHtml(category.name)}')">
+                        <div class="category-header ${gradient}">
+                            <div class="category-icon">
+                                ${category.icon || '📚'}
+                            </div>
+                            <h3 class="category-name">${escapeHtml(category.name)}</h3>
+                            <div class="text-center mt-2">${ownerBadge}</div>
+                        </div>
+                        <div class="category-body">
+                            <div class="category-stats">
+                                <div class="stat-item">
+                                    <div class="stat-value">${totalWords}</div>
+                                    <div class="stat-label">Tổng từ</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-value text-success">${learnedWords}</div>
+                                    <div class="stat-label">Đã học</div>
+                                </div>
+                            </div>
+                            <div class="progress-section">
+                                <div class="progress-label">
+                                    <span>Tiến độ</span>
+                                    <span>${progressPercent}%</span>
+                                </div>
+                                <div class="progress-bar-custom">
+                                    <div class="progress-fill" style="width: ${progressPercent}%"></div>
+                                </div>
+                            </div>
+                            <button class="btn-start-learning">
+                                <i class="fas fa-play-circle"></i>
+                                Bắt đầu học
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            setupPagination();
+        }
+
+        function setupPagination() {
+            const totalPages = Math.ceil(activeCategories.length / CARDS_PER_PAGE);
+            const paginationEl = document.getElementById('pagination');
+            const paginationContainer = document.getElementById('paginationContainer');
+            
+            if (totalPages <= 1) {
+                paginationContainer.style.display = 'none';
+                return;
+            }
+            
+            paginationContainer.style.display = 'block';
+            
+            let html = `
+                <li class="page-item ${currentPage === 1 ? 'disabled' : ''}">
+                    <a class="page-link" href="#" onclick="changePage(${currentPage - 1}); return false;">
+                        <i class="fas fa-chevron-left"></i>
+                    </a>
+                </li>
+            `;
+            
+            for (let i = 1; i <= totalPages; i++) {
+                html += `
+                    <li class="page-item ${i === currentPage ? 'active' : ''}">
+                        <a class="page-link" href="#" onclick="changePage(${i}); return false;">${i}</a>
+                    </li>
+                `;
+            }
+            
+            html += `
+                <li class="page-item ${currentPage === totalPages ? 'disabled' : ''}">
+                    <a class="page-link" href="#" onclick="changePage(${currentPage + 1}); return false;">
+                        <i class="fas fa-chevron-right"></i>
+                    </a>
+                </li>
+            `;
+            
+            paginationEl.innerHTML = html;
+        }
+
+        window.changePage = function(page) {
+            const totalPages = Math.ceil(activeCategories.length / CARDS_PER_PAGE);
+            if (page < 1 || page > totalPages) return;
+            
+            currentPage = page;
+            displayPaginatedCategories();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        };
+
+        function filterByAdmin() {
+            const selectedAdmin = document.getElementById('filterAdmin').value;
+            
+            if (selectedAdmin === '__MY_WORDS__') {
+                // Show only current user's own words
+                adminWords = [...userOwnWords];
+                console.log('Filtering: My words -', adminWords.length);
+            } else if (selectedAdmin) {
+                // Show specific admin's words
+                adminWords = allAdminWords.filter(word => word.createdBy?.username === selectedAdmin);
+                console.log('Filtering: Admin', selectedAdmin, '-', adminWords.length);
+            } else {
+                // Show all admin words (không bao gồm từ của user)
+                adminWords = [...allAdminWords];
+                console.log('Filtering: All admin words -', adminWords.length);
+            }
+            
+            currentPage = 1;
+            renderCategories();
+        }
+
+        function startLearning(categorySlug, categoryName) {
+            window.location.href = `learning-modes.html?category=${categorySlug}&name=${encodeURIComponent(categoryName)}`;
+        }
+
+        function escapeHtml(text) {
+            if (!text) return '';
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        function showError(message) {
+            const grid = document.getElementById('categoriesGrid');
+            grid.innerHTML = `
+                <div class="empty-state">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <h3>Lỗi</h3>
+                    <p>${message}</p>
+                </div>
+            `;
+        }
+    </script>
+</body>
+</html>

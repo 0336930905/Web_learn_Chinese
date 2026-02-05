@@ -1,0 +1,1455 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cài đặt - Học Tiếng Đài Loan</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    
+    <!-- Font Awesome Kit -->
+    <script src="https://kit.fontawesome.com/8b9a27d5a0.js" crossorigin="anonymous"></script>
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/pages/dashboard.css">
+    
+    <style>
+        .settings-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+
+        .settings-header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding: 3rem 1rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 1.5rem;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .settings-header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 70%);
+            animation: pulse 4s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.2); opacity: 0.8; }
+        }
+
+        .settings-header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .settings-header p {
+            font-size: 1.125rem;
+            opacity: 0.95;
+            position: relative;
+            z-index: 1;
+            margin: 0;
+        }
+
+        .settings-content {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .settings-sidebar {
+            position: sticky;
+            top: 100px;
+            height: fit-content;
+        }
+
+        .settings-menu {
+            background: white;
+            border-radius: 1rem;
+            padding: 1rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .menu-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            border-radius: 0.75rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            background: transparent;
+            width: 100%;
+            text-align: left;
+            color: #666;
+            font-weight: 500;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .menu-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 4px;
+            height: 0;
+            background: linear-gradient(180deg, #667eea, #764ba2);
+            border-radius: 0 4px 4px 0;
+            transition: height 0.3s ease;
+        }
+
+        .menu-item:hover {
+            background: #f8f9ff;
+            color: #667eea;
+        }
+
+        .menu-item.active {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+            color: #667eea;
+            font-weight: 600;
+        }
+
+        .menu-item.active::before {
+            height: 70%;
+        }
+
+        .menu-item i {
+            width: 24px;
+            text-align: center;
+            font-size: 1.25rem;
+        }
+
+        .settings-panel {
+            background: white;
+            border-radius: 1rem;
+            padding: 2.5rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            display: none;
+        }
+
+        .settings-panel.active {
+            display: block;
+            animation: fadeInUp 0.4s ease;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .panel-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: #1a1a1a;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .panel-title i {
+            color: #667eea;
+        }
+
+        .panel-subtitle {
+            color: #666;
+            margin-bottom: 2rem;
+            font-size: 1rem;
+        }
+
+        .setting-card {
+            background: #f8f9ff;
+            border-radius: 1rem;
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .setting-card:hover {
+            border-color: #667eea;
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.15);
+        }
+
+        .card-header {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: #1a1a1a;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .card-header i {
+            color: #667eea;
+        }
+
+        .setting-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.25rem 0;
+            border-bottom: 1px solid #e8e8ff;
+        }
+
+        .setting-item:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .setting-item:first-child {
+            padding-top: 0;
+        }
+
+        .setting-info {
+            flex: 1;
+        }
+
+        .setting-label {
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-bottom: 0.25rem;
+            font-size: 1rem;
+        }
+
+        .setting-desc {
+            color: #666;
+            font-size: 0.875rem;
+            line-height: 1.5;
+        }
+
+        .setting-control {
+            margin-left: 2rem;
+        }
+
+        /* Toggle Switch */
+        .toggle-switch {
+            position: relative;
+            width: 56px;
+            height: 30px;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: #ddd;
+            transition: 0.4s;
+            border-radius: 30px;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 24px;
+            width: 24px;
+            left: 3px;
+            bottom: 3px;
+            background: white;
+            transition: 0.4s;
+            border-radius: 50%;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        input:checked + .toggle-slider {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+        }
+
+        input:checked + .toggle-slider:before {
+            transform: translateX(26px);
+        }
+
+        /* Select Dropdown */
+        .custom-select {
+            min-width: 200px;
+            padding: 0.75rem 1rem;
+            border: 2px solid #e8e8ff;
+            border-radius: 0.75rem;
+            font-size: 1rem;
+            color: #1a1a1a;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .custom-select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+        }
+
+        .custom-select:hover {
+            border-color: #667eea;
+        }
+
+        /* Range Slider */
+        .range-slider {
+            width: 200px;
+        }
+
+        .range-slider input[type="range"] {
+            width: 100%;
+            height: 8px;
+            border-radius: 5px;
+            background: #e8e8ff;
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        .range-slider input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.4);
+        }
+
+        .range-slider input[type="range"]::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.4);
+            border: none;
+        }
+
+        .range-value {
+            display: inline-block;
+            margin-left: 1rem;
+            font-weight: 600;
+            color: #667eea;
+            min-width: 50px;
+        }
+
+        /* Buttons */
+        .btn-primary-custom {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border: none;
+            color: white;
+            padding: 0.875rem 2rem;
+            border-radius: 0.75rem;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-primary-custom:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary-custom {
+            background: white;
+            border: 2px solid #e8e8ff;
+            color: #667eea;
+            padding: 0.875rem 2rem;
+            border-radius: 0.75rem;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-secondary-custom:hover {
+            background: #f8f9ff;
+            border-color: #667eea;
+        }
+
+        .btn-danger-custom {
+            background: linear-gradient(135deg, #ff6b6b, #ee5a6f);
+            border: none;
+            color: white;
+            padding: 0.875rem 2rem;
+            border-radius: 0.75rem;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+        }
+
+        .btn-danger-custom:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px rgba(255, 107, 107, 0.4);
+        }
+
+        /* Danger Zone */
+        .danger-zone {
+            background: linear-gradient(135deg, rgba(255, 107, 107, 0.05), rgba(238, 90, 111, 0.05));
+            border: 2px solid #ffebee;
+            border-radius: 1rem;
+            padding: 2rem;
+            margin-top: 2rem;
+        }
+
+        .danger-zone .card-header {
+            color: #ff6b6b;
+        }
+
+        .danger-zone .card-header i {
+            color: #ff6b6b;
+        }
+
+        /* Data Export Section */
+        .export-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .export-card {
+            background: white;
+            border: 2px solid #e8e8ff;
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .export-card:hover {
+            border-color: #667eea;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.15);
+        }
+
+        .export-card i {
+            font-size: 2.5rem;
+            color: #667eea;
+            margin-bottom: 1rem;
+        }
+
+        .export-card h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #1a1a1a;
+        }
+
+        .export-card p {
+            font-size: 0.875rem;
+            color: #666;
+            margin: 0;
+        }
+
+        /* Success Message */
+        .success-message {
+            background: linear-gradient(135deg, rgba(76, 175, 80, 0.1), rgba(46, 125, 50, 0.1));
+            border: 2px solid #c8e6c9;
+            border-radius: 0.75rem;
+            padding: 1rem 1.5rem;
+            margin-bottom: 1.5rem;
+            display: none;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .success-message.show {
+            display: flex;
+            animation: slideInDown 0.4s ease;
+        }
+
+        @keyframes slideInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .success-message i {
+            color: #4caf50;
+            font-size: 1.5rem;
+        }
+
+        .success-message span {
+            color: #2e7d32;
+            font-weight: 600;
+        }
+
+        /* Responsive */
+        @media (max-width: 992px) {
+            .settings-content {
+                grid-template-columns: 1fr;
+            }
+
+            .settings-sidebar {
+                position: static;
+            }
+
+            .settings-menu {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                gap: 0.5rem;
+            }
+
+            .setting-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+
+            .setting-control {
+                margin-left: 0;
+                width: 100%;
+            }
+
+            .custom-select,
+            .range-slider {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .settings-header h1 {
+                font-size: 2rem;
+            }
+
+            .settings-panel {
+                padding: 1.5rem;
+            }
+
+            .panel-title {
+                font-size: 1.5rem;
+            }
+
+            .setting-card {
+                padding: 1.5rem;
+            }
+
+            .export-options {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div id="header-placeholder"></div>
+    
+    <div class="settings-container">
+        <!-- Page Header -->
+        <div class="settings-header">
+            <h1>⚙️ Cài đặt</h1>
+            <p>Tùy chỉnh trải nghiệm học tập của bạn</p>
+        </div>
+
+        <!-- Success Message -->
+        <div class="success-message" id="successMessage">
+            <i class="fas fa-check-circle"></i>
+            <span>Cài đặt đã được lưu thành công!</span>
+        </div>
+
+        <div class="settings-content">
+            <!-- Sidebar Menu -->
+            <div class="settings-sidebar">
+                <div class="settings-menu">
+                    <button class="menu-item active" data-panel="general">
+                        <i class="fas fa-sliders-h"></i>
+                        <span>Chung</span>
+                    </button>
+                    <button class="menu-item" data-panel="learning">
+                        <i class="fas fa-graduation-cap"></i>
+                        <span>Học tập</span>
+                    </button>
+                    <button class="menu-item" data-panel="notifications">
+                        <i class="fas fa-bell"></i>
+                        <span>Thông báo</span>
+                    </button>
+                    <button class="menu-item" data-panel="privacy">
+                        <i class="fas fa-shield-alt"></i>
+                        <span>Bảo mật</span>
+                    </button>
+                    <button class="menu-item" data-panel="data">
+                        <i class="fas fa-database"></i>
+                        <span>Dữ liệu</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Main Content -->
+            <div class="settings-main">
+                <!-- General Panel -->
+                <div class="settings-panel active" id="general-panel">
+                    <h2 class="panel-title">
+                        <i class="fas fa-sliders-h"></i>
+                        Cài đặt chung
+                    </h2>
+                    <p class="panel-subtitle">Cấu hình giao diện, ngôn ngữ và các tùy chọn cơ bản</p>
+
+                    <!-- Interface & Language Card -->
+                    <div class="setting-card">
+                        <div class="card-header">
+                            <i class="fas fa-palette"></i>
+                            Giao diện & Ngôn ngữ
+                        </div>
+                        
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <div class="setting-label">Ngôn ngữ giao diện</div>
+                                <div class="setting-desc">Chọn ngôn ngữ hiển thị của ứng dụng</div>
+                            </div>
+                            <div class="setting-control">
+                                <select class="custom-select" id="language">
+                                    <option value="vi">🇻🇳 Tiếng Việt</option>
+                                    <option value="zh-tw">🇹🇼 繁體中文</option>
+                                    <option value="en">🇬🇧 English</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <div class="setting-label">Cỡ chữ</div>
+                                <div class="setting-desc">Điều chỉnh kích thước chữ trong ứng dụng</div>
+                            </div>
+                            <div class="setting-control">
+                                <select class="custom-select" id="fontSize">
+                                    <option value="small">Nhỏ</option>
+                                    <option value="medium" selected>Trung bình</option>
+                                    <option value="large">Lớn</option>
+                                    <option value="xlarge">Rất lớn</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <div class="setting-label">Chế độ tối</div>
+                                <div class="setting-desc">Bật chế độ nền tối để giảm mỏi mắt</div>
+                            </div>
+                            <div class="setting-control">
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="darkMode">
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <div class="setting-label">Tự động chuyển chế độ</div>
+                                <div class="setting-desc">Tự động bật chế độ tối vào ban đêm</div>
+                            </div>
+                            <div class="setting-control">
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="autoTheme">
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Sound & Effects Card -->
+                    <div class="setting-card">
+                        <div class="card-header">
+                            <i class="fas fa-volume-up"></i>
+                            Âm thanh & Hiệu ứng
+                        </div>
+
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <div class="setting-label">Hiệu ứng âm thanh</div>
+                                <div class="setting-desc">Phát âm thanh khi hoàn thành bài học, đạt thành tích</div>
+                            </div>
+                            <div class="setting-control">
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="soundEffects" checked>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <div class="setting-label">Âm lượng hiệu ứng</div>
+                                <div class="setting-desc">Điều chỉnh mức âm lượng của hiệu ứng âm thanh</div>
+                            </div>
+                            <div class="setting-control">
+                                <select class="custom-select" id="effectsVolume">
+                                    <option value="25">25%</option>
+                                    <option value="50">50%</option>
+                                    <option value="75" selected>75%</option>
+                                    <option value="100">100%</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <div class="setting-label">Hiệu ứng chuyển động</div>
+                                <div class="setting-desc">Bật/tắt các hiệu ứng animation trong giao diện</div>
+                            </div>
+                            <div class="setting-control">
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="animations" checked>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Learning Panel -->
+                <div class="settings-panel" id="learning-panel">
+                    <h2 class="panel-title">
+                        <i class="fas fa-graduation-cap"></i>
+                        Cài đặt học tập
+                    </h2>
+                    <p class="panel-subtitle">Tùy chỉnh trải nghiệm học tập theo nhu cầu của bạn</p>
+
+                    <div class="setting-card">
+                        <div class="card-header">
+                            <i class="fas fa-target"></i>
+                            Mục tiêu học tập
+                        </div>
+
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <div class="setting-label">Mục tiêu hàng ngày</div>
+                                <div class="setting-desc">Số từ vựng bạn muốn học mỗi ngày</div>
+                            </div>
+                            <div class="setting-control">
+                                <div class="range-slider">
+                                    <input type="range" min="5" max="50" value="10" id="dailyGoal">
+                                    <span class="range-value" id="dailyGoalValue">10 từ</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <div class="setting-label">Nhắc nhở học tập</div>
+                                <div class="setting-desc">Nhận thông báo nhắc nhở học tập hàng ngày</div>
+                            </div>
+                            <div class="setting-control">
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="studyReminder" checked>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="setting-card">
+                        <div class="card-header">
+                            <i class="fas fa-book-open"></i>
+                            Phương pháp học
+                        </div>
+
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <div class="setting-label">Hiển thị Pinyin</div>
+                                <div class="setting-desc">Hiển thị phiên âm Pinyin khi học từ vựng</div>
+                            </div>
+                            <div class="setting-control">
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="showPinyin" checked>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <div class="setting-label">Hiển thị Zhuyin</div>
+                                <div class="setting-desc">Hiển thị phiên âm Zhuyin (Bopomofo) khi học</div>
+                            </div>
+                            <div class="setting-control">
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="showZhuyin">
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <div class="setting-label">Chế độ ôn tập</div>
+                                <div class="setting-desc">Phương pháp ôn tập từ vựng đã học</div>
+                            </div>
+                            <div class="setting-control">
+                                <select class="custom-select" id="reviewMode">
+                                    <option value="flashcard">Flashcard</option>
+                                    <option value="quiz" selected>Trắc nghiệm</option>
+                                    <option value="writing">Viết chữ</option>
+                                    <option value="mixed">Kết hợp</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <div class="setting-label">Phát âm tự động</div>
+                                <div class="setting-desc">Tự động phát âm thanh khi hiển thị từ mới</div>
+                            </div>
+                            <div class="setting-control">
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="autoPlay" checked>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Notifications Panel -->
+                <div class="settings-panel" id="notifications-panel">
+                    <h2 class="panel-title">
+                        <i class="fas fa-bell"></i>
+                        Cài đặt thông báo
+                    </h2>
+                    <p class="panel-subtitle">Quản lý các loại thông báo bạn muốn nhận</p>
+
+                    <div class="setting-card">
+                        <div class="card-header">
+                            <i class="fas fa-envelope"></i>
+                            Thông báo qua Email
+                        </div>
+
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <div class="setting-label">Nhắc nhở hàng ngày</div>
+                                <div class="setting-desc">Nhận email nhắc nhở học tập mỗi ngày</div>
+                            </div>
+                            <div class="setting-control">
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="emailReminder" checked>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <div class="setting-label">Thông báo thành tích</div>
+                                <div class="setting-desc">Nhận email khi đạt được thành tích mới</div>
+                            </div>
+                            <div class="setting-control">
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="achievementEmail" checked>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <div class="setting-label">Báo cáo tiến độ tuần</div>
+                                <div class="setting-desc">Nhận báo cáo tổng kết tiến độ học tập hàng tuần</div>
+                            </div>
+                            <div class="setting-control">
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="weeklyReport" checked>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="setting-card">
+                        <div class="card-header">
+                            <i class="fas fa-mobile-alt"></i>
+                            Thông báo đẩy
+                        </div>
+
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <div class="setting-label">Bật thông báo đẩy</div>
+                                <div class="setting-desc">Cho phép nhận thông báo đẩy trên thiết bị</div>
+                            </div>
+                            <div class="setting-control">
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="pushNotifications">
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <div class="setting-label">Thời gian nhắc nhở</div>
+                                <div class="setting-desc">Thời điểm bạn muốn nhận nhắc nhở học tập</div>
+                            </div>
+                            <div class="setting-control">
+                                <select class="custom-select" id="reminderTime">
+                                    <option value="morning">Sáng (8:00)</option>
+                                    <option value="afternoon">Chiều (14:00)</option>
+                                    <option value="evening" selected>Tối (20:00)</option>
+                                    <option value="custom">Tùy chỉnh</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Privacy Panel -->
+                <div class="settings-panel" id="privacy-panel">
+                    <h2 class="panel-title">
+                        <i class="fas fa-shield-alt"></i>
+                        Bảo mật & Quyền riêng tư
+                    </h2>
+                    <p class="panel-subtitle">Quản lý quyền riêng tư và bảo mật tài khoản của bạn</p>
+
+                    <div class="setting-card">
+                        <div class="card-header">
+                            <i class="fas fa-user-lock"></i>
+                            Quyền riêng tư
+                        </div>
+
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <div class="setting-label">Hồ sơ công khai</div>
+                                <div class="setting-desc">Cho phép người dùng khác xem hồ sơ của bạn</div>
+                            </div>
+                            <div class="setting-control">
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="publicProfile">
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <div class="setting-label">Hiển thị tiến độ</div>
+                                <div class="setting-desc">Cho phép người khác xem tiến độ học tập của bạn</div>
+                            </div>
+                            <div class="setting-control">
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="showProgress">
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <div class="setting-label">Hiển thị thành tích</div>
+                                <div class="setting-desc">Chia sẻ các thành tích đã đạt được với người khác</div>
+                            </div>
+                            <div class="setting-control">
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="showAchievements" checked>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="setting-card">
+                        <div class="card-header">
+                            <i class="fas fa-lock"></i>
+                            Bảo mật tài khoản
+                        </div>
+
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <div class="setting-label">Xác thực 2 lớp (2FA)</div>
+                                <div class="setting-desc">Thêm lớp bảo mật bổ sung cho tài khoản của bạn</div>
+                            </div>
+                            <div class="setting-control">
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="twoFactorAuth">
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <div class="setting-label">Thông báo đăng nhập</div>
+                                <div class="setting-desc">Nhận thông báo khi có đăng nhập từ thiết bị mới</div>
+                            </div>
+                            <div class="setting-control">
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="loginNotification" checked>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <div class="setting-label">Đổi mật khẩu</div>
+                                <div class="setting-desc">Thay đổi mật khẩu đăng nhập của bạn</div>
+                            </div>
+                            <div class="setting-control">
+                                <button class="btn-secondary-custom" onclick="window.location.href='/pages/dashboard/profile.html'">
+                                    Đổi mật khẩu
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="setting-card">
+                        <div class="card-header">
+                            <i class="fas fa-chart-bar"></i>
+                            Thu thập dữ liệu
+                        </div>
+
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <div class="setting-label">Phân tích sử dụng</div>
+                                <div class="setting-desc">Cho phép thu thập dữ liệu để cải thiện ứng dụng</div>
+                            </div>
+                            <div class="setting-control">
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="analytics" checked>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <div class="setting-label">Cải thiện trải nghiệm</div>
+                                <div class="setting-desc">Chia sẻ dữ liệu học tập để cá nhân hóa nội dung</div>
+                            </div>
+                            <div class="setting-control">
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="personalization" checked>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Data Panel -->
+                <div class="settings-panel" id="data-panel">
+                    <h2 class="panel-title">
+                        <i class="fas fa-database"></i>
+                        Quản lý dữ liệu
+                    </h2>
+                    <p class="panel-subtitle">Sao lưu, xuất và quản lý dữ liệu học tập của bạn</p>
+
+                    <div class="setting-card">
+                        <div class="card-header">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                            Sao lưu & Đồng bộ
+                        </div>
+
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <div class="setting-label">Sao lưu tự động</div>
+                                <div class="setting-desc">Tự động sao lưu dữ liệu lên cloud hàng ngày</div>
+                            </div>
+                            <div class="setting-control">
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="autoBackup" checked>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <div class="setting-label">Đồng bộ đa thiết bị</div>
+                                <div class="setting-desc">Đồng bộ tiến độ giữa các thiết bị của bạn</div>
+                            </div>
+                            <div class="setting-control">
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="syncDevices" checked>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <div class="setting-label">Sao lưu thủ công</div>
+                                <div class="setting-desc">Tạo bản sao lưu ngay bây giờ</div>
+                            </div>
+                            <div class="setting-control">
+                                <button class="btn-secondary-custom" onclick="createBackup()">
+                                    <i class="fas fa-save"></i> Sao lưu ngay
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="setting-card">
+                        <div class="card-header">
+                            <i class="fas fa-download"></i>
+                            Xuất dữ liệu
+                        </div>
+
+                        <div class="export-options">
+                            <div class="export-card" onclick="exportData('json')">
+                                <i class="fas fa-file-code"></i>
+                                <h4>Xuất JSON</h4>
+                                <p>Định dạng dữ liệu JSON</p>
+                            </div>
+
+                            <div class="export-card" onclick="exportData('csv')">
+                                <i class="fas fa-file-csv"></i>
+                                <h4>Xuất CSV</h4>
+                                <p>Định dạng bảng tính</p>
+                            </div>
+
+                            <div class="export-card" onclick="exportData('pdf')">
+                                <i class="fas fa-file-pdf"></i>
+                                <h4>Xuất PDF</h4>
+                                <p>Báo cáo học tập PDF</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="danger-zone">
+                        <div class="card-header">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            Vùng nguy hiểm
+                        </div>
+
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <div class="setting-label">Xóa lịch sử học tập</div>
+                                <div class="setting-desc">Xóa toàn bộ lịch sử học tập (không thể hoàn tác)</div>
+                            </div>
+                            <div class="setting-control">
+                                <button class="btn-danger-custom" onclick="clearHistory()">
+                                    <i class="fas fa-trash"></i> Xóa lịch sử
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <div class="setting-label">Đặt lại tiến độ</div>
+                                <div class="setting-desc">Reset toàn bộ tiến độ học tập về ban đầu</div>
+                            </div>
+                            <div class="setting-control">
+                                <button class="btn-danger-custom" onclick="resetProgress()">
+                                    <i class="fas fa-redo"></i> Đặt lại
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="setting-item">
+                            <div class="setting-info">
+                                <div class="setting-label">Xóa tài khoản</div>
+                                <div class="setting-desc">Xóa vĩnh viễn tài khoản và toàn bộ dữ liệu</div>
+                            </div>
+                            <div class="setting-control">
+                                <button class="btn-danger-custom" onclick="window.location.href='/pages/dashboard/profile.html#delete'">
+                                    <i class="fas fa-user-times"></i> Xóa tài khoản
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div id="footer-placeholder"></div>
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    
+    <!-- Component Loader -->
+    <script type="module" src="/js/utils/component-loader.js"></script>
+
+    <!-- Settings Page Script -->
+    <script>
+        const API_URL = window.location.hostname === 'localhost' 
+            ? 'http://localhost:3000/api' 
+            : '/api';
+
+        // Check authentication
+        const token = localStorage.getItem('token');
+        if (!token) {
+            window.location.href = '/pages/auth/login.html';
+        }
+
+        // Default settings
+        const defaultSettings = {
+            // General
+            language: 'vi',
+            fontSize: 'medium',
+            darkMode: false,
+            autoTheme: false,
+            soundEffects: true,
+            effectsVolume: 75,
+            animations: true,
+            
+            // Learning
+            dailyGoal: 10,
+            studyReminder: true,
+            showPinyin: true,
+            showZhuyin: false,
+            reviewMode: 'quiz',
+            autoPlay: true,
+            
+            // Notifications
+            emailReminder: true,
+            achievementEmail: true,
+            weeklyReport: true,
+            pushNotifications: false,
+            reminderTime: 'evening',
+            
+            // Privacy
+            publicProfile: false,
+            showProgress: false,
+            showAchievements: true,
+            twoFactorAuth: false,
+            loginNotification: true,
+            analytics: true,
+            personalization: true,
+            
+            // Data
+            autoBackup: true,
+            syncDevices: true
+        };
+
+        // Load settings from localStorage
+        function loadSettings() {
+            const savedSettings = localStorage.getItem('userSettings');
+            if (savedSettings) {
+                const settings = JSON.parse(savedSettings);
+                applySettings(settings);
+            } else {
+                applySettings(defaultSettings);
+            }
+        }
+
+        // Apply settings to UI
+        function applySettings(settings) {
+            Object.keys(settings).forEach(key => {
+                const element = document.getElementById(key);
+                if (!element) return;
+
+                if (element.type === 'checkbox') {
+                    element.checked = settings[key];
+                } else if (element.type === 'range') {
+                    element.value = settings[key];
+                    updateRangeValue(key, settings[key]);
+                } else {
+                    element.value = settings[key];
+                }
+            });
+        }
+
+        // Save settings to localStorage
+        function saveSettings() {
+            const settings = {};
+            
+            // List of all saveable inputs
+            const saveableInputs = [
+                'language', 'fontSize', 'darkMode', 'autoTheme', 'soundEffects', 'effectsVolume', 'animations',
+                'dailyGoal', 'studyReminder', 'showPinyin', 'showZhuyin', 'reviewMode', 'autoPlay',
+                'emailReminder', 'achievementEmail', 'weeklyReport', 'pushNotifications', 'reminderTime',
+                'publicProfile', 'showProgress', 'showAchievements', 'twoFactorAuth', 'loginNotification', 'analytics', 'personalization',
+                'autoBackup', 'syncDevices'
+            ];
+
+            saveableInputs.forEach(id => {
+                const element = document.getElementById(id);
+                if (!element) return;
+
+                if (element.type === 'checkbox') {
+                    settings[id] = element.checked;
+                } else if (element.type === 'range') {
+                    settings[id] = parseInt(element.value);
+                } else {
+                    settings[id] = element.value;
+                }
+            });
+
+            localStorage.setItem('userSettings', JSON.stringify(settings));
+            showSuccessMessage();
+
+            // In production, also save to server
+            // saveToServer(settings);
+        }
+
+        // Show success message
+        function showSuccessMessage() {
+            const message = document.getElementById('successMessage');
+            message.classList.add('show');
+            setTimeout(() => {
+                message.classList.remove('show');
+            }, 3000);
+        }
+
+        // Update range slider value display
+        function updateRangeValue(id, value) {
+            const valueDisplay = document.getElementById(id + 'Value');
+            if (valueDisplay) {
+                if (id === 'dailyGoal') {
+                    valueDisplay.textContent = value + ' từ';
+                } else {
+                    valueDisplay.textContent = value;
+                }
+            }
+        }
+
+        // Panel switching
+        function setupPanelSwitching() {
+            const menuItems = document.querySelectorAll('.menu-item');
+            const panels = document.querySelectorAll('.settings-panel');
+
+            menuItems.forEach(item => {
+                item.addEventListener('click', () => {
+                    const panelId = item.dataset.panel + '-panel';
+
+                    // Update active menu item
+                    menuItems.forEach(mi => mi.classList.remove('active'));
+                    item.classList.add('active');
+
+                    // Update active panel
+                    panels.forEach(panel => panel.classList.remove('active'));
+                    document.getElementById(panelId).classList.add('active');
+
+                    // Scroll to top
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                });
+            });
+        }
+
+        // Setup auto-save on change
+        function setupAutoSave() {
+            const inputs = document.querySelectorAll('input, select');
+            inputs.forEach(input => {
+                input.addEventListener('change', () => {
+                    saveSettings();
+                });
+            });
+
+            // Range slider real-time update
+            const rangeInputs = document.querySelectorAll('input[type="range"]');
+            rangeInputs.forEach(input => {
+                input.addEventListener('input', (e) => {
+                    updateRangeValue(e.target.id, e.target.value);
+                });
+            });
+        }
+
+        // Export data functions
+        function exportData(format) {
+            const settings = JSON.parse(localStorage.getItem('userSettings') || '{}');
+            const userData = {
+                settings: settings,
+                exportDate: new Date().toISOString(),
+                version: '1.0'
+            };
+
+            if (format === 'json') {
+                const dataStr = JSON.stringify(userData, null, 2);
+                const dataBlob = new Blob([dataStr], { type: 'application/json' });
+                downloadFile(dataBlob, 'settings-backup.json');
+            } else if (format === 'csv') {
+                let csvContent = 'Setting,Value\n';
+                Object.entries(settings).forEach(([key, value]) => {
+                    csvContent += `${key},${value}\n`;
+                });
+                const dataBlob = new Blob([csvContent], { type: 'text/csv' });
+                downloadFile(dataBlob, 'settings-backup.csv');
+            } else if (format === 'pdf') {
+                alert('Xuất PDF sẽ được triển khai trong phiên bản tiếp theo');
+            }
+
+            showSuccessMessage();
+        }
+
+        // Download file helper
+        function downloadFile(blob, filename) {
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        // Backup function
+        function createBackup() {
+            exportData('json');
+        }
+
+        // Clear history
+        function clearHistory() {
+            if (confirm('⚠️ Bạn có chắc chắn muốn xóa toàn bộ lịch sử học tập?\n\nHành động này không thể hoàn tác!')) {
+                if (confirm('Xác nhận lần cuối: Xóa tất cả lịch sử học tập?')) {
+                    // In production, call API to clear history
+                    alert('✅ Đã xóa lịch sử học tập');
+                    showSuccessMessage();
+                }
+            }
+        }
+
+        // Reset progress
+        function resetProgress() {
+            if (confirm('⚠️ Bạn có chắc chắn muốn đặt lại toàn bộ tiến độ học tập?\n\nTất cả từ vựng đã học, streak và điểm số sẽ bị reset về 0!')) {
+                if (confirm('Xác nhận lần cuối: Đặt lại toàn bộ tiến độ?')) {
+                    // In production, call API to reset progress
+                    alert('✅ Đã đặt lại tiến độ học tập');
+                    showSuccessMessage();
+                }
+            }
+        }
+
+        // Initialize
+        function init() {
+            loadSettings();
+            setupPanelSwitching();
+            setupAutoSave();
+        }
+
+        // Run on page load
+        init();
+    </script>
+</body>
+</html>

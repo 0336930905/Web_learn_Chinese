@@ -1,0 +1,116 @@
+/**
+ * Alert Component Styles
+ * Toast notifications and alert messages
+ */
+
+/* Alert Container */
+.alert-container {
+    position: fixed;
+    top: var(--spacing-lg);
+    right: var(--spacing-lg);
+    z-index: var(--z-tooltip);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+    max-width: 400px;
+    pointer-events: none;
+}
+
+/* Base Alert */
+.alert {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+    padding: var(--spacing-md) var(--spacing-lg);
+    background-color: white;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-xl);
+    opacity: 0;
+    transform: translateX(100%);
+    transition: all var(--transition-base);
+    pointer-events: auto;
+}
+
+.alert.show {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.alert i:first-child {
+    font-size: var(--font-size-xl);
+    flex-shrink: 0;
+}
+
+.alert span {
+    flex: 1;
+    font-size: var(--font-size-sm);
+    line-height: var(--line-height-normal);
+}
+
+/* Alert Close Button */
+.alert-close {
+    background: none;
+    border: none;
+    color: inherit;
+    cursor: pointer;
+    opacity: 0.6;
+    padding: var(--spacing-xs);
+    transition: opacity var(--transition-fast);
+}
+
+.alert-close:hover {
+    opacity: 1;
+}
+
+/* Alert Variants */
+.alert-success {
+    color: var(--success-color);
+    background-color: var(--success-light);
+    border-left: 4px solid var(--success-color);
+}
+
+.alert-danger {
+    color: var(--danger-color);
+    background-color: var(--danger-light);
+    border-left: 4px solid var(--danger-color);
+}
+
+.alert-warning {
+    color: var(--warning-color);
+    background-color: var(--warning-light);
+    border-left: 4px solid var(--warning-color);
+}
+
+.alert-info {
+    color: var(--info-color);
+    background-color: var(--info-light);
+    border-left: 4px solid var(--info-color);
+}
+
+/* Static Alerts (in-page) */
+.alert-static {
+    position: relative;
+    opacity: 1;
+    transform: none;
+    margin-bottom: var(--spacing-md);
+}
+
+.alert-static.alert-dismissible {
+    padding-right: var(--spacing-3xl);
+}
+
+.alert-static .alert-close {
+    position: absolute;
+    top: 50%;
+    right: var(--spacing-md);
+    transform: translateY(-50%);
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    .alert-container {
+        left: var(--spacing-md);
+        right: var(--spacing-md);
+        max-width: none;
+    }
+}

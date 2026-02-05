@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Học tiếng Trung Quốc (Mandarin) hiện đại, dễ dàng và hiệu quả. Tự tin giao tiếp với người bản ngữ.">
+    <meta name="keywords" content="học tiếng trung, mandarin, tiếng đài loan, chinese learning, 中文">
+    <title>Học Tiếng Đài Loan - Nền tảng học tiếng Trung hiện đại</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="/assets/icons/favicon.png">
+
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+
+    <!-- Font Awesome Kit -->
+    <script src="https://kit.fontawesome.com/8b9a27d5a0.js" crossorigin="anonymous"></script>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/pages/landing.css">
+    
+    <!-- Auth Check Script -->
+    <script>
+        // Immediate auth check before page loads
+        (function() {
+            const token = localStorage.getItem('token');
+            if (token) {
+                // User is authenticated, redirect to dashboard
+                console.log('✅ Authenticated user detected, redirecting to dashboard...');
+                window.location.href = '/pages/dashboard/dashboard.html';
+            }
+        })();
+    </script>
+</head>
+<body>
+    <!-- Header -->
+    <div id="header-placeholder"></div>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-background">
+            <div class="hero-orb hero-orb-1"></div>
+            <div class="hero-orb hero-orb-2"></div>
+        </div>
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-text">
+                    <h1 class="hero-title">
+                        Học Tiếng Trung <br>
+                        <span class="gradient-text">Dễ Dàng & Hiệu Quả</span>
+                    </h1>
+                    <p class="hero-description">
+                        Nền tảng học tiếng Trung Quốc (Mandarin) hiện đại với phương pháp 
+                        tương tác, giúp bạn tự tin giao tiếp chỉ sau 3 tháng.
+                    </p>
+                    <div class="hero-actions">
+                        <a href="/pages/auth/login.html?mode=register" class="btn btn-primary btn-lg">
+                            <i class="fas fa-rocket"></i> Bắt đầu miễn phí
+                        </a>
+                        <a href="#features" class="btn btn-outline btn-lg">
+                            <i class="fas fa-play-circle"></i> Xem demo
+                        </a>
+                    </div>
+                    <div class="hero-stats">
+                        <div class="stat-item">
+                            <div class="stat-value">10K+</div>
+                            <div class="stat-label">Học viên</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">5000+</div>
+                            <div class="stat-label">Từ vựng</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">4.9/5</div>
+                            <div class="stat-label">Đánh giá</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="hero-image">
+                    <div class="hero-card">
+                        <div class="card-header">
+                            <i class="fas fa-book-open"></i>
+                            <span>Bài học hôm nay</span>
+                        </div>
+                        <div class="card-body">
+                            <div class="word-card">
+                                <div class="chinese">你好</div>
+                                <div class="pinyin">nǐ hǎo</div>
+                                <div class="meaning">Xin chào</div>
+                            </div>
+                        </div>
+                        <div class="progress">
+                            <div class="progress-bar" style="width: 75%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="features">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Tính năng nổi bật</h2>
+                <p class="section-description">
+                    Công nghệ hiện đại kết hợp phương pháp học tập khoa học
+                </p>
+            </div>
+
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <h3 class="feature-title">Học thông minh</h3>
+                    <p class="feature-description">
+                        Thuật toán AI cá nhân hóa lộ trình học tập phù hợp với trình độ và tiến độ của bạn.
+                    </p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-gamepad"></i>
+                    </div>
+                    <h3 class="feature-title">Gamification</h3>
+                    <p class="feature-description">
+                        Học như chơi game với XP, streak, thành tích và bảng xếp hạng.
+                    </p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-volume-up"></i>
+                    </div>
+                    <h3 class="feature-title">Phát âm chuẩn</h3>
+                    <p class="feature-description">
+                        Âm thanh người bản ngữ, luyện tập thanh điệu chính xác.
+                    </p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                    <h3 class="feature-title">Học mọi lúc</h3>
+                    <p class="feature-description">
+                        Responsive design, học trên mọi thiết bị, mọi lúc mọi nơi.
+                    </p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3 class="feature-title">Theo dõi tiến độ</h3>
+                    <p class="feature-description">
+                        Dashboard chi tiết, thống kê học tập, biểu đồ phát triển.
+                    </p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3 class="feature-title">Cộng đồng</h3>
+                    <p class="feature-description">
+                        Kết nối với học viên khác, thi đấu và học tập cùng nhau.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works -->
+    <section class="how-it-works">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Cách thức hoạt động</h2>
+                <p class="section-description">
+                    Chỉ 3 bước đơn giản để bắt đầu hành trình học tiếng Trung
+                </p>
+            </div>
+
+            <div class="steps-grid">
+                <div class="step-card">
+                    <div class="step-number">1</div>
+                    <div class="step-icon">
+                        <i class="fas fa-user-plus"></i>
+                    </div>
+                    <h3 class="step-title">Đăng ký tài khoản</h3>
+                    <p class="step-description">
+                        Tạo tài khoản miễn phí chỉ trong 30 giây
+                    </p>
+                </div>
+
+                <div class="step-card">
+                    <div class="step-number">2</div>
+                    <div class="step-icon">
+                        <i class="fas fa-clipboard-check"></i>
+                    </div>
+                    <h3 class="step-title">Kiểm tra trình độ</h3>
+                    <p class="step-description">
+                        Làm bài test ngắn để xác định level phù hợp
+                    </p>
+                </div>
+
+                <div class="step-card">
+                    <div class="step-number">3</div>
+                    <div class="step-icon">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <h3 class="step-title">Bắt đầu học</h3>
+                    <p class="step-description">
+                        Học theo lộ trình cá nhân hóa, 15 phút mỗi ngày
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section id="about" class="testimonials">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Học viên nói gì về chúng tôi</h2>
+                <p class="section-description">
+                    Hơn 10,000 học viên đã tin tưởng và đạt kết quả
+                </p>
+            </div>
+
+            <div class="testimonials-grid">
+                <div class="testimonial-card">
+                    <div class="testimonial-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <p class="testimonial-text">
+                        "Chỉ sau 2 tháng học, mình đã có thể giao tiếp cơ bản với 
+                        đồng nghiệp người Đài Loan. Phương pháp học rất hiệu quả!"
+                    </p>
+                    <div class="testimonial-author">
+                        <img src="https://ui-avatars.com/api/?name=Nguyen+Van+A&background=667eea&color=fff" alt="Avatar">
+                        <div>
+                            <div class="author-name">Nguyễn Văn A</div>
+                            <div class="author-role">Kỹ sư phần mềm</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="testimonial-card">
+                    <div class="testimonial-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <p class="testimonial-text">
+                        "Giao diện đẹp, dễ sử dụng. Học như chơi game nên rất 
+                        cuốn. Mỗi ngày đều mong được học bài mới."
+                    </p>
+                    <div class="testimonial-author">
+                        <img src="https://ui-avatars.com/api/?name=Tran+Thi+B&background=764ba2&color=fff" alt="Avatar">
+                        <div>
+                            <div class="author-name">Trần Thị B</div>
+                            <div class="author-role">Sinh viên</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="testimonial-card">
+                    <div class="testimonial-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <p class="testimonial-text">
+                        "Tốt nhất là phần luyện phát âm. Giờ mình nói tiếng Trung 
+                        chuẩn hơn nhiều so với trước."
+                    </p>
+                    <div class="testimonial-author">
+                        <img src="https://ui-avatars.com/api/?name=Le+Van+C&background=4caf50&color=fff" alt="Avatar">
+                        <div>
+                            <div class="author-name">Lê Văn C</div>
+                            <div class="author-role">Nhân viên kinh doanh</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing -->
+    <section id="pricing" class="pricing">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Gói học phù hợp với bạn</h2>
+                <p class="section-description">
+                    Chọn gói học phù hợp với nhu cầu và ngân sách
+                </p>
+            </div>
+
+            <div class="pricing-grid">
+                <div class="pricing-card">
+                    <div class="pricing-header">
+                        <h3 class="pricing-title">Miễn phí</h3>
+                        <div class="pricing-price">
+                            <span class="price">0đ</span>
+                            <span class="period">/tháng</span>
+                        </div>
+                    </div>
+                    <ul class="pricing-features">
+                        <li><i class="fas fa-check"></i> 500 từ vựng cơ bản</li>
+                        <li><i class="fas fa-check"></i> Bài học hàng ngày</li>
+                        <li><i class="fas fa-check"></i> Theo dõi tiến độ</li>
+                        <li class="disabled"><i class="fas fa-times"></i> Luyện phát âm nâng cao</li>
+                        <li class="disabled"><i class="fas fa-times"></i> Hỗ trợ ưu tiên</li>
+                    </ul>
+                    <a href="/pages/auth/login.html?mode=register" class="btn btn-outline btn-block">Bắt đầu</a>
+                </div>
+
+                <div class="pricing-card featured">
+                    <div class="pricing-badge">Phổ biến</div>
+                    <div class="pricing-header">
+                        <h3 class="pricing-title">Premium</h3>
+                        <div class="pricing-price">
+                            <span class="price">99,000đ</span>
+                            <span class="period">/tháng</span>
+                        </div>
+                    </div>
+                    <ul class="pricing-features">
+                        <li><i class="fas fa-check"></i> 5000+ từ vựng</li>
+                        <li><i class="fas fa-check"></i> Tất cả bài học</li>
+                        <li><i class="fas fa-check"></i> Luyện phát âm AI</li>
+                        <li><i class="fas fa-check"></i> Offline mode</li>
+                        <li><i class="fas fa-check"></i> Hỗ trợ ưu tiên</li>
+                    </ul>
+                    <a href="/pages/auth/login.html?mode=register" class="btn btn-primary btn-block">Nâng cấp ngay</a>
+                </div>
+
+                <div class="pricing-card">
+                    <div class="pricing-header">
+                        <h3 class="pricing-title">Doanh nghiệp</h3>
+                        <div class="pricing-price">
+                            <span class="price">Liên hệ</span>
+                        </div>
+                    </div>
+                    <ul class="pricing-features">
+                        <li><i class="fas fa-check"></i> Tất cả tính năng Premium</li>
+                        <li><i class="fas fa-check"></i> Quản lý nhóm</li>
+                        <li><i class="fas fa-check"></i> Báo cáo chi tiết</li>
+                        <li><i class="fas fa-check"></i> Tùy chỉnh nội dung</li>
+                        <li><i class="fas fa-check"></i> Hỗ trợ 24/7</li>
+                    </ul>
+                    <a href="#contact" class="btn btn-outline btn-block">Liên hệ</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+    <!-- Footer -->
+    <div id="footer-placeholder"></div>
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    
+    <!-- Bootstrap 5 JS Bundle (includes Popper) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    
+    <!-- Scripts -->
+    <script type="module" src="/js/utils/component-loader.js"></script>
+    <script type="module" src="/js/pages/landing.js"></script>
+</body>
+</html>

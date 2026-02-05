@@ -1,0 +1,1594 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Từ Vựng Cá Nhân - Học Tiếng Đài Loan</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <script src="https://kit.fontawesome.com/8b9a27d5a0.js" crossorigin="anonymous"></script>
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/pages/dashboard.css">
+    
+    <!-- Auth Protection -->
+    <script>
+        const hasToken = localStorage.getItem('token');
+        if (!hasToken) {
+            sessionStorage.clear();
+            localStorage.clear();
+            window.location.href = '/pages/auth/login.html';
+        }
+    </script>
+    
+    <style>
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .container {
+            padding-top: 2rem;
+            padding-bottom: 3rem;
+        }
+
+        /* Page Header */
+        .page-header {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        }
+
+        .page-header h1 {
+            font-size: 2rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin: 0;
+        }
+
+        .page-header p {
+            color: #6c757d;
+            margin: 0.5rem 0 0 0;
+        }
+
+        /* Stats Bar */
+        .stats-bar {
+            background: white;
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #667eea;
+        }
+
+        .stat-label {
+            font-size: 0.875rem;
+            color: #6c757d;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        /* Filter Section */
+        .filter-section .card {
+            border-radius: 16px;
+            border: none;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        .filter-section .form-select,
+        .filter-section .form-control {
+            border-radius: 10px;
+            border: 2px solid #e8e8ff;
+            padding: 0.75rem 1rem;
+        }
+
+        .filter-section .form-select:focus,
+        .filter-section .form-control:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .filter-section .btn {
+            border-radius: 10px;
+            padding: 0.75rem 1.5rem;
+            font-weight: 600;
+        }
+
+        /* Words Grid */
+        .words-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .word-card-modern {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .word-card-modern:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+        }
+
+        .word-image-container {
+            width: 100%;
+            height: 180px;
+            overflow: hidden;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            position: relative;
+        }
+
+        .word-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .word-card-modern:hover .word-image {
+            transform: scale(1.1);
+        }
+
+        .word-content {
+            padding: 1.5rem;
+        }
+
+        .word-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .word-traditional {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #2d3748;
+            margin: 0;
+        }
+
+        .btn-speak {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            color: white;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-speak:hover {
+            transform: scale(1.1);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+
+        .word-phonetics {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .word-pinyin {
+            font-size: 0.938rem;
+            color: #667eea;
+            font-weight: 600;
+        }
+
+        .word-meanings {
+            margin-bottom: 1rem;
+        }
+
+        .word-vietnamese {
+            font-size: 0.938rem;
+            color: #4a5568;
+            margin-bottom: 0.5rem;
+        }
+
+        .word-meta {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin-bottom: 1rem;
+        }
+
+        .word-actions {
+            display: flex;
+            gap: 0.5rem;
+            padding: 1rem 1.5rem;
+            background: #f7fafc;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .word-actions .btn {
+            flex: 1;
+            border-radius: 8px;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        /* Pagination */
+        .pagination-container {
+            background: white;
+            border-radius: 16px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        .pagination {
+            margin: 0;
+        }
+
+        .page-link {
+            border-radius: 8px;
+            margin: 0 0.25rem;
+            border: 2px solid #e8e8ff;
+            color: #667eea;
+            font-weight: 600;
+        }
+
+        .page-link:hover {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+
+        .page-item.active .page-link {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-color: #667eea;
+        }
+
+        /* Loading */
+        .loading {
+            text-align: center;
+            padding: 3rem;
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        .empty-state i {
+            font-size: 5rem;
+            color: #e8e8ff;
+            margin-bottom: 1.5rem;
+        }
+
+        .empty-state h3 {
+            color: #667eea;
+            margin-bottom: 1rem;
+        }
+
+        .empty-state p {
+            color: #6c757d;
+            margin-bottom: 2rem;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .word-card-modern {
+            animation: fadeInUp 0.5s ease-out;
+        }
+
+        @media (max-width: 768px) {
+            .words-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Modal Overlay */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(5px);
+            z-index: 10000;
+            padding: 2rem;
+            overflow-y: auto;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Modal Container */
+        .modal-container {
+            background: white;
+            border-radius: 1.5rem;
+            max-width: 800px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            animation: slideUp 0.4s ease;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Modal Header */
+        .modal-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 2rem;
+            border-radius: 1.5rem 1.5rem 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .modal-header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -10%;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+
+        .modal-header h2 {
+            color: white;
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .modal-header h2 i {
+            font-size: 1.5rem;
+        }
+
+        .modal-close {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            color: white;
+            font-size: 1.25rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .modal-close:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: rotate(90deg);
+        }
+
+        /* Word Form */
+        .word-form {
+            padding: 2rem;
+        }
+
+        .form-section {
+            background: #f8f9ff;
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .form-section:hover {
+            border-color: #e8e8ff;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.1);
+        }
+
+        .section-title {
+            font-size: 1.125rem;
+            font-weight: 700;
+            color: #667eea;
+            margin-bottom: 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .section-title i {
+            font-size: 1rem;
+        }
+
+        .form-row {
+            display: grid;
+            gap: 1.25rem;
+            margin-bottom: 1rem;
+        }
+
+        .form-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .form-row.two-columns {
+            grid-template-columns: 1fr 1fr;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group.full-width {
+            width: 100%;
+        }
+
+        .form-group label {
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-bottom: 0.5rem;
+            font-size: 0.9375rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .form-group label i {
+            color: #667eea;
+            font-size: 0.875rem;
+        }
+
+        .required {
+            color: #ff6b6b;
+            font-weight: 700;
+        }
+
+        .form-input,
+        .form-select,
+        .form-textarea {
+            padding: 0.875rem 1rem;
+            border: 2px solid #e8e8ff;
+            border-radius: 0.75rem;
+            font-size: 1rem;
+            color: #1a1a1a;
+            background: white;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+
+        .form-input:focus,
+        .form-select:focus,
+        .form-textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+        }
+
+        .form-input::placeholder {
+            color: #999;
+        }
+
+        .traditional-input {
+            font-size: 2rem;
+            font-weight: 700;
+            text-align: center;
+            padding: 1.25rem;
+            background: linear-gradient(135deg, #fff 0%, #f8f9ff 100%);
+        }
+
+        .form-hint {
+            color: #666;
+            font-size: 0.8125rem;
+            margin-top: 0.375rem;
+            display: block;
+        }
+
+        .form-textarea {
+            resize: vertical;
+            min-height: 60px;
+            font-family: inherit;
+            line-height: 1.5;
+        }
+
+        .form-select {
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23667eea' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+            background-size: 12px;
+            padding-right: 2.5rem;
+        }
+
+        /* Difficulty Selector */
+        .difficulty-selector {
+            position: relative;
+        }
+
+        .difficulty-range {
+            width: 100%;
+            height: 8px;
+            border-radius: 5px;
+            background: #e8e8ff;
+            outline: none;
+            -webkit-appearance: none;
+            margin-bottom: 1rem;
+        }
+
+        .difficulty-range::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+
+        .difficulty-range::-moz-range-thumb {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+            border: none;
+        }
+
+        .difficulty-labels {
+            display: flex;
+            justify-content: space-between;
+            gap: 0.5rem;
+        }
+
+        .diff-label {
+            flex: 1;
+            text-align: center;
+            padding: 0.5rem;
+            border-radius: 0.5rem;
+            background: white;
+            border: 2px solid #e8e8ff;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        .diff-label:hover {
+            border-color: #667eea;
+            transform: translateY(-2px);
+        }
+
+        .diff-label.active {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+            border-color: #667eea;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+        }
+
+        .diff-icon {
+            font-size: 0.75rem;
+            line-height: 1;
+        }
+
+        .diff-text {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #666;
+        }
+
+        .diff-label.active .diff-text {
+            color: #667eea;
+        }
+
+        /* Form Actions */
+        .form-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 2px solid #f0f0f0;
+        }
+
+        .btn-cancel,
+        .btn-submit {
+            flex: 1;
+            padding: 1rem 2rem;
+            border-radius: 0.75rem;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .btn-cancel {
+            background: white;
+            border: 2px solid #e8e8ff;
+            color: #666;
+        }
+
+        .btn-cancel:hover {
+            background: #f8f9ff;
+            border-color: #667eea;
+            color: #667eea;
+            transform: translateY(-2px);
+        }
+
+        .btn-submit {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        /* Image Upload */
+        .image-upload-container {
+            margin-top: 0.5rem;
+        }
+
+        .image-preview {
+            width: 100%;
+            height: 200px;
+            border: 2px dashed #e8e8ff;
+            border-radius: 0.75rem;
+            background: linear-gradient(135deg, #f8f9ff 0%, #fff 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .image-preview.has-image {
+            border-style: solid;
+            border-color: #667eea;
+        }
+
+        .image-preview i {
+            font-size: 3rem;
+            color: #e8e8ff;
+        }
+
+        .image-preview span {
+            color: #999;
+            font-size: 0.9375rem;
+        }
+
+        .image-preview img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            display: none;
+        }
+
+        .image-preview.has-image img {
+            display: block;
+        }
+
+        .image-preview.has-image i,
+        .image-preview.has-image span {
+            display: none;
+        }
+
+        .image-remove-btn {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            background: rgba(255, 107, 107, 0.9);
+            color: white;
+            border: none;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            z-index: 1;
+        }
+
+        .image-preview.has-image .image-remove-btn {
+            display: flex;
+        }
+
+        .image-remove-btn:hover {
+            background: #ff6b6b;
+            transform: scale(1.1);
+        }
+
+        .image-input-group {
+            display: flex;
+            gap: 0.75rem;
+        }
+
+        .image-input-group .form-input {
+            flex: 1;
+        }
+
+        .btn-upload-image {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+            border: 2px solid #e8e8ff;
+            color: #667eea;
+            padding: 0.875rem 1.5rem;
+            border-radius: 0.75rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            white-space: nowrap;
+        }
+
+        .btn-upload-image:hover {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.2), rgba(118, 75, 162, 0.2));
+            border-color: #667eea;
+            transform: translateY(-2px);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .modal-overlay {
+                padding: 1rem;
+            }
+
+            .modal-header {
+                padding: 1.5rem;
+            }
+
+            .modal-header h2 {
+                font-size: 1.375rem;
+            }
+
+            .word-form {
+                padding: 1.5rem;
+            }
+
+            .form-section {
+                padding: 1rem;
+            }
+
+            .form-row.two-columns {
+                grid-template-columns: 1fr;
+            }
+
+            .form-actions {
+                flex-direction: column;
+            }
+
+            .traditional-input {
+                font-size: 1.5rem;
+            }
+
+            .diff-label {
+                padding: 0.375rem;
+            }
+
+            .diff-text {
+                font-size: 0.625rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div id="header-placeholder"></div>
+    
+    <div class="container" id="mainContent">
+        <!-- Page Header -->
+        <div class="page-header">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h1><i class="fas fa-list-ul me-3"></i>Từ Vựng Cá Nhân</h1>
+                    <p>Quản lý và xem tất cả từ vựng của bạn</p>
+                </div>
+                <div>
+                    <button class="btn btn-outline-secondary me-2" onclick="history.back()">
+                        <i class="fas fa-arrow-left"></i> Quay lại
+                    </button>
+                    <button class="btn btn-primary" id="addWordBtn">
+                        <i class="fas fa-plus-circle"></i> Thêm từ mới
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Stats Bar -->
+        <div class="stats-bar">
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="stat-item">
+                        <div class="stat-value" id="totalWordsCount">0</div>
+                        <div class="stat-label">Tổng từ vựng</div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="stat-item">
+                        <div class="stat-value text-success" id="currentPageDisplay">0</div>
+                        <div class="stat-label">Trang hiện tại</div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="stat-item">
+                        <div class="stat-value text-info" id="totalPagesCount">0</div>
+                        <div class="stat-label">Tổng số trang</div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="stat-item">
+                        <div class="stat-value text-warning" id="wordsOnPageCount">0</div>
+                        <div class="stat-label">Từ trang này</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Filter Section -->
+        <section class="filter-section mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row g-3">
+                        <div class="col-md-3">
+                            <label class="form-label fw-semibold">
+                                <i class="fas fa-filter me-2"></i>Danh mục
+                            </label>
+                            <select id="categoryFilter" class="form-select">
+                                <option value="">🏷️ Tất cả danh mục</option>
+                                <option value="beginner">📚 Cơ bản</option>
+                                <option value="intermediate">📖 Trung cấp</option>
+                                <option value="advanced">🎓 Nâng cao</option>
+                                <option value="common-phrases">💬 Cụm từ thường dùng</option>
+                                <option value="numbers">🔢 Số đếm</option>
+                                <option value="colors">🎨 Màu sắc</option>
+                                <option value="food">🍜 Đồ ăn</option>
+                                <option value="family">👨‍👩‍👧‍👦 Gia đình</option>
+                            </select>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">
+                                <i class="fas fa-search me-2"></i>Tìm kiếm
+                            </label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-white">
+                                    <i class="fas fa-search text-muted"></i>
+                                </span>
+                                <input type="text" id="searchInput" class="form-control" placeholder="Tìm từ vựng, pinyin, nghĩa...">
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-3">
+                            <label class="form-label fw-semibold">
+                                <i class="fas fa-sort me-2"></i>Sắp xếp
+                            </label>
+                            <select id="sortFilter" class="form-select">
+                                <option value="newest">Mới nhất</option>
+                                <option value="oldest">Cũ nhất</option>
+                                <option value="az">A-Z (Pinyin)</option>
+                                <option value="za">Z-A (Pinyin)</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Words List -->
+        <div id="wordsList" class="words-grid"></div>
+        
+        <!-- Loading State -->
+        <div id="loading" class="loading" style="display: none;">
+            <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;">
+                <span class="visually-hidden">Đang tải...</span>
+            </div>
+            <p class="mt-3 text-muted">Đang tải từ vựng...</p>
+        </div>
+
+        <!-- Empty State -->
+        <div id="emptyState" class="empty-state" style="display: none;">
+            <i class="fas fa-book-open"></i>
+            <h3>Chưa có từ vựng nào</h3>
+            <p>Bắt đầu thêm từ vựng mới để học tập nhé!</p>
+            <button class="btn btn-primary btn-lg" onclick="document.getElementById('addWordBtn').click()">
+                <i class="fas fa-plus-circle"></i> Thêm từ đầu tiên
+            </button>
+        </div>
+
+        <!-- Pagination -->
+        <div id="paginationContainer" class="pagination-container" style="display: none;">
+            <nav>
+                <ul class="pagination justify-content-center mb-0" id="pagination"></ul>
+            </nav>
+        </div>
+    </div>
+
+    <!-- Add Word Modal -->
+    <div id="addWordModal" class="modal-overlay">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h2>
+                    <i class="fas fa-plus-circle"></i>
+                    Thêm từ vựng mới
+                </h2>
+                <button class="modal-close" id="closeAddWordModal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <form id="addWordForm" class="word-form">
+                <!-- Main Information Section -->
+                <div class="form-section">
+                    <div class="section-title">
+                        <i class="fas fa-language"></i>
+                        Thông tin từ vựng
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group full-width">
+                            <label for="traditional">
+                                <i class="fas fa-font"></i>
+                                Chữ Hán (繁體中文) <span class="required">*</span>
+                            </label>
+                            <input type="text" id="traditional" class="form-input traditional-input" placeholder="你好" required autocomplete="off">
+                            <small class="form-hint">Nhập chữ Hán phồn thể (Traditional Chinese)</small>
+                        </div>
+                    </div>
+
+                    <div class="form-row two-columns">
+                        <div class="form-group">
+                            <label for="pinyin">
+                                <i class="fas fa-music"></i>
+                                Pinyin <span class="required">*</span>
+                            </label>
+                            <input type="text" id="pinyin" class="form-input" placeholder="nǐ hǎo" required autocomplete="off">
+                            <small class="form-hint">Phiên âm La Mã</small>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="zhuyin">
+                                <i class="fas fa-flag"></i>
+                                Zhuyin (注音)
+                            </label>
+                            <input type="text" id="zhuyin" class="form-input" placeholder="ㄋㄧˇ ㄏㄠˇ" autocomplete="off">
+                            <small class="form-hint">Bopomofo (tùy chọn)</small>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Translation Section -->
+                <div class="form-section">
+                    <div class="section-title">
+                        <i class="fas fa-globe"></i>
+                        Nghĩa từ vựng
+                    </div>
+
+                    <div class="form-row two-columns">
+                        <div class="form-group">
+                            <label for="vietnamese">
+                                <i class="fas fa-flag"></i>
+                                Tiếng Việt <span class="required">*</span>
+                            </label>
+                            <input type="text" id="vietnamese" class="form-input" placeholder="Xin chào" required autocomplete="off">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="english">
+                                <i class="fas fa-flag"></i>
+                                English
+                            </label>
+                            <input type="text" id="english" class="form-input" placeholder="Hello" autocomplete="off">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group full-width">
+                            <label for="example">
+                                <i class="fas fa-comment-dots"></i>
+                                Câu ví dụ
+                            </label>
+                            <textarea id="example" class="form-textarea" placeholder="你好，很高興認識你 (Xin chào, rất vui được gặp bạn)" rows="2"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group full-width">
+                            <label for="imageUrl">
+                                <i class="fas fa-image"></i>
+                                Hình ảnh minh họa
+                            </label>
+                            <div class="image-upload-container">
+                                <div class="image-preview" id="imagePreview">
+                                    <i class="fas fa-image"></i>
+                                    <span>Chưa có hình ảnh</span>
+                                    <img src="" alt="Preview" style="display: none;">
+                                    <button type="button" class="image-remove-btn" id="removeImageBtn" style="display: none;">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                </div>
+                                <div class="image-input-group">
+                                    <input type="url" id="imageUrl" class="form-input" placeholder="Nhập URL hình ảnh" autocomplete="off">
+                                    <button type="button" class="btn-upload-image" id="uploadImageBtn">
+                                        <i class="fas fa-upload"></i>
+                                        Tải lên
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Category & Settings Section -->
+                <div class="form-section">
+                    <div class="section-title">
+                        <i class="fas fa-cog"></i>
+                        Phân loại & Cài đặt
+                    </div>
+
+                    <div class="form-row two-columns">
+                        <div class="form-group">
+                            <label for="category">
+                                <i class="fas fa-folder"></i>
+                                Danh mục <span class="required">*</span>
+                            </label>
+                            <select id="category" class="form-select" required>
+                                <option value="">-- Chọn danh mục --</option>
+                                <option value="beginner">📚 Cơ bản</option>
+                                <option value="intermediate">📖 Trung cấp</option>
+                                <option value="advanced">🎓 Nâng cao</option>
+                                <option value="common-phrases">💬 Cụm từ thường dùng</option>
+                                <option value="numbers">🔢 Số đếm</option>
+                                <option value="colors">🎨 Màu sắc</option>
+                                <option value="food">🍜 Đồ ăn</option>
+                                <option value="family">👨‍👩‍👧‍👦 Gia đình</option>
+                                <option value="school">🏫 Trường học</option>
+                                <option value="work">💼 Công việc</option>
+                                <option value="travel">✈️ Du lịch</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="difficulty">
+                                <i class="fas fa-signal"></i>
+                                Độ khó <span class="required">*</span>
+                            </label>
+                            <div class="difficulty-selector">
+                                <input type="range" id="difficulty" class="difficulty-range" min="1" max="5" value="3" required>
+                                <div class="difficulty-labels">
+                                    <span class="diff-label" data-level="1">
+                                        <span class="diff-icon">⭐</span>
+                                        <span class="diff-text">Dễ</span>
+                                    </span>
+                                    <span class="diff-label" data-level="2">
+                                        <span class="diff-icon">⭐⭐</span>
+                                        <span class="diff-text">TB</span>
+                                    </span>
+                                    <span class="diff-label active" data-level="3">
+                                        <span class="diff-icon">⭐⭐⭐</span>
+                                        <span class="diff-text">Khá</span>
+                                    </span>
+                                    <span class="diff-label" data-level="4">
+                                        <span class="diff-icon">⭐⭐⭐⭐</span>
+                                        <span class="diff-text">Khó</span>
+                                    </span>
+                                    <span class="diff-label" data-level="5">
+                                        <span class="diff-icon">⭐⭐⭐⭐⭐</span>
+                                        <span class="diff-text">RK</span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Form Actions -->
+                <div class="form-actions">
+                    <button type="button" class="btn-cancel" id="cancelAddWord">
+                        <i class="fas fa-times"></i>
+                        Hủy bỏ
+                    </button>
+                    <button type="submit" class="btn-submit">
+                        <i class="fas fa-check"></i>
+                        Thêm từ vựng
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div id="footer-placeholder"></div>
+
+    <!-- Scripts -->
+    <script src="/app.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script type="module" src="/js/utils/component-loader.js"></script>
+    
+    <script type="module">
+        import { apiRequest } from '/js/utils/api.js';
+
+        // Configuration
+        const WORDS_PER_PAGE = 9;
+        let currentPage = 1;
+        let allWords = [];
+        let filteredWords = [];
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', async () => {
+            await loadWords();
+            setupEventListeners();
+        });
+
+        // Load Words
+        async function loadWords() {
+            try {
+                document.getElementById('loading').style.display = 'block';
+                document.getElementById('wordsList').innerHTML = '';
+                
+                const response = await apiRequest('/words');
+                
+                if (response && response.success && response.data) {
+                    allWords = response.data;
+                    filteredWords = [...allWords];
+                    
+                    updateStats();
+                    displayWords();
+                    setupPagination();
+                } else {
+                    showEmptyState();
+                }
+            } catch (error) {
+                console.error('Error loading words:', error);
+                showEmptyState();
+            } finally {
+                document.getElementById('loading').style.display = 'none';
+            }
+        }
+
+        // Display Words
+        function displayWords() {
+            const wordsList = document.getElementById('wordsList');
+            const emptyState = document.getElementById('emptyState');
+            
+            if (filteredWords.length === 0) {
+                wordsList.innerHTML = '';
+                emptyState.style.display = 'block';
+                document.getElementById('paginationContainer').style.display = 'none';
+                return;
+            }
+
+            emptyState.style.display = 'none';
+            
+            const startIndex = (currentPage - 1) * WORDS_PER_PAGE;
+            const endIndex = startIndex + WORDS_PER_PAGE;
+            const wordsToDisplay = filteredWords.slice(startIndex, endIndex);
+            
+            wordsList.innerHTML = wordsToDisplay.map(word => createWordCard(word)).join('');
+            
+            document.getElementById('wordsOnPageCount').textContent = wordsToDisplay.length;
+        }
+
+        // Create Word Card
+        function createWordCard(word) {
+            const imageUrl = word.imageUrl || 'https://placehold.co/400x300/667eea/white?text=' + encodeURIComponent(word.traditional);
+            
+            return `
+                <div class="word-card-modern">
+                    <div class="word-image-container">
+                        <img src="${imageUrl}" alt="${word.traditional}" class="word-image" onerror="this.src='https://placehold.co/400x300/667eea/white?text=${encodeURIComponent(word.traditional)}'">
+                    </div>
+                    <div class="word-content">
+                        <div class="word-header">
+                            <h3 class="word-traditional">${word.traditional}</h3>
+                            <button class="btn-speak" onclick="speakWord('${word.pinyin || word.traditional}')">
+                                <i class="fas fa-volume-up"></i>
+                            </button>
+                        </div>
+                        <div class="word-phonetics">
+                            <div class="word-pinyin">🔊 ${word.pinyin}</div>
+                        </div>
+                        <div class="word-meanings">
+                            <div class="word-vietnamese">🇻🇳 ${word.vietnamese}</div>
+                            ${word.english ? `<div class="word-vietnamese">🇬🇧 ${word.english}</div>` : ''}
+                        </div>
+                        <div class="word-meta">
+                            <span class="badge bg-primary">${getCategoryName(word.category)}</span>
+                            <span class="badge bg-warning">${'⭐'.repeat(word.difficulty || 1)}</span>
+                        </div>
+                    </div>
+                    <div class="word-actions">
+                        <button class="btn btn-sm btn-outline-primary" onclick="editWord('${word._id}')">
+                            <i class="fas fa-edit"></i> Sửa
+                        </button>
+                        <button class="btn btn-sm btn-outline-danger" onclick="deleteWord('${word._id}')">
+                            <i class="fas fa-trash"></i> Xóa
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Setup Pagination
+        function setupPagination() {
+            const totalPages = Math.ceil(filteredWords.length / WORDS_PER_PAGE);
+            const paginationEl = document.getElementById('pagination');
+            const paginationContainer = document.getElementById('paginationContainer');
+            
+            if (totalPages <= 1) {
+                paginationContainer.style.display = 'none';
+                return;
+            }
+            
+            paginationContainer.style.display = 'block';
+            
+            let html = `
+                <li class="page-item ${currentPage === 1 ? 'disabled' : ''}">
+                    <a class="page-link" href="#" onclick="changePage(${currentPage - 1}); return false;">
+                        <i class="fas fa-chevron-left"></i>
+                    </a>
+                </li>
+            `;
+            
+            for (let i = 1; i <= totalPages; i++) {
+                if (i === 1 || i === totalPages || (i >= currentPage - 2 && i <= currentPage + 2)) {
+                    html += `
+                        <li class="page-item ${i === currentPage ? 'active' : ''}">
+                            <a class="page-link" href="#" onclick="changePage(${i}); return false;">${i}</a>
+                        </li>
+                    `;
+                } else if (i === currentPage - 3 || i === currentPage + 3) {
+                    html += `<li class="page-item disabled"><span class="page-link">...</span></li>`;
+                }
+            }
+            
+            html += `
+                <li class="page-item ${currentPage === totalPages ? 'disabled' : ''}">
+                    <a class="page-link" href="#" onclick="changePage(${currentPage + 1}); return false;">
+                        <i class="fas fa-chevron-right"></i>
+                    </a>
+                </li>
+            `;
+            
+            paginationEl.innerHTML = html;
+        }
+
+        // Change Page
+        window.changePage = function(page) {
+            const totalPages = Math.ceil(filteredWords.length / WORDS_PER_PAGE);
+            if (page < 1 || page > totalPages) return;
+            
+            currentPage = page;
+            displayWords();
+            setupPagination();
+            updateStats();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        };
+
+        // Update Stats
+        function updateStats() {
+            document.getElementById('totalWordsCount').textContent = filteredWords.length;
+            document.getElementById('currentPageDisplay').textContent = currentPage;
+            document.getElementById('totalPagesCount').textContent = Math.ceil(filteredWords.length / WORDS_PER_PAGE) || 0;
+        }
+
+        // Show Empty State
+        function showEmptyState() {
+            document.getElementById('wordsList').innerHTML = '';
+            document.getElementById('emptyState').style.display = 'block';
+            document.getElementById('paginationContainer').style.display = 'none';
+            updateStats();
+        }
+
+        // Filter & Search
+        function applyFilters() {
+            const category = document.getElementById('categoryFilter').value;
+            const search = document.getElementById('searchInput').value.toLowerCase();
+            const sort = document.getElementById('sortFilter').value;
+            
+            filteredWords = allWords.filter(word => {
+                const matchCategory = !category || word.category === category;
+                const matchSearch = !search || 
+                    word.traditional.toLowerCase().includes(search) ||
+                    word.pinyin.toLowerCase().includes(search) ||
+                    word.vietnamese.toLowerCase().includes(search);
+                return matchCategory && matchSearch;
+            });
+            
+            // Sort
+            if (sort === 'newest') {
+                filteredWords.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+            } else if (sort === 'oldest') {
+                filteredWords.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+            } else if (sort === 'az') {
+                filteredWords.sort((a, b) => a.pinyin.localeCompare(b.pinyin));
+            } else if (sort === 'za') {
+                filteredWords.sort((a, b) => b.pinyin.localeCompare(a.pinyin));
+            }
+            
+            currentPage = 1;
+            displayWords();
+            setupPagination();
+            updateStats();
+        }
+
+        // Setup Event Listeners
+        function setupEventListeners() {
+            document.getElementById('categoryFilter').addEventListener('change', applyFilters);
+            document.getElementById('sortFilter').addEventListener('change', applyFilters);
+            
+            let searchTimeout;
+            document.getElementById('searchInput').addEventListener('input', () => {
+                clearTimeout(searchTimeout);
+                searchTimeout = setTimeout(applyFilters, 300);
+            });
+
+            document.getElementById('addWordBtn').addEventListener('click', () => {
+                showAddWordModal();
+            });
+        }
+
+        // Show Add Word Modal
+        function showAddWordModal() {
+            const modal = document.getElementById('addWordModal');
+            document.getElementById('addWordForm').reset();
+            modal.classList.add('active');
+            
+            // Reset difficulty slider
+            const difficultySlider = document.getElementById('difficulty');
+            difficultySlider.value = 3;
+            updateDifficultyLabels(3);
+            
+            // Reset image preview
+            const imagePreview = document.getElementById('imagePreview');
+            const previewImg = imagePreview.querySelector('img');
+            imagePreview.classList.remove('has-image');
+            previewImg.style.display = 'none';
+        }
+
+        // Close Modal Handlers
+        document.getElementById('closeAddWordModal')?.addEventListener('click', () => {
+            document.getElementById('addWordModal').classList.remove('active');
+        });
+
+        document.getElementById('cancelAddWord')?.addEventListener('click', () => {
+            document.getElementById('addWordModal').classList.remove('active');
+        });
+
+        // Click outside to close
+        document.getElementById('addWordModal')?.addEventListener('click', (e) => {
+            if (e.target.id === 'addWordModal') {
+                document.getElementById('addWordModal').classList.remove('active');
+            }
+        });
+
+        // Difficulty Slider
+        const difficultySlider = document.getElementById('difficulty');
+        const diffLabels = document.querySelectorAll('.diff-label');
+        
+        function updateDifficultyLabels(value) {
+            diffLabels.forEach((label, index) => {
+                if (index + 1 <= value) {
+                    label.classList.add('active');
+                } else {
+                    label.classList.remove('active');
+                }
+            });
+        }
+
+        difficultySlider?.addEventListener('input', (e) => {
+            updateDifficultyLabels(parseInt(e.target.value));
+        });
+
+        diffLabels.forEach((label, index) => {
+            label.addEventListener('click', () => {
+                const level = index + 1;
+                difficultySlider.value = level;
+                updateDifficultyLabels(level);
+            });
+        });
+
+        // Image Preview
+        const imageUrlInput = document.getElementById('imageUrl');
+        const imagePreview = document.getElementById('imagePreview');
+        const previewImg = imagePreview.querySelector('img');
+        const removeImageBtn = document.getElementById('removeImageBtn');
+
+        imageUrlInput?.addEventListener('input', (e) => {
+            const url = e.target.value.trim();
+            if (url) {
+                previewImg.src = url;
+                previewImg.style.display = 'block';
+                imagePreview.classList.add('has-image');
+                removeImageBtn.style.display = 'flex';
+            } else {
+                previewImg.style.display = 'none';
+                imagePreview.classList.remove('has-image');
+                removeImageBtn.style.display = 'none';
+            }
+        });
+
+        removeImageBtn?.addEventListener('click', () => {
+            imageUrlInput.value = '';
+            previewImg.style.display = 'none';
+            imagePreview.classList.remove('has-image');
+            removeImageBtn.style.display = 'none';
+        });
+
+        // Submit Word Form
+        document.getElementById('addWordForm')?.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const formData = {
+                traditional: document.getElementById('traditional').value.trim(),
+                pinyin: document.getElementById('pinyin').value.trim(),
+                vietnamese: document.getElementById('vietnamese').value.trim(),
+                english: document.getElementById('english').value.trim(),
+                zhuyin: document.getElementById('zhuyin').value.trim(),
+                example: document.getElementById('example').value.trim(),
+                category: document.getElementById('category').value,
+                difficulty: parseInt(document.getElementById('difficulty').value) || 3,
+                imageUrl: document.getElementById('imageUrl').value.trim()
+            };
+
+            // Validate required fields
+            if (!formData.traditional || !formData.pinyin || !formData.vietnamese || !formData.category) {
+                alert('⚠️ Vui lòng điền đầy đủ các trường bắt buộc!');
+                return;
+            }
+
+            try {
+                const response = await apiRequest('/words', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(formData)
+                });
+
+                if (response && response.success) {
+                    // Close modal
+                    document.getElementById('addWordModal').classList.remove('active');
+                    
+                    // Show success message
+                    alert('✅ Đã thêm từ vựng thành công!');
+                    
+                    // Reload words
+                    await loadWords();
+                } else {
+                    alert('❌ Lỗi khi thêm từ vựng: ' + (response.message || 'Unknown error'));
+                }
+            } catch (error) {
+                console.error('Error adding word:', error);
+                alert('❌ Lỗi khi thêm từ vựng!');
+            }
+        });
+
+        // Speak Word
+        window.speakWord = function(text) {
+            if ('speechSynthesis' in window) {
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.lang = 'zh-TW';
+                utterance.rate = 0.8;
+                speechSynthesis.speak(utterance);
+            }
+        };
+
+        // Get Category Name
+        function getCategoryName(category) {
+            const names = {
+                'beginner': '📚 Cơ bản',
+                'intermediate': '📖 Trung cấp',
+                'advanced': '🎓 Nâng cao',
+                'common-phrases': '💬 Cụm từ',
+                'numbers': '🔢 Số đếm',
+                'colors': '🎨 Màu sắc',
+                'food': '🍜 Đồ ăn',
+                'family': '👨‍👩‍👧‍👦 Gia đình'
+            };
+            return names[category] || category;
+        }
+
+        // Edit Word
+        window.editWord = function(id) {
+            window.location.href = `/pages/dashboard/dashboard.html?edit=${id}`;
+        };
+
+        // Delete Word
+        window.deleteWord = async function(id) {
+            if (!confirm('Bạn có chắc muốn xóa từ vựng này?')) return;
+            
+            try {
+                const response = await apiRequest(`/words/${id}`, {
+                    method: 'DELETE'
+                });
+                
+                if (response && response.success) {
+                    await loadWords();
+                    alert('Đã xóa từ vựng thành công!');
+                }
+            } catch (error) {
+                console.error('Error deleting word:', error);
+                alert('Lỗi khi xóa từ vựng!');
+            }
+        };
+    </script>
+</body>
+</html>

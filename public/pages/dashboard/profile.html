@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hồ sơ cá nhân - Học Tiếng Đài Loan</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    
+    <!-- Font Awesome Kit -->
+    <script src="https://kit.fontawesome.com/8b9a27d5a0.js" crossorigin="anonymous"></script>
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/pages/dashboard.css">
+    
+    <style>
+        .profile-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+
+        .profile-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 1rem;
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+            color: white;
+            box-shadow: 0 10px 40px rgba(102, 126, 234, 0.3);
+        }
+
+        .profile-avatar-section {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .avatar-wrapper {
+            position: relative;
+        }
+
+        .profile-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            object-fit: cover;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+        }
+
+        .avatar-upload-btn {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: white;
+            border: none;
+            color: #667eea;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .avatar-upload-btn:hover {
+            transform: scale(1.1);
+            background: #f8f9fa;
+        }
+
+        .profile-info {
+            flex: 1;
+        }
+
+        .profile-name {
+            font-size: 2rem;
+            font-weight: 700;
+            margin: 0 0 0.5rem 0;
+        }
+
+        .profile-email {
+            font-size: 1rem;
+            opacity: 0.9;
+            margin: 0 0 1rem 0;
+        }
+
+        .profile-stats {
+            display: flex;
+            gap: 2rem;
+            margin-top: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 1.75rem;
+            font-weight: 700;
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 0.875rem;
+            opacity: 0.9;
+        }
+
+        .profile-card {
+            background: white;
+            border-radius: 1rem;
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+        }
+
+        .profile-card-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin: 0 0 1.5rem 0;
+            color: #1a1a1a;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .profile-card-title i {
+            color: #667eea;
+            font-size: 1.25rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #333;
+            font-size: 0.875rem;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 0.5rem;
+            font-size: 0.9375rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .form-input:disabled {
+            background: #f5f5f5;
+            cursor: not-allowed;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9375rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: #f5f5f5;
+            color: #333;
+        }
+
+        .btn-secondary:hover {
+            background: #e0e0e0;
+        }
+
+        .btn-danger {
+            background: #ff4757;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #ee5a6f;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(255, 71, 87, 0.4);
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .alert {
+            padding: 1rem 1.25rem;
+            border-radius: 0.5rem;
+            margin-bottom: 1.5rem;
+            display: none;
+        }
+
+        .alert-success {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+        }
+
+        .alert-error {
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 0.375rem 0.75rem;
+            border-radius: 1rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .badge-premium {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+        }
+
+        .badge-free {
+            background: #e0e0e0;
+            color: #666;
+        }
+
+        @media (max-width: 768px) {
+            .profile-header {
+                padding: 1.5rem;
+            }
+
+            .profile-avatar-section {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .profile-name {
+                font-size: 1.5rem;
+            }
+
+            .profile-stats {
+                justify-content: center;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .btn-group {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div id="header-placeholder"></div>
+    
+    <div class="profile-container">
+        <!-- Profile Header -->
+        <div class="profile-header">
+            <div class="profile-avatar-section">
+                <div class="avatar-wrapper">
+                    <img src="https://ui-avatars.com/api/?name=User&background=667eea&color=fff&size=120" 
+                         alt="Avatar" 
+                         class="profile-avatar" 
+                         id="profileAvatar">
+                    <button class="avatar-upload-btn" id="avatarUploadBtn" title="Thay đổi ảnh đại diện">
+                        <i class="fas fa-camera"></i>
+                    </button>
+                    <input type="file" id="avatarInput" accept="image/*" style="display: none;">
+                </div>
+                <div class="profile-info">
+                    <h1 class="profile-name" id="profileName">Đang tải...</h1>
+                    <p class="profile-email" id="profileEmail">user@example.com</p>
+                    <span class="badge badge-free" id="membershipBadge">Free Member</span>
+                </div>
+            </div>
+            <div class="profile-stats">
+                <div class="stat-item">
+                    <span class="stat-value" id="totalWordsProfile">0</span>
+                    <span class="stat-label">Từ đã học</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-value" id="studyStreakProfile">0 🔥</span>
+                    <span class="stat-label">Chuỗi ngày học</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-value" id="totalXPProfile">0</span>
+                    <span class="stat-label">Tổng XP</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-value" id="levelProfile">1</span>
+                    <span class="stat-label">Level</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Alert Messages -->
+        <div id="alertSuccess" class="alert alert-success"></div>
+        <div id="alertError" class="alert alert-error"></div>
+
+        <!-- Personal Information -->
+        <div class="profile-card">
+            <h2 class="profile-card-title">
+                <i class="fas fa-user"></i>
+                Thông tin cá nhân
+            </h2>
+            <form id="profileForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Tên hiển thị *</label>
+                        <input type="text" class="form-input" id="displayName" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Username</label>
+                        <input type="text" class="form-input" id="username" disabled>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Email</label>
+                    <input type="email" class="form-input" id="email" disabled>
+                </div>
+                <div class="btn-group">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i>
+                        Lưu thay đổi
+                    </button>
+                    <button type="button" class="btn btn-secondary" id="cancelBtn">
+                        <i class="fas fa-times"></i>
+                        Hủy
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Change Password -->
+        <div class="profile-card">
+            <h2 class="profile-card-title">
+                <i class="fas fa-lock"></i>
+                Đổi mật khẩu
+            </h2>
+            <form id="passwordForm">
+                <div class="form-group">
+                    <label class="form-label">Mật khẩu hiện tại *</label>
+                    <input type="password" class="form-input" id="currentPassword" required>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label">Mật khẩu mới *</label>
+                        <input type="password" class="form-input" id="newPassword" required minlength="6">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Xác nhận mật khẩu *</label>
+                        <input type="password" class="form-input" id="confirmPassword" required minlength="6">
+                    </div>
+                </div>
+                <div class="btn-group">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-key"></i>
+                        Đổi mật khẩu
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Danger Zone -->
+        <div class="profile-card">
+            <h2 class="profile-card-title">
+                <i class="fas fa-exclamation-triangle"></i>
+                Vùng nguy hiểm
+            </h2>
+            <p style="color: #666; margin-bottom: 1.5rem;">
+                Các hành động sau không thể hoàn tác. Vui lòng cân nhắc kỹ trước khi thực hiện.
+            </p>
+            <div class="btn-group">
+                <button type="button" class="btn btn-danger" id="deleteAccountBtn">
+                    <i class="fas fa-trash"></i>
+                    Xóa tài khoản
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div id="footer-placeholder"></div>
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    
+    <!-- Component Loader -->
+    <script type="module" src="/js/utils/component-loader.js"></script>
+
+    <!-- Profile Page Script -->
+    <script>
+        const API_URL = window.location.hostname === 'localhost' 
+            ? 'http://localhost:3000/api' 
+            : '/api';
+
+        let currentUser = null;
+        let originalData = {};
+
+        // Check authentication
+        const token = localStorage.getItem('token');
+        if (!token) {
+            window.location.href = '/pages/auth/login.html';
+        }
+
+        // Load user data
+        async function loadUserData() {
+            try {
+                // Fetch user profile
+                const response = await fetch(`${API_URL}/auth/me`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to load user data');
+                }
+
+                const data = await response.json();
+                currentUser = data.user;
+                
+                // Fetch user stats
+                const statsResponse = await fetch(`${API_URL}/users/stats/me`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                let statsData = null;
+                if (statsResponse.ok) {
+                    statsData = await statsResponse.json();
+                }
+                
+                // Merge stats into user object
+                if (statsData && statsData.data) {
+                    currentUser.totalWords = statsData.data.user.totalWords || statsData.data.progress?.totalWordsLearned || 0;
+                    currentUser.studyStreak = statsData.data.user.streak || statsData.data.progress?.studyStreak || 0;
+                    currentUser.totalXP = statsData.data.user.totalXP || 0;
+                    currentUser.level = statsData.data.user.level || 1;
+                } else {
+                    // Fallback to user object values
+                    currentUser.totalWords = currentUser.totalWords || 0;
+                    currentUser.studyStreak = currentUser.streak || 0;
+                    currentUser.totalXP = currentUser.totalXP || 0;
+                    currentUser.level = currentUser.level || 1;
+                }
+                
+                // Update UI
+                updateUI(currentUser);
+                
+                // Store original data for cancel
+                originalData = {
+                    displayName: currentUser.displayName || currentUser.username
+                };
+
+            } catch (error) {
+                console.error('Error loading user data:', error);
+                showError('Không thể tải thông tin người dùng');
+            }
+        }
+
+        function updateUI(user) {
+            // Header
+            document.getElementById('profileName').textContent = user.displayName || user.username;
+            document.getElementById('profileEmail').textContent = user.email;
+            
+            // Avatar
+            const avatarUrl = user.avatar || `https://ui-avatars.com/api/?name=${encodeURIComponent(user.displayName || user.username)}&background=667eea&color=fff&size=120`;
+            document.getElementById('profileAvatar').src = avatarUrl;
+
+            // Membership badge
+            const badge = document.getElementById('membershipBadge');
+            if (user.isPremium) {
+                badge.textContent = 'Premium Member';
+                badge.className = 'badge badge-premium';
+            }
+
+            // Stats
+            document.getElementById('totalWordsProfile').textContent = user.totalWords || 0;
+            document.getElementById('studyStreakProfile').textContent = (user.studyStreak || 0) + ' 🔥';
+            document.getElementById('totalXPProfile').textContent = user.totalXP || 0;
+            document.getElementById('levelProfile').textContent = user.level || 1;
+
+            // Form fields
+            document.getElementById('displayName').value = user.displayName || user.username;
+            document.getElementById('username').value = user.username;
+            document.getElementById('email').value = user.email;
+        }
+
+        // Profile form submission
+        document.getElementById('profileForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const displayName = document.getElementById('displayName').value.trim();
+
+            if (!displayName) {
+                showError('Vui lòng nhập tên hiển thị');
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_URL}/users/profile`, {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ displayName })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    showSuccess('Cập nhật thông tin thành công!');
+                    originalData.displayName = displayName;
+                    currentUser.displayName = displayName;
+                    document.getElementById('profileName').textContent = displayName;
+                } else {
+                    showError(data.message || 'Cập nhật thất bại');
+                }
+            } catch (error) {
+                console.error('Error updating profile:', error);
+                showError('Có lỗi xảy ra. Vui lòng thử lại');
+            }
+        });
+
+        // Cancel button
+        document.getElementById('cancelBtn').addEventListener('click', () => {
+            document.getElementById('displayName').value = originalData.displayName;
+        });
+
+        // Password form submission
+        document.getElementById('passwordForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const currentPassword = document.getElementById('currentPassword').value;
+            const newPassword = document.getElementById('newPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+
+            if (newPassword !== confirmPassword) {
+                showError('Mật khẩu xác nhận không khớp');
+                return;
+            }
+
+            if (newPassword.length < 6) {
+                showError('Mật khẩu mới phải có ít nhất 6 ký tự');
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_URL}/auth/change-password`, {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ currentPassword, newPassword })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    showSuccess('Đổi mật khẩu thành công!');
+                    document.getElementById('passwordForm').reset();
+                } else {
+                    showError(data.message || 'Đổi mật khẩu thất bại');
+                }
+            } catch (error) {
+                console.error('Error changing password:', error);
+                showError('Có lỗi xảy ra. Vui lòng thử lại');
+            }
+        });
+
+        // Avatar upload
+        document.getElementById('avatarUploadBtn').addEventListener('click', () => {
+            document.getElementById('avatarInput').click();
+        });
+
+        document.getElementById('avatarInput').addEventListener('change', async (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            // Validate file type
+            if (!file.type.startsWith('image/')) {
+                showError('Vui lòng chọn file ảnh');
+                return;
+            }
+
+            // Validate file size (max 2MB)
+            if (file.size > 2 * 1024 * 1024) {
+                showError('Kích thước ảnh không được vượt quá 2MB');
+                return;
+            }
+
+            // Preview image
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                document.getElementById('profileAvatar').src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+
+            // TODO: Upload to server
+            showSuccess('Tính năng upload ảnh sẽ được cập nhật sớm!');
+        });
+
+        // Delete account
+        document.getElementById('deleteAccountBtn').addEventListener('click', () => {
+            if (confirm('⚠️ BẠN CÓ CHẮC CHẮN MUỐN XÓA TÀI KHOẢN?\n\nHành động này không thể hoàn tác và toàn bộ dữ liệu của bạn sẽ bị xóa vĩnh viễn.')) {
+                if (confirm('Vui lòng xác nhận lần cuối: Bạn thật sự muốn xóa tài khoản?')) {
+                    // TODO: Implement delete account API
+                    showError('Tính năng xóa tài khoản sẽ được cập nhật sớm!');
+                }
+            }
+        });
+
+        // Utility functions
+        function showSuccess(message) {
+            const alert = document.getElementById('alertSuccess');
+            alert.textContent = message;
+            alert.style.display = 'block';
+            setTimeout(() => {
+                alert.style.display = 'none';
+            }, 5000);
+            
+            // Hide error alert
+            document.getElementById('alertError').style.display = 'none';
+        }
+
+        function showError(message) {
+            const alert = document.getElementById('alertError');
+            alert.textContent = message;
+            alert.style.display = 'block';
+            setTimeout(() => {
+                alert.style.display = 'none';
+            }, 5000);
+            
+            // Hide success alert
+            document.getElementById('alertSuccess').style.display = 'none';
+        }
+
+        // Initialize
+        loadUserData();
+    </script>
+</body>
+</html>

@@ -1,0 +1,1317 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản lý danh mục - Học Tiếng Đài Loan</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome Kit -->
+    <script src="https://kit.fontawesome.com/8b9a27d5a0.js" crossorigin="anonymous"></script>
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/pages/dashboard.css">
+    
+    <style>
+        /* Body and Container */
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .container {
+            padding-top: 2rem;
+            padding-bottom: 3rem;
+            max-width: 1400px;
+        }
+
+        /* Welcome Banner - Like Dashboard */
+        .welcome-banner {
+            margin-bottom: 2rem;
+        }
+
+        .welcome-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 20px;
+            padding: 2.5rem;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .welcome-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -10%;
+            width: 400px;
+            height: 400px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+        }
+
+        .welcome-card::after {
+            content: '';
+            position: absolute;
+            bottom: -30%;
+            left: -5%;
+            width: 300px;
+            height: 300px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 50%;
+        }
+
+        .welcome-content {
+            flex: 1;
+            position: relative;
+            z-index: 1;
+        }
+
+        .welcome-title {
+            font-size: 2rem;
+            font-weight: 800;
+            color: white;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .welcome-subtitle {
+            font-size: 1rem;
+            color: rgba(255, 255, 255, 0.9);
+            margin: 0;
+        }
+
+        .welcome-actions {
+            position: relative;
+            z-index: 1;
+        }
+
+        .btn-add-category {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            padding: 0.875rem 1.75rem;
+            border-radius: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            text-decoration: none;
+        }
+
+        .btn-add-category:hover {
+            background: rgba(255, 255, 255, 0.3);
+            color: white;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Stats Cards - Like Dashboard */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card-modern {
+            background: white;
+            border-radius: 16px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .stat-card-modern:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+        }
+
+        .stat-icon-wrapper {
+            width: 64px;
+            height: 64px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            color: white;
+            flex-shrink: 0;
+        }
+
+        .bg-gradient-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .bg-gradient-success {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+
+        .bg-gradient-warning {
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+        }
+
+        .stat-content {
+            flex: 1;
+        }
+
+        .stat-label {
+            font-size: 0.875rem;
+            color: #6c757d;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #2d3748;
+            margin-bottom: 0.25rem;
+            line-height: 1;
+        }
+
+        /* Categories Section */
+        .categories-section {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #2d3748;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin: 0;
+        }
+
+        .section-title i {
+            color: #667eea;
+        }
+
+        .search-box {
+            position: relative;
+            max-width: 350px;
+            flex: 1;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 0.75rem 1rem 0.75rem 2.75rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 0.938rem;
+            transition: all 0.3s;
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #94a3b8;
+        }
+
+        /* Categories Grid */
+        .categories-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .category-card {
+            background: white;
+            border-radius: 16px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 2px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .category-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            transform: scaleX(0);
+            transition: transform 0.3s;
+        }
+
+        .category-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 24px rgba(102, 126, 234, 0.2);
+            border-color: rgba(102, 126, 234, 0.3);
+        }
+
+        .category-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .category-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .category-icon {
+            width: 56px;
+            height: 56px;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.75rem;
+            flex-shrink: 0;
+        }
+
+        .category-info {
+            flex: 1;
+        }
+
+        .category-name {
+            font-size: 1.125rem;
+            font-weight: 700;
+            color: #2d3748;
+            margin-bottom: 0.25rem;
+        }
+
+        .category-slug {
+            font-size: 0.813rem;
+            color: #94a3b8;
+            font-family: 'Courier New', monospace;
+        }
+
+        .category-desc {
+            font-size: 0.938rem;
+            color: #64748b;
+            margin-bottom: 1rem;
+            line-height: 1.5;
+        }
+
+        .category-stats {
+            display: flex;
+            gap: 1.5rem;
+            padding: 1rem 0;
+            border-top: 1px solid #f1f5f9;
+            border-bottom: 1px solid #f1f5f9;
+            margin-bottom: 1rem;
+        }
+
+        .category-stat {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.875rem;
+            color: #64748b;
+        }
+
+        .category-stat i {
+            color: #667eea;
+        }
+
+        .category-stat strong {
+            color: #2d3748;
+            font-weight: 700;
+        }
+
+        .category-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .btn-action {
+            flex: 1;
+            padding: 0.625rem 1rem;
+            border-radius: 8px;
+            border: none;
+            font-weight: 600;
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .btn-edit {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        .btn-edit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-delete {
+            background: #fff5f5;
+            color: #ff6b6b;
+            border: 2px solid #fee;
+        }
+
+        .btn-delete:hover {
+            background: #ff6b6b;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        .empty-state i {
+            font-size: 4rem;
+            color: #e0e0e0;
+            margin-bottom: 1.5rem;
+        }
+
+        .empty-state h3 {
+            font-size: 1.5rem;
+            color: #64748b;
+            margin-bottom: 0.5rem;
+        }
+
+        .empty-state p {
+            color: #94a3b8;
+            margin-bottom: 1.5rem;
+        }
+
+        /* Modal Styles - Like Dashboard */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(5px);
+            z-index: 10000;
+            padding: 2rem;
+            overflow-y: auto;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal-container {
+            background: white;
+            border-radius: 1.5rem;
+            max-width: 700px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            animation: slideUp 0.4s ease;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .modal-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 2rem;
+            border-radius: 1.5rem 1.5rem 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .modal-header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 300px;
+            height: 300px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+        }
+
+        .modal-header h2 {
+            color: white;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .modal-close {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            color: white;
+            font-size: 1.25rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .modal-close:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: rotate(90deg);
+        }
+
+        .modal-body {
+            padding: 2rem;
+        }
+
+        .form-section {
+            background: #f8f9ff;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            border: 2px solid #e8e8ff;
+            transition: all 0.3s;
+        }
+
+        .form-section:hover {
+            border-color: #667eea;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.1);
+        }
+
+        .section-subtitle {
+            font-size: 1rem;
+            font-weight: 700;
+            color: #667eea;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+
+        .form-group:last-child {
+            margin-bottom: 0;
+        }
+
+        .form-group label {
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.938rem;
+        }
+
+        .form-group label i {
+            color: #667eea;
+        }
+
+        .required {
+            color: #ff6b6b;
+            font-weight: 700;
+        }
+
+        .form-input,
+        .form-select,
+        .form-textarea {
+            width: 100%;
+            padding: 0.875rem 1rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 1rem;
+            color: #2d3748;
+            transition: all 0.3s;
+            font-family: inherit;
+        }
+
+        .form-input:focus,
+        .form-select:focus,
+        .form-textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+        }
+
+        .form-textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .form-hint {
+            font-size: 0.813rem;
+            color: #94a3b8;
+            margin-top: 0.375rem;
+        }
+
+        /* Icon Picker */
+        .icon-picker {
+            display: grid;
+            grid-template-columns: repeat(8, 1fr);
+            gap: 0.5rem;
+            margin-top: 0.75rem;
+        }
+
+        .icon-option {
+            width: 100%;
+            aspect-ratio: 1;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            background: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .icon-option:hover {
+            border-color: #667eea;
+            transform: scale(1.1);
+            background: #f8f9ff;
+        }
+
+        .icon-option.active {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.2), rgba(118, 75, 162, 0.2));
+            border-color: #667eea;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+
+        /* Form Actions */
+        .form-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 2px solid #f1f5f9;
+        }
+
+        .btn-cancel,
+        .btn-submit {
+            flex: 1;
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+        }
+
+        .btn-cancel {
+            background: white;
+            border: 2px solid #e2e8f0;
+            color: #64748b;
+        }
+
+        .btn-cancel:hover {
+            background: #f8f9ff;
+            border-color: #667eea;
+            color: #667eea;
+        }
+
+        .btn-submit {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            top: -100px;
+            right: 2rem;
+            background: white;
+            padding: 1.25rem 1.75rem;
+            border-radius: 12px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+            z-index: 10001;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            font-weight: 600;
+            min-width: 300px;
+            transition: all 0.3s ease;
+            border-left: 4px solid;
+        }
+
+        .toast.show {
+            top: 2rem;
+        }
+
+        .toast.success {
+            border-color: #4caf50;
+            color: #2e7d32;
+        }
+
+        .toast.success i {
+            color: #4caf50;
+            font-size: 1.5rem;
+        }
+
+        .toast.error {
+            border-color: #ff6b6b;
+            color: #c62828;
+        }
+
+        .toast.error i {
+            color: #ff6b6b;
+            font-size: 1.5rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 992px) {
+            .welcome-card {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .categories-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding-left: 1rem;
+                padding-right: 1rem;
+            }
+
+            .welcome-title {
+                font-size: 1.5rem;
+            }
+
+            .categories-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .section-header {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .search-box {
+                max-width: 100%;
+            }
+
+            .icon-picker {
+                grid-template-columns: repeat(6, 1fr);
+            }
+
+            .modal-overlay {
+                padding: 1rem;
+            }
+
+            .toast {
+                right: 1rem;
+                left: 1rem;
+                min-width: auto;
+            }
+
+            .toast.show {
+                top: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div id="header-placeholder"></div>
+    
+    <div class="container">
+        <!-- Welcome Banner -->
+        <section class="welcome-banner">
+            <div class="welcome-card">
+                <div class="welcome-content">
+                    <h1 class="welcome-title">
+                        <i class="fas fa-folder-open"></i>
+                        Quản lý danh mục
+                    </h1>
+                    <p class="welcome-subtitle">
+                        Tổ chức và quản lý các danh mục từ vựng của bạn một cách hiệu quả
+                    </p>
+                </div>
+                <div class="welcome-actions">
+                    <button class="btn-add-category" id="addCategoryBtn">
+                        <i class="fas fa-plus-circle"></i>
+                        Tạo danh mục mới
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Stats Cards -->
+        <div class="stats-grid">
+            <div class="stat-card-modern">
+                <div class="stat-icon-wrapper bg-gradient-primary">
+                    <i class="fas fa-folder"></i>
+                </div>
+                <div class="stat-content">
+                    <div class="stat-label">Tổng danh mục</div>
+                    <div class="stat-value" id="totalCategories">0</div>
+                </div>
+            </div>
+
+            <div class="stat-card-modern">
+                <div class="stat-icon-wrapper bg-gradient-success">
+                    <i class="fas fa-book"></i>
+                </div>
+                <div class="stat-content">
+                    <div class="stat-label">Tổng từ vựng</div>
+                    <div class="stat-value" id="totalWords">0</div>
+                </div>
+            </div>
+
+            <div class="stat-card-modern">
+                <div class="stat-icon-wrapper bg-gradient-warning">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <div class="stat-content">
+                    <div class="stat-label">Danh mục đang dùng</div>
+                    <div class="stat-value" id="activeCategories">0</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Categories Section -->
+        <section class="categories-section">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <i class="fas fa-list"></i>
+                    Danh sách danh mục
+                </h2>
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="searchInput" placeholder="Tìm kiếm danh mục...">
+                </div>
+            </div>
+
+            <!-- Categories Grid -->
+            <div class="categories-grid" id="categoriesGrid">
+                <!-- Categories will be loaded here -->
+            </div>
+
+            <!-- Empty State -->
+            <div class="empty-state" id="emptyState" style="display: none;">
+                <i class="fas fa-folder-open"></i>
+                <h3>Chưa có danh mục nào</h3>
+                <p>Tạo danh mục đầu tiên để bắt đầu tổ chức từ vựng của bạn</p>
+                <button class="btn-add-category" onclick="showAddModal()">
+                    <i class="fas fa-plus-circle"></i>
+                    Tạo danh mục đầu tiên
+                </button>
+            </div>
+        </section>
+    </div>
+
+    <!-- Add/Edit Category Modal -->
+    <div class="modal-overlay" id="categoryModal">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h2 id="modalTitle">
+                    <i class="fas fa-plus-circle"></i>
+                    Tạo danh mục mới
+                </h2>
+                <button class="modal-close" onclick="closeModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="categoryForm">
+                    <input type="hidden" id="categoryId">
+                    
+                    <!-- Basic Info Section -->
+                    <div class="form-section">
+                        <h3 class="section-subtitle">
+                            <i class="fas fa-info-circle"></i>
+                            Thông tin cơ bản
+                        </h3>
+                        
+                        <div class="form-group">
+                            <label>
+                                <i class="fas fa-tag"></i>
+                                Tên danh mục <span class="required">*</span>
+                            </label>
+                            <input type="text" class="form-input" id="categoryName" placeholder="Ví dụ: Từ vựng hàng ngày" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label>
+                                <i class="fas fa-link"></i>
+                                Mã danh mục (slug) <span class="required">*</span>
+                            </label>
+                            <input type="text" class="form-input" id="categorySlug" placeholder="vi-du-tu-vung-hang-ngay" required>
+                            <div class="form-hint">Mã định danh duy nhất cho danh mục (chỉ chữ thường, số và dấu gạch ngang)</div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>
+                                <i class="fas fa-align-left"></i>
+                                Mô tả
+                            </label>
+                            <textarea class="form-textarea" id="categoryDesc" placeholder="Mô tả ngắn gọn về danh mục này..."></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Icon Selection -->
+                    <div class="form-section">
+                        <h3 class="section-subtitle">
+                            <i class="fas fa-icons"></i>
+                            Chọn biểu tượng
+                        </h3>
+                        
+                        <input type="hidden" id="selectedIcon" value="📚">
+                        
+                        <div class="icon-picker">
+                            <button type="button" class="icon-option active" data-icon="📚">📚</button>
+                            <button type="button" class="icon-option" data-icon="🎯">🎯</button>
+                            <button type="button" class="icon-option" data-icon="🌟">🌟</button>
+                            <button type="button" class="icon-option" data-icon="💼">💼</button>
+                            <button type="button" class="icon-option" data-icon="🏠">🏠</button>
+                            <button type="button" class="icon-option" data-icon="🍔">🍔</button>
+                            <button type="button" class="icon-option" data-icon="✈️">✈️</button>
+                            <button type="button" class="icon-option" data-icon="🎨">🎨</button>
+                            <button type="button" class="icon-option" data-icon="🎵">🎵</button>
+                            <button type="button" class="icon-option" data-icon="⚽">⚽</button>
+                            <button type="button" class="icon-option" data-icon="🎮">🎮</button>
+                            <button type="button" class="icon-option" data-icon="💡">💡</button>
+                            <button type="button" class="icon-option" data-icon="🌸">🌸</button>
+                            <button type="button" class="icon-option" data-icon="🐱">🐱</button>
+                            <button type="button" class="icon-option" data-icon="🚗">🚗</button>
+                            <button type="button" class="icon-option" data-icon="📱">📱</button>
+                        </div>
+                    </div>
+
+                    <!-- Form Actions -->
+                    <div class="form-actions">
+                        <button type="button" class="btn-cancel" onclick="closeModal()">
+                            <i class="fas fa-times"></i>
+                            Hủy
+                        </button>
+                        <button type="submit" class="btn-submit">
+                            <i class="fas fa-save"></i>
+                            Lưu danh mục
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div id="footer-placeholder"></div>
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Component Loader -->
+    <script type="module" src="/js/utils/component-loader.js"></script>
+
+    <script>
+        const API_URL = window.location.hostname === 'localhost' 
+            ? 'http://localhost:3000/api' 
+            : '/api';
+
+        // Check authentication
+        const token = localStorage.getItem('token');
+        if (!token) {
+            window.location.href = '/pages/auth/login.html';
+        }
+
+        let categories = [];
+        let editingCategoryId = null;
+
+        // Initialize
+        async function init() {
+            await loadCategories();
+            setupEventListeners();
+        }
+
+        // Load categories from API
+        async function loadCategories() {
+            try {
+                const response = await fetch(`${API_URL}/categories`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+
+                if (!response.ok) throw new Error('Failed to load categories');
+
+                const data = await response.json();
+                categories = data.data || [];
+                renderCategories();
+                await updateStats();
+            } catch (error) {
+                console.error('Error loading categories:', error);
+                categories = [];
+                renderCategories();
+                showToast('error', '❌ Không thể tải danh mục');
+            }
+        }
+
+        // Setup event listeners
+        function setupEventListeners() {
+            document.getElementById('addCategoryBtn').addEventListener('click', showAddModal);
+            document.getElementById('searchInput').addEventListener('input', handleSearch);
+            
+            // Icon picker
+            document.querySelectorAll('.icon-option').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    selectIcon(btn.dataset.icon);
+                });
+            });
+
+            // Category name to slug auto-generation
+            document.getElementById('categoryName').addEventListener('input', (e) => {
+                if (!editingCategoryId) {
+                    document.getElementById('categorySlug').value = generateSlug(e.target.value);
+                }
+            });
+
+            document.getElementById('categoryForm').addEventListener('submit', handleSubmit);
+        }
+
+        // Render categories
+        function renderCategories(filteredCategories = null) {
+            const grid = document.getElementById('categoriesGrid');
+            const emptyState = document.getElementById('emptyState');
+            const categoriesToRender = filteredCategories || categories || [];
+
+            if (categoriesToRender.length === 0) {
+                grid.style.display = 'none';
+                emptyState.style.display = 'block';
+                return;
+            }
+
+            grid.style.display = 'grid';
+            emptyState.style.display = 'none';
+
+            grid.innerHTML = categoriesToRender.map(cat => `
+                <div class="category-card">
+                    <div class="category-header">
+                        <div class="category-icon">${cat.icon || '📚'}</div>
+                        <div class="category-info">
+                            <div class="category-name">${cat.name}</div>
+                            <div class="category-slug">${cat.slug}</div>
+                        </div>
+                    </div>
+                    
+                    <div class="category-desc">
+                        ${cat.description || 'Chưa có mô tả'}
+                    </div>
+                    
+                    <div class="category-stats">
+                        <div class="category-stat">
+                            <i class="fas fa-book"></i>
+                            <span><strong>${cat.wordCount || 0}</strong> từ vựng</span>
+                        </div>
+                        ${cat.isSystem ? '<div class="category-stat"><i class="fas fa-shield-alt"></i><span>Hệ thống</span></div>' : ''}
+                    </div>
+                    
+                    <div class="category-actions">
+                        <button class="btn-action btn-edit" onclick="editCategory('${cat._id}')">
+                            <i class="fas fa-edit"></i>
+                            Chỉnh sửa
+                        </button>
+                        ${!cat.isSystem ? `
+                            <button class="btn-action btn-delete" onclick="deleteCategory('${cat._id}')">
+                                <i class="fas fa-trash"></i>
+                                Xóa
+                            </button>
+                        ` : ''}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Update stats
+        async function updateStats() {
+            try {
+                const response = await fetch(`${API_URL}/categories/stats`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+
+                if (!response.ok) throw new Error('Failed to load stats');
+
+                const data = await response.json();
+                const stats = data.data;
+                
+                document.getElementById('totalCategories').textContent = stats.totalCategories;
+                document.getElementById('totalWords').textContent = stats.totalWords;
+                document.getElementById('activeCategories').textContent = stats.activeCategories;
+            } catch (error) {
+                console.error('Error loading stats:', error);
+                const totalWords = categories.reduce((sum, cat) => sum + (cat.wordCount || 0), 0);
+                const activeCategories = categories.filter(cat => (cat.wordCount || 0) > 0).length;
+
+                document.getElementById('totalCategories').textContent = categories.length;
+                document.getElementById('totalWords').textContent = totalWords;
+                document.getElementById('activeCategories').textContent = activeCategories;
+            }
+        }
+
+        // Show add modal
+        function showAddModal() {
+            editingCategoryId = null;
+            document.getElementById('modalTitle').innerHTML = '<i class="fas fa-plus-circle"></i> Tạo danh mục mới';
+            document.getElementById('categoryForm').reset();
+            document.getElementById('categoryId').value = '';
+            document.querySelectorAll('.icon-option').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.icon-option')[0].classList.add('active');
+            document.getElementById('selectedIcon').value = '📚';
+            document.getElementById('categoryModal').classList.add('active');
+        }
+
+        // Edit category
+        async function editCategory(id) {
+            const category = categories.find(c => c._id === id);
+            if (!category) return;
+
+            editingCategoryId = id;
+            document.getElementById('modalTitle').innerHTML = '<i class="fas fa-edit"></i> Chỉnh sửa danh mục';
+            document.getElementById('categoryId').value = category._id;
+            document.getElementById('categoryName').value = category.name;
+            document.getElementById('categoryDesc').value = category.description || '';
+            document.getElementById('categorySlug').value = category.slug;
+            selectIcon(category.icon);
+            
+            document.getElementById('categoryModal').classList.add('active');
+        }
+
+        // Delete category
+        async function deleteCategory(id) {
+            const category = categories.find(c => c._id === id);
+            if (!category) return;
+
+            if (category.isSystem) {
+                showToast('error', '❌ Không thể xóa danh mục hệ thống');
+                return;
+            }
+
+            if (category.wordCount > 0) {
+                if (!confirm(`⚠️ Danh mục "${category.name}" đang chứa ${category.wordCount} từ vựng.\n\nBạn có chắc muốn xóa?`)) return;
+            } else {
+                if (!confirm(`Bạn có chắc muốn xóa danh mục "${category.name}"?`)) return;
+            }
+
+            try {
+                const response = await fetch(`${API_URL}/categories/${id}`, {
+                    method: 'DELETE',
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+
+                if (!response.ok) throw new Error('Failed to delete category');
+
+                showToast('success', '✅ Đã xóa danh mục thành công!');
+                await loadCategories();
+            } catch (error) {
+                console.error('Error deleting category:', error);
+                showToast('error', `❌ ${error.message || 'Không thể xóa danh mục'}`);
+            }
+        }
+
+        // Close modal
+        function closeModal() {
+            document.getElementById('categoryModal').classList.remove('active');
+            editingCategoryId = null;
+        }
+
+        // Select icon
+        function selectIcon(icon) {
+            document.querySelectorAll('.icon-option').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.dataset.icon === icon) {
+                    btn.classList.add('active');
+                }
+            });
+            document.getElementById('selectedIcon').value = icon;
+        }
+
+        // Generate slug
+        function generateSlug(text) {
+            return text
+                .toLowerCase()
+                .normalize('NFD')
+                .replace(/[\u0300-\u036f]/g, '')
+                .replace(/đ/g, 'd')
+                .replace(/[^a-z0-9\s-]/g, '')
+                .replace(/\s+/g, '-')
+                .replace(/-+/g, '-')
+                .replace(/^-|-$/g, '');
+        }
+
+        // Handle search
+        function handleSearch(e) {
+            const query = e.target.value.toLowerCase();
+            if (!query) {
+                renderCategories();
+                return;
+            }
+
+            const filtered = categories.filter(cat => 
+                cat.name.toLowerCase().includes(query) ||
+                (cat.description && cat.description.toLowerCase().includes(query)) ||
+                cat.slug.toLowerCase().includes(query)
+            );
+            renderCategories(filtered);
+        }
+
+        // Handle form submit
+        async function handleSubmit(e) {
+            e.preventDefault();
+
+            const formData = {
+                name: document.getElementById('categoryName').value,
+                slug: document.getElementById('categorySlug').value,
+                description: document.getElementById('categoryDesc').value,
+                icon: document.getElementById('selectedIcon').value
+            };
+
+            if (!formData.name || !formData.slug || !formData.icon) {
+                showToast('error', '❌ Vui lòng điền đầy đủ thông tin bắt buộc');
+                return;
+            }
+
+            try {
+                const url = editingCategoryId 
+                    ? `${API_URL}/categories/${editingCategoryId}`
+                    : `${API_URL}/categories`;
+                
+                const method = editingCategoryId ? 'PUT' : 'POST';
+
+                const response = await fetch(url, {
+                    method: method,
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                if (!response.ok) {
+                    const error = await response.json();
+                    throw new Error(error.message || 'Failed to save category');
+                }
+
+                showToast('success', editingCategoryId ? '✅ Cập nhật danh mục thành công!' : '✅ Tạo danh mục thành công!');
+                closeModal();
+                await loadCategories();
+            } catch (error) {
+                console.error('Error saving category:', error);
+                showToast('error', `❌ ${error.message || 'Không thể lưu danh mục'}`);
+            }
+        }
+
+        // Show toast notification
+        function showToast(type, message) {
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.innerHTML = `<i class="fas fa-${type === 'success' ? 'check' : 'exclamation'}-circle"></i> ${message}`;
+            document.body.appendChild(toast);
+
+            setTimeout(() => toast.classList.add('show'), 100);
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        // Close modal on outside click
+        document.getElementById('categoryModal').addEventListener('click', (e) => {
+            if (e.target.id === 'categoryModal') {
+                closeModal();
+            }
+        });
+
+        // Initialize on load
+        init();
+    </script>
+</body>
+</html>

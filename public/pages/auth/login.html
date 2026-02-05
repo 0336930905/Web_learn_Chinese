@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng nhập - Học Tiếng Đài Loan</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    
+    <!-- Font Awesome Kit -->
+    <script src="https://kit.fontawesome.com/8b9a27d5a0.js" crossorigin="anonymous"></script>
+    
+    <!-- Main CSS -->
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/pages/login.css">
+    <style>
+        /* Inline styles can be removed - now using external CSS */
+
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div id="header-placeholder"></div>
+
+    <main class="main-content">
+        <div class="login-container">
+                <!-- Left Panel -->
+            <div class="login-left">
+                <!-- Animated Shapes -->
+                <div class="login-shapes">
+                    <div class="shape shape-1"></div>
+                    <div class="shape shape-2"></div>
+                    <div class="shape shape-3"></div>
+                    <div class="shape shape-4"></div>
+                </div>
+
+                <div class="login-content-wrapper">
+                    <div class="brand">
+                        <span class="brand-icon">🇹🇼</span>
+                        <span class="brand-text">Học Tiếng Đài Loan</span>
+                    </div>
+                    
+                    <div class="welcome-box">
+                        <div class="welcome-badge">
+                            <i class="fas fa-users"></i>
+                            Học cùng 10k+ học viên
+                        </div>
+                    </div>
+
+                    <div class="features-list">
+                        <div class="feature-item">
+                            <div class="feature-icon"><i class="fas fa-brain"></i></div>
+                            <span>Lộ trình AI cá nhân hóa</span>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon"><i class="fas fa-microphone-alt"></i></div>
+                            <span>Luyện phát âm chuẩn bản ngữ</span>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon"><i class="fas fa-gamepad"></i></div>
+                            <span>Học qua trò chơi tương tác</span>
+                        </div>
+                    </div>
+
+                    <!-- Testimonial -->
+                    <div class="login-testimonial">
+                        <div class="testimonial-content">
+                            <i class="fas fa-quote-left quote-icon"></i>
+                            <p>"Chỉ sau 3 tháng, mình đã tự tin giao tiếp tiếng Trung cơ bản!"</p>
+                        </div>
+                        <div class="testimonial-author">
+                            <img src="https://ui-avatars.com/api/?name=Minh+Anh&background=fbbf24&color=fff&size=40" alt="Avatar" class="author-avatar">
+                            <div class="author-info">
+                                <span class="author-name">Minh Anh</span>
+                                <span class="author-role">Sinh viên</span>
+                            </div>
+                            <div class="rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Panel -->
+            <div class="login-right">
+                <!-- Alert Container -->
+                <div id="alertContainer"></div>
+
+                <!-- Login Form -->
+                <div id="loginForm" class="form-container active">
+                    <div class="form-header">
+                        <h3 class="form-title">Đăng nhập</h3>
+                        <p class="form-subtitle">Chào mừng bạn trở lại! Tiếp tục hành trình học tập.</p>
+                    </div>
+
+                <form id="loginFormElement" onsubmit="handleLogin(event)">
+                    <div class="form-group">
+                        <label for="loginEmail">Email</label>
+                        <div class="input-wrapper">
+                            <i class="fas fa-envelope"></i>
+                            <input 
+                                type="email" 
+                                class="form-control" 
+                                id="loginEmail" 
+                                placeholder="email@example.com"
+                                required
+                            >
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="loginPassword">Mật khẩu</label>
+                        <div class="input-wrapper">
+                            <i class="fas fa-lock"></i>
+                            <input 
+                                type="password" 
+                                class="form-control" 
+                                id="loginPassword" 
+                                placeholder="Nhập mật khẩu"
+                                required
+                            >
+                        </div>
+                    </div>
+
+                    <div class="forgot-password">
+                        <a href="#" onclick="showForgotPassword(); return false;">Quên mật khẩu?</a>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary" id="loginBtn">
+                        <i class="fas fa-sign-in-alt"></i>
+                        <span>Đăng nhập</span>
+                    </button>
+                </form>
+
+                <div class="divider">
+                    <span>hoặc</span>
+                </div>
+
+                <a href="/api/auth/google" class="btn btn-google">
+                    <svg class="google-icon" viewBox="0 0 24 24">
+                        <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                        <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                        <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                        <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+                    </svg>
+                    <span>Đăng nhập với Google</span>
+                </a>
+
+                <div class="form-toggle">
+                    Chưa có tài khoản? <a onclick="showRegister()">Đăng ký ngay</a>
+                </div>
+            </div>
+
+                <!-- Register Form -->
+                <div id="registerForm" class="form-container">
+                    <div class="form-header">
+                        <h2 class="form-title">Đăng ký</h2>
+                        <p class="form-subtitle">Tạo tài khoản và bắt đầu học ngay hôm nay!</p>
+                    </div>
+
+                <form id="registerFormElement" onsubmit="handleRegister(event)">
+                    <div class="form-group">
+                        <label for="registerName">Tên hiển thị</label>
+                        <div class="input-wrapper">
+                            <i class="fas fa-user"></i>
+                            <input 
+                                type="text" 
+                                class="form-control" 
+                                id="registerName" 
+                                placeholder="Tên của bạn"
+                                required
+                                minlength="2"
+                            >
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="registerEmail">Email</label>
+                        <div class="input-wrapper">
+                            <i class="fas fa-envelope"></i>
+                            <input 
+                                type="email" 
+                                class="form-control" 
+                                id="registerEmail" 
+                                placeholder="email@example.com"
+                                required
+                            >
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="registerPassword">Mật khẩu</label>
+                        <div class="input-wrapper">
+                            <i class="fas fa-lock"></i>
+                            <input 
+                                type="password" 
+                                class="form-control" 
+                                id="registerPassword" 
+                                placeholder="Tối thiểu 6 ký tự"
+                                required
+                                minlength="6"
+                            >
+                            <i class="fas fa-eye password-toggle" onclick="togglePassword('registerPassword')"></i>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="confirmPassword">Xác nhận mật khẩu</label>
+                        <div class="input-wrapper">
+                            <i class="fas fa-lock"></i>
+                            <input 
+                                type="password" 
+                                class="form-control" 
+                                id="confirmPassword" 
+                                placeholder="Nhập lại mật khẩu"
+                                required
+                                minlength="6"
+                            >
+                            <i class="fas fa-eye password-toggle" onclick="togglePassword('confirmPassword')"></i>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary" id="registerBtn">
+                        <i class="fas fa-user-plus"></i>
+                        <span>Đăng ký</span>
+                    </button>
+                </form>
+
+                    <div class="form-toggle">
+                        Đã có tài khoản? <a onclick="showLogin()">Đăng nhập</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <div id="footer-placeholder"></div>
+
+    <script>
+        'use strict';
+
+        // ============================================================================
+        // MULTI-ACCOUNT SUPPORT HELPER FUNCTIONS
+        // ============================================================================
+        function setAuthToken(token) {
+            localStorage.setItem('token', token);
+            sessionStorage.setItem('currentToken', token);
+            console.log('💾 Token saved to storage');
+        }
+        
+        function clearAuthToken() {
+            localStorage.removeItem('token');
+            sessionStorage.removeItem('currentToken');
+            localStorage.removeItem('user');
+            console.log('🗑️ Auth data cleared');
+        }
+
+        // ============================================================================
+        // OAUTH TOKEN HANDLER
+        // ============================================================================
+        (function handleOAuthToken() {
+            console.log('🔍 Checking for OAuth token in URL...');
+            
+            const urlParams = new URLSearchParams(window.location.search);
+            const token = urlParams.get('token');
+            
+            if (!token) {
+                console.log('ℹ️ No OAuth token in URL');
+                return;
+            }
+            
+            console.log('═══════════════════════════════════════════════');
+            console.log('🔐 OAUTH TOKEN DETECTED');
+            console.log('═══════════════════════════════════════════════');
+            console.log('🎫 Token preview:', token.substring(0, 50) + '...');
+            console.log('🎫 Token length:', token.length);
+            
+            // Clear everything first
+            console.log('🗑️ Clearing old data...');
+            clearAuthToken();
+            
+            // Save new token with multi-account support
+            console.log('💾 Saving OAuth token...');
+            setAuthToken(token);
+            
+            // Verify it was saved
+            const savedToken = localStorage.getItem('token');
+            console.log('🔍 Token saved successfully:', savedToken === token ? '✅ YES' : '❌ NO');
+            
+            // Check user role from token
+            try {
+                const payload = JSON.parse(atob(token.split('.')[1]));
+                const isAdmin = payload.isAdmin || payload.role === 'admin';
+                const dashboardUrl = isAdmin 
+                    ? '/pages/dashboard/admin-dashboard.html' 
+                    : '/pages/dashboard/dashboard.html';
+                
+                console.log('👤 User role:', isAdmin ? 'Admin' : 'User');
+                console.log('🔄 Redirecting to', dashboardUrl);
+                console.log('═══════════════════════════════════════════════');
+                
+                window.location.href = dashboardUrl;
+            } catch (e) {
+                console.error('Error parsing token:', e);
+                window.location.href = '/pages/dashboard/dashboard.html';
+            }
+        })();
+
+        // ============================================================================
+        // ALERT FUNCTIONS
+        // ============================================================================
+        function showAlert(message, type = 'danger') {
+            let container = document.getElementById('alertContainer');
+            
+            // Create container if it doesn't exist
+            if (!container) {
+                console.warn('⚠️ alertContainer not found, creating it...');
+                container = document.createElement('div');
+                container.id = 'alertContainer';
+                const loginRight = document.querySelector('.login-right');
+                if (loginRight) {
+                    loginRight.insertBefore(container, loginRight.firstChild);
+                } else {
+                    console.error('❌ Cannot find .login-right to insert alert');
+                    alert(message); // Fallback to browser alert
+                    return;
+                }
+            }
+            
+            container.innerHTML = `
+                <div class="alert alert-${type} show">
+                    <i class="fas fa-${type === 'danger' ? 'exclamation-circle' : 'check-circle'}"></i>
+                    ${message}
+                </div>
+            `;
+            setTimeout(() => {
+                const alert = container.querySelector('.alert');
+                if (alert) alert.classList.remove('show');
+            }, 5000);
+        }
+
+        // ============================================================================
+        // FORM TOGGLE
+        // ============================================================================
+        function showLogin() {
+            document.getElementById('loginForm').classList.add('active');
+            document.getElementById('registerForm').classList.remove('active');
+            document.getElementById('alertContainer').innerHTML = '';
+        }
+
+        function showRegister() {
+            document.getElementById('registerForm').classList.add('active');
+            document.getElementById('loginForm').classList.remove('active');
+            document.getElementById('alertContainer').innerHTML = '';
+        }
+
+        function showForgotPassword() {
+            showAlert('Chức năng quên mật khẩu sẽ được thêm sớm!', 'info');
+        }
+
+        // ============================================================================
+        // PASSWORD TOGGLE
+        // ============================================================================
+        function togglePassword(inputId) {
+            const input = document.getElementById(inputId);
+            const icon = input.parentElement.querySelector('.password-toggle');
+            
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            } else {
+                input.type = 'password';
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            }
+        }
+
+        // ============================================================================
+        // LOGIN HANDLER
+        // ============================================================================
+        async function handleLogin(event) {
+            event.preventDefault();
+            
+            const email = document.getElementById('loginEmail').value.trim();
+            const password = document.getElementById('loginPassword').value;
+            const btn = document.getElementById('loginBtn');
+            const btnContent = btn.querySelector('span');
+            const btnIcon = btn.querySelector('i');
+            
+            // Show loading
+            btn.disabled = true;
+            btnIcon.className = '';
+            btnIcon.innerHTML = '<div class="spinner"></div>';
+            btnContent.textContent = 'Đang đăng nhập...';
+            
+            try {
+                console.log('🔐 Attempting login:', email);
+                console.log('📡 API URL:', '/api/auth/login');
+                
+                const response = await fetch('/api/auth/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password })
+                });
+                
+                console.log('📥 Response status:', response.status, response.ok ? '✅' : '❌');
+                
+                const data = await response.json();
+                console.log('📦 Response data:', data);
+                
+                if (data.success && data.token) {
+                    console.log('✅ Login successful!');
+                    console.log('🎫 Token received:', data.token.substring(0, 50) + '...');
+                    
+                    // Clear any old data
+                    clearAuthToken();
+                    
+                    // Save new token with multi-account support
+                    setAuthToken(data.token);
+                    console.log('💾 Token saved to storage');
+                    
+                    // Verify token was saved
+                    const savedToken = localStorage.getItem('token');
+                    console.log('🔍 Token verification:', savedToken === data.token ? '✅ Match' : '❌ Mismatch');
+                    
+                    // Check user role and redirect to appropriate dashboard
+                    try {
+                        const payload = JSON.parse(atob(data.token.split('.')[1]));
+                        const isAdmin = payload.isAdmin || payload.role === 'admin';
+                        const dashboardUrl = isAdmin 
+                            ? '/pages/dashboard/admin-dashboard.html' 
+                            : '/pages/dashboard/dashboard.html';
+                        
+                        console.log('👤 User role:', isAdmin ? 'Admin' : 'User');
+                        console.log('🔄 Redirecting to', dashboardUrl);
+                        window.location.href = dashboardUrl;
+                    } catch (e) {
+                        console.error('Error parsing token:', e);
+                        window.location.href = '/pages/dashboard/dashboard.html';
+                    }
+                } else {
+                    throw new Error(data.message || 'Đăng nhập thất bại');
+                }
+            } catch (error) {
+                console.error('❌ Login error:', error);
+                showAlert(error.message || 'Lỗi kết nối! Vui lòng thử lại.', 'danger');
+                
+                // Reset button
+                btn.disabled = false;
+                btnIcon.innerHTML = '';
+                btnIcon.className = 'fas fa-sign-in-alt';
+                btnContent.textContent = 'Đăng nhập';
+            }
+            
+            return false;
+        }
+
+        // ============================================================================
+        // REGISTER HANDLER
+        // ============================================================================
+        async function handleRegister(event) {
+            event.preventDefault();
+            
+            const displayName = document.getElementById('registerName').value.trim();
+            const email = document.getElementById('registerEmail').value.trim();
+            const password = document.getElementById('registerPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const btn = document.getElementById('registerBtn');
+            const btnContent = btn.querySelector('span');
+            const btnIcon = btn.querySelector('i');
+            
+            // Validation
+            if (displayName.length < 2) {
+                showAlert('Tên hiển thị phải có ít nhất 2 ký tự!', 'danger');
+                return false;
+            }
+            
+            if (password.length < 6) {
+                showAlert('Mật khẩu phải có ít nhất 6 ký tự!', 'danger');
+                return false;
+            }
+            
+            if (password !== confirmPassword) {
+                showAlert('Mật khẩu nhập lại không khớp!', 'danger');
+                return false;
+            }
+            
+            // Show loading
+            btn.disabled = true;
+            btnIcon.className = '';
+            btnIcon.innerHTML = '<div class="spinner"></div>';
+            btnContent.textContent = 'Đang đăng ký...';
+            
+            try {
+                console.log('📝 Attempting registration:', email);
+                
+                const response = await fetch('/api/auth/register', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, displayName, password })
+                });
+                
+                console.log('📥 Response status:', response.status, response.ok ? '✅' : '❌');
+                
+                const data = await response.json();
+                console.log('📦 Response data:', data);
+                
+                if (data.success && data.token) {
+                    console.log('✅ Registration successful!');
+                    console.log('🎫 Token received:', data.token.substring(0, 50) + '...');
+                    
+                    // Clear any old data
+                    clearAuthToken();
+                    
+                    // Save new token with multi-account support
+                    setAuthToken(data.token);
+                    console.log('💾 Token saved to storage');
+                    
+                    // Check user role and redirect to appropriate dashboard
+                    try {
+                        const payload = JSON.parse(atob(data.token.split('.')[1]));
+                        const isAdmin = payload.isAdmin || payload.role === 'admin';
+                        const dashboardUrl = isAdmin 
+                            ? '/pages/dashboard/admin-dashboard.html' 
+                            : '/pages/dashboard/dashboard.html';
+                        
+                        console.log('👤 User role:', isAdmin ? 'Admin' : 'User');
+                        console.log('🔄 Redirecting to', dashboardUrl);
+                        window.location.href = dashboardUrl;
+                    } catch (e) {
+                        console.error('Error parsing token:', e);
+                        window.location.href = '/pages/dashboard/dashboard.html';
+                    }
+                } else {
+                    throw new Error(data.message || 'Đăng ký thất bại');
+                }
+            } catch (error) {
+                console.error('❌ Register error:', error);
+                showAlert(error.message || 'Lỗi kết nối! Vui lòng thử lại.', 'danger');
+                
+                // Reset button
+                btn.disabled = false;
+                btnIcon.innerHTML = '';
+                btnIcon.className = 'fas fa-user-plus';
+                btnContent.textContent = 'Đăng ký';
+            }
+            
+            return false;
+        }
+
+        // ============================================================================
+        // URL ERROR HANDLER
+        // ============================================================================
+        window.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const error = urlParams.get('error');
+            const message = urlParams.get('message');
+            
+            if (error) {
+                showAlert(decodeURIComponent(error), 'danger');
+            } else if (message) {
+                showAlert(decodeURIComponent(message), 'info');
+            }
+        });
+
+        console.log('✅ Login page initialized');
+    </script>
+    
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    
+    <!-- Bootstrap 5 JS Bundle (includes Popper) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+
+    <!-- Scripts -->
+    <script type="module" src="/js/utils/component-loader.js"></script>
+</body>
+</html>

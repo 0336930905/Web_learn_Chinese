@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Speech</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+        button {
+            padding: 15px 30px;
+            font-size: 16px;
+            margin: 10px;
+            cursor: pointer;
+        }
+        .log {
+            margin-top: 20px;
+            padding: 20px;
+            background: #f5f5f5;
+            border-radius: 8px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        .log-item {
+            margin: 5px 0;
+            padding: 5px;
+            border-left: 3px solid #667eea;
+            padding-left: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>🔊 Test Phát Âm & Ghi Âm</h1>
+    
+    <div>
+        <h2>Test Phát Âm (Text-to-Speech)</h2>
+        <button onclick="testSpeak()">Phát âm "你好"</button>
+        <button onclick="testSpeak2()">Phát âm "hā lō"</button>
+        <button onclick="testSpeak3()">Phát âm "Xin chào"</button>
+    </div>
+
+    <div style="margin-top: 30px;">
+        <h2>Test Ghi Âm (Speech Recognition)</h2>
+        <button onclick="testRecognition()">Bắt đầu ghi âm</button>
+        <button onclick="stopRecognitionTest()">Dừng ghi âm</button>
+    </div>
+
+    <div class="log" id="logArea">
+        <h3>Console Log:</h3>
+    </div>
+
+    <script>
+        let recognition = null;
+        
+        function log(message, type = 'info') {
+            const logArea = document.getElementById('logArea');
+            const logItem = document.createElement('div');
+            logItem.className = 'log-item';
+            logItem.style.borderLeftColor = type === 'error' ? '#ef4444' : type === 'success' ? '#22c55e' : '#667eea';
+            logItem.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
+            logArea.appendChild(logItem);
+            logArea.scrollTop = logArea.scrollHeight;
+            console.log(message);
+        }
+
+        function testSpeak() {
+            log('🔊 Testing speech synthesis with "你好"');
+            
+            if (!('speechSynthesis' in window)) {
+                log('❌ Speech synthesis NOT supported!', 'error');
+                alert('Trình duyệt không hỗ trợ phát âm');
+                return;
+            }
+            
+            log('✅ Speech synthesis is supported', 'success');
+            
+            try {
+                window.speechSynthesis.cancel();
+                
+                const utterance = new SpeechSynthesisUtterance('你好');
+                utterance.lang = 'zh-TW';
+                utterance.rate = 0.8;
+                
+                utterance.onstart = () => log('✅ Speech started', 'success');
+                utterance.onend = () => log('✅ Speech ended', 'success');
+                utterance.onerror = (e) => log(`❌ Speech error: ${e.error}`, 'error');
+                
+                window.speechSynthesis.speak(utterance);
+                log('🎤 Utterance queued for speaking');
+                
+            } catch (error) {
+                log(`❌ Error: ${error.message}`, 'error');
+            }
+        }
+
+        function testSpeak2() {
+            log('🔊 Testing speech synthesis with "hā lō"');
+            
+            try {
+                window.speechSynthesis.cancel();
+                
+                const utterance = new SpeechSynthesisUtterance('hā lō');
+                utterance.lang = 'zh-TW';
+                utterance.rate = 0.8;
+                
+                utterance.onstart = () => log('✅ Speech started', 'success');
+                utterance.onend = () => log('✅ Speech ended', 'success');
+                utterance.onerror = (e) => log(`❌ Speech error: ${e.error}`, 'error');
+                
+                window.speechSynthesis.speak(utterance);
+                log('🎤 Utterance queued for speaking');
+                
+            } catch (error) {
+                log(`❌ Error: ${error.message}`, 'error');
+            }
+        }
+
+        function testSpeak3() {
+            log('🔊 Testing speech synthesis with "Xin chào"');
+            
+            try {
+                window.speechSynthesis.cancel();
+                
+                const utterance = new SpeechSynthesisUtterance('Xin chào');
+                utterance.lang = 'vi-VN';
+                utterance.rate = 0.8;
+                
+                utterance.onstart = () => log('✅ Speech started', 'success');
+                utterance.onend = () => log('✅ Speech ended', 'success');
+                utterance.onerror = (e) => log(`❌ Speech error: ${e.error}`, 'error');
+                
+                window.speechSynthesis.speak(utterance);
+                log('🎤 Utterance queued for speaking');
+                
+            } catch (error) {
+                log(`❌ Error: ${error.message}`, 'error');
+            }
+        }
+
+        async function testRecognition() {
+            log('🎙️ Testing speech recognition');
+            
+            if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+                log('❌ Speech recognition NOT supported!', 'error');
+                alert('Trình duyệt không hỗ trợ nhận diện giọng nói');
+                return;
+            }
+            
+            log('✅ Speech recognition is supported', 'success');
+            
+            try {
+                // Request microphone permission
+                log('📱 Requesting microphone permission...');
+                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                stream.getTracks().forEach(track => track.stop());
+                log('✅ Microphone permission granted', 'success');
+                
+                // Initialize recognition
+                const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+                recognition = new SpeechRecognition();
+                recognition.lang = 'zh-TW';
+                recognition.continuous = false;
+                recognition.interimResults = false;
+                
+                recognition.onstart = () => {
+                    log('✅ Recognition started - please speak!', 'success');
+                };
+                
+                recognition.onresult = (event) => {
+                    const transcript = event.results[0][0].transcript;
+                    const confidence = event.results[0][0].confidence;
+                    log(`✅ Recognized: "${transcript}" (confidence: ${(confidence * 100).toFixed(1)}%)`, 'success');
+                };
+                
+                recognition.onerror = (event) => {
+                    log(`❌ Recognition error: ${event.error}`, 'error');
+                };
+                
+                recognition.onend = () => {
+                    log('✅ Recognition ended', 'success');
+                };
+                
+                recognition.start();
+                log('🎤 Recognition started, waiting for speech...');
+                
+            } catch (error) {
+                log(`❌ Error: ${error.message}`, 'error');
+            }
+        }
+
+        function stopRecognitionTest() {
+            if (recognition) {
+                recognition.stop();
+                log('🛑 Stopping recognition...');
+            } else {
+                log('⚠️ No active recognition to stop', 'error');
+            }
+        }
+
+        // Log browser info
+        log(`Browser: ${navigator.userAgent}`);
+        log(`Speech Synthesis: ${('speechSynthesis' in window) ? '✅ Supported' : '❌ Not supported'}`);
+        log(`Speech Recognition: ${('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) ? '✅ Supported' : '❌ Not supported'}`);
+    </script>
+</body>
+</html>

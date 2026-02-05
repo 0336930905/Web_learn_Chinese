@@ -1,0 +1,1087 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bộ Từ Vựng Admin - Learn Chinese</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    
+    <!-- Font Awesome Kit -->
+    <script src="https://kit.fontawesome.com/8b9a27d5a0.js" crossorigin="anonymous"></script>
+    
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Auth Protection Script -->
+    <script>
+        console.log('═══════════════════════════════════════════════');
+        console.log('📚 USER WORDSETS PAGE LOADED');
+        console.log('═══════════════════════════════════════════════');
+        
+        const hasToken = localStorage.getItem('token');
+        console.log('🎫 Token check:', hasToken ? '✅ TOKEN EXISTS' : '❌ NO TOKEN');
+        
+        if (!hasToken) {
+            console.log('❌ No token - redirecting to login');
+            sessionStorage.clear();
+            localStorage.clear();
+            window.location.href = '/pages/auth/login.html';
+        }
+        console.log('═══════════════════════════════════════════════');
+    </script>
+    
+    <style>
+        :root {
+            --primary: #111827;
+            --secondary: #6B7280;
+            --background: #FFFFFF;
+            --accent: #22C55E;
+            --border: #E5E7EB;
+            
+            /* Gradients */
+            --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-teal: linear-gradient(135deg, #14b8a6 0%, #06b6d4 100%);
+            --gradient-purple: linear-gradient(135deg, #a855f7 0%, #ec4899 100%);
+            --gradient-info: linear-gradient(135deg, #3b82f6 0%, #06b6d4 100%);
+            --gradient-success: linear-gradient(135deg, #22C55E 0%, #84cc16 100%);
+            --gradient-warning: linear-gradient(135deg, #f59e0b 0%, #eab308 100%);
+            --gradient-orange: linear-gradient(135deg, #f97316 0%, #fb923c 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0e7ff 25%, #fae8ff 50%, #fef3c7 75%, #ecfccb 100%);
+            background-size: 400% 400%;
+            animation: gradientShift 20s ease infinite;
+            background-attachment: fixed;
+            min-height: 100vh;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(255, 255, 255, 0.15) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .container {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ========== HEADER ========== */
+        .page-header {
+            background: var(--gradient-orange);
+            backdrop-filter: blur(10px);
+            color: white;
+            padding: 2rem 0;
+            box-shadow: 0 8px 32px rgba(249, 115, 22, 0.3);
+            margin-bottom: 2.5rem;
+            border-bottom: 3px solid rgba(255, 255, 255, 0.2);
+            animation: slideDown 0.6s ease-out;
+        }
+
+        @keyframes slideDown {
+            from {
+                transform: translateY(-100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .page-header h1 {
+            font-size: 2rem;
+            font-weight: 800;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            background: linear-gradient(135deg, #fff 0%, #fef3c7 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .page-header h1 i {
+            background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .btn-back {
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            font-weight: 700;
+            padding: 0.625rem 1.5rem;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-back:hover {
+            background: rgba(255, 255, 255, 0.3);
+            border-color: rgba(255, 255, 255, 0.5);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 255, 255, 0.3);
+        }
+
+        /* ========== STATS BAR ========== */
+        .stats-bar {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 1.5rem 2rem;
+            box-shadow: 
+                0 8px 32px rgba(0, 0, 0, 0.1),
+                0 0 0 1px rgba(255, 255, 255, 0.2);
+            margin-bottom: 2rem;
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .stat-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.75rem;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+        }
+
+        .stat-icon.bg-gradient-orange {
+            background: var(--gradient-orange);
+            color: white;
+        }
+
+        .stat-icon.bg-gradient-purple {
+            background: var(--gradient-purple);
+            color: white;
+        }
+
+        .stat-icon.bg-gradient-info {
+            background: var(--gradient-info);
+            color: white;
+        }
+
+        .stat-content h3 {
+            font-size: 2rem;
+            font-weight: 800;
+            background: var(--gradient-orange);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin: 0;
+            line-height: 1;
+        }
+
+        .stat-content p {
+            color: #6b7280;
+            font-weight: 600;
+            margin: 0.25rem 0 0;
+            font-size: 0.9rem;
+        }
+
+        /* ========== FILTER SECTION ========== */
+        .filter-section {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 1.75rem 2rem;
+            box-shadow: 
+                0 8px 32px rgba(0, 0, 0, 0.1),
+                0 0 0 1px rgba(255, 255, 255, 0.2);
+            margin-bottom: 2rem;
+        }
+
+        .form-control, .form-select {
+            border: 2px solid #e5e7eb;
+            border-radius: 10px;
+            padding: 0.75rem 1rem;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .form-control:focus, .form-select:focus {
+            border-color: #f97316;
+            box-shadow: 0 0 0 4px rgba(249, 115, 22, 0.1);
+        }
+
+        /* ========== WORDSET CARDS ========== */
+        .wordset-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 16px;
+            padding: 1.75rem;
+            box-shadow: 
+                0 8px 32px rgba(0, 0, 0, 0.1),
+                0 0 0 1px rgba(255, 255, 255, 0.2);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            height: 100%;
+            overflow: hidden;
+            position: relative;
+            border: 2px solid transparent;
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .wordset-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: var(--gradient-orange);
+        }
+
+        .wordset-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 
+                0 20px 60px rgba(0, 0, 0, 0.2),
+                0 0 0 1px rgba(249, 115, 22, 0.3);
+            border-color: rgba(249, 115, 22, 0.2);
+        }
+
+        .wordset-card .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #f3f4f6;
+        }
+
+        .wordset-card .card-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            background: var(--gradient-orange);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin: 0;
+            flex: 1;
+        }
+
+        .wordset-card .card-category {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.375rem;
+            padding: 0.375rem 0.875rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            background: var(--gradient-purple);
+            color: white;
+            box-shadow: 0 4px 12px rgba(168, 85, 247, 0.3);
+        }
+
+        .wordset-card .card-description {
+            color: #6b7280;
+            font-size: 0.9rem;
+            margin-bottom: 1.25rem;
+            line-height: 1.5;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .wordset-card .card-stats {
+            display: flex;
+            gap: 1.5rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .wordset-card .stat-item-small {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.875rem;
+            color: #374151;
+        }
+
+        .wordset-card .stat-item-small i {
+            color: #f97316;
+            font-size: 1rem;
+        }
+
+        .wordset-card .stat-value {
+            font-weight: 700;
+        }
+
+        .wordset-card .card-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: auto;
+        }
+
+        .wordset-card .btn-study {
+            flex: 1;
+            background: var(--gradient-orange);
+            color: white;
+            border: none;
+            padding: 0.625rem 1rem;
+            border-radius: 10px;
+            font-weight: 700;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(249, 115, 22, 0.3);
+        }
+
+        .wordset-card .btn-study:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(249, 115, 22, 0.5);
+        }
+
+        .wordset-card .btn-save {
+            background: linear-gradient(135deg, #ddd6fe 0%, #a78bfa 100%);
+            color: #5b21b6;
+            border: none;
+            padding: 0.625rem 1rem;
+            border-radius: 10px;
+            font-weight: 700;
+            transition: all 0.3s ease;
+        }
+
+        .wordset-card .btn-save:hover {
+            background: linear-gradient(135deg, #a78bfa 0%, #8b5cf6 100%);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        /* ========== PAGINATION ========== */
+        .pagination-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 2rem;
+            padding: 1.5rem 2rem;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            box-shadow: 
+                0 8px 32px rgba(0, 0, 0, 0.1),
+                0 0 0 1px rgba(255, 255, 255, 0.2);
+        }
+
+        .pagination {
+            display: flex;
+            gap: 0.5rem;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .pagination .page-item {
+            display: inline-block;
+        }
+
+        .pagination .page-link {
+            padding: 0.5rem 0.75rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            color: var(--primary);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            background: white;
+        }
+
+        .pagination .page-link:hover {
+            background: var(--gradient-orange);
+            color: white;
+            border-color: transparent;
+            transform: translateY(-2px);
+        }
+
+        .pagination .page-item.active .page-link {
+            background: var(--gradient-orange);
+            color: white;
+            border-color: transparent;
+            box-shadow: 0 4px 12px rgba(249, 115, 22, 0.3);
+        }
+
+        .pagination .page-item.disabled .page-link {
+            opacity: 0.5;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
+        .pagination-info {
+            color: var(--secondary);
+            font-weight: 600;
+        }
+
+        /* ========== EMPTY STATE ========== */
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            box-shadow: 
+                0 8px 32px rgba(0, 0, 0, 0.1),
+                0 0 0 1px rgba(255, 255, 255, 0.2);
+        }
+
+        .empty-state i {
+            font-size: 4rem;
+            color: #d1d5db;
+            margin-bottom: 1.5rem;
+        }
+
+        .empty-state h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #374151;
+            margin-bottom: 0.5rem;
+        }
+
+        .empty-state p {
+            color: #6b7280;
+            font-size: 1rem;
+        }
+
+        /* ========== SPINNER ========== */
+        .spinner-border {
+            width: 3rem;
+            height: 3rem;
+            border-width: 0.3rem;
+        }
+
+        /* ========== RESPONSIVE ========== */
+        @media (max-width: 768px) {
+            .page-header h1 {
+                font-size: 1.5rem;
+            }
+
+            .stats-bar {
+                padding: 1.25rem;
+            }
+
+            .stat-content h3 {
+                font-size: 1.5rem;
+            }
+
+            .filter-section {
+                padding: 1.25rem;
+            }
+
+            .pagination-container {
+                flex-direction: column;
+                gap: 1rem;
+            }
+        }
+
+        /* ========== SCROLL BAR ========== */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--gradient-orange);
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--gradient-purple);
+        }
+    </style>
+</head>
+<body>
+    <!-- Page Header -->
+    <div class="page-header">
+        <div class="container">
+            <div class="d-flex justify-content-between align-items-center">
+                <h1>
+                    <i class="fas fa-book-reader"></i>
+                    Bộ Từ Vựng Admin
+                </h1>
+                <a href="/pages/dashboard/dashboard.html" class="btn-back">
+                    <i class="fas fa-arrow-left"></i> Quay lại Dashboard
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="container pb-5">
+        <!-- Statistics Bar -->
+        <div class="stats-bar">
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="stat-item">
+                        <div class="stat-icon bg-gradient-orange">
+                            <i class="fas fa-folder"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3 id="totalWordSets">0</h3>
+                            <p>Tổng bộ từ vựng</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="stat-item">
+                        <div class="stat-icon bg-gradient-purple">
+                            <i class="fas fa-book"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3 id="totalWords">0</h3>
+                            <p>Tổng số từ</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="stat-item">
+                        <div class="stat-icon bg-gradient-info">
+                            <i class="fas fa-tag"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3 id="totalCategories">0</h3>
+                            <p>Danh mục</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Filter Section -->
+        <div class="filter-section">
+            <div class="row g-3 align-items-end">
+                <div class="col-md-4">
+                    <label class="form-label fw-bold">
+                        <i class="fas fa-search"></i> Tìm kiếm
+                    </label>
+                    <input type="search" class="form-control" id="searchWordSets" placeholder="Tìm kiếm bộ từ vựng...">
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label fw-bold">
+                        <i class="fas fa-filter"></i> Danh mục
+                    </label>
+                    <select class="form-select" id="filterCategory">
+                        <option value="">Tất cả danh mục</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label fw-bold">
+                        <i class="fas fa-sort"></i> Sắp xếp
+                    </label>
+                    <select class="form-select" id="sortBy">
+                        <option value="name-asc">Tên (A-Z)</option>
+                        <option value="name-desc">Tên (Z-A)</option>
+                        <option value="words-desc">Nhiều từ nhất</option>
+                        <option value="words-asc">Ít từ nhất</option>
+                        <option value="date-desc">Mới nhất</option>
+                        <option value="date-asc">Cũ nhất</option>
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <button class="btn btn-secondary w-100" onclick="resetFilters()">
+                        <i class="fas fa-redo"></i> Đặt lại
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- WordSets Grid -->
+        <div class="row g-4" id="wordSetsGrid">
+            <div class="col-12 text-center">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Đang tải...</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pagination -->
+        <div class="pagination-container" id="paginationContainer" style="display: none;">
+            <div class="pagination-info">
+                Hiển thị <span id="showingStart">1</span>-<span id="showingEnd">12</span> 
+                trong tổng số <span id="totalCount">0</span> bộ từ vựng
+            </div>
+            <ul class="pagination" id="paginationList"></ul>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    
+    <!-- Page Script -->
+    <script>
+        const API_URL = 'http://localhost:3000/api';
+        
+        // Support multiple accounts: Use sessionStorage for current session token
+        let authToken = sessionStorage.getItem('currentToken') || localStorage.getItem('token');
+        
+        // Save to sessionStorage for this session
+        if (authToken && !sessionStorage.getItem('currentToken')) {
+            sessionStorage.setItem('currentToken', authToken);
+        }
+
+        // State management
+        let wordSetsState = {
+            allWordSets: [],
+            filteredWordSets: [],
+            currentPage: 1,
+            itemsPerPage: 12,
+            searchTerm: '',
+            selectedCategory: '',
+            sortBy: 'name-asc'
+        };
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', async () => {
+            console.log('📚 User WordSets Page Initialized');
+            
+            if (!authToken) {
+                window.location.href = '/pages/auth/login.html';
+                return;
+            }
+
+            await loadWordSets();
+            await loadCategories();
+            setupEventListeners();
+        });
+
+        // Setup event listeners
+        function setupEventListeners() {
+            document.getElementById('searchWordSets')?.addEventListener('input', handleSearch);
+            document.getElementById('filterCategory')?.addEventListener('change', handleFilter);
+            document.getElementById('sortBy')?.addEventListener('change', handleSort);
+        }
+
+        // Load word sets from admin
+        async function loadWordSets() {
+            try {
+                console.log('📚 Loading admin wordsets for user...');
+                
+                // Fetch all wordsets
+                const response = await fetch(`${API_URL}/wordsets`, {
+                    headers: {
+                        'Authorization': `Bearer ${authToken}`
+                    }
+                });
+                
+                if (!response.ok) throw new Error('Failed to fetch wordsets');
+                
+                const data = await response.json();
+                console.log('📦 API Response:', data);
+                
+                // Handle different response structures
+                let allWordSets = [];
+                if (Array.isArray(data)) {
+                    allWordSets = data;
+                } else if (data.wordSets && Array.isArray(data.wordSets)) {
+                    allWordSets = data.wordSets;
+                } else if (data.data && Array.isArray(data.data)) {
+                    allWordSets = data.data;
+                } else {
+                    console.error('❌ Unexpected API response structure:', data);
+                    throw new Error('Invalid API response format');
+                }
+                
+                // Filter only wordsets from users with role === 'admin'
+                wordSetsState.allWordSets = allWordSets.filter(ws => {
+                    // Show only if creator has admin role
+                    const isAdminWordSet = ws.user && ws.user.role === 'admin';
+                    if (isAdminWordSet) {
+                        console.log('📚 Admin wordset found:', ws.name, 'by', ws.user.email || ws.user.displayName);
+                    }
+                    return isAdminWordSet;
+                });
+                
+                wordSetsState.filteredWordSets = [...wordSetsState.allWordSets];
+                
+                console.log('✅ Admin wordsets loaded:', wordSetsState.allWordSets.length);
+                
+                // Update statistics
+                updateStatistics();
+                
+                // Apply sorting and render
+                applySorting();
+                renderWordSets();
+                
+            } catch (error) {
+                console.error('❌ Error loading wordsets:', error);
+                showError('Không thể tải bộ từ vựng. Vui lòng thử lại!');
+            }
+        }
+
+        // Load categories for filter
+        async function loadCategories() {
+            try {
+                const response = await fetch(`${API_URL}/categories`, {
+                    headers: {
+                        'Authorization': `Bearer ${authToken}`
+                    }
+                });
+                
+                if (!response.ok) throw new Error('Failed to fetch categories');
+                
+                const data = await response.json();
+                console.log('📦 Categories API Response:', data);
+                
+                // Handle different response structures
+                let categories = [];
+                if (Array.isArray(data)) {
+                    categories = data;
+                } else if (data.categories && Array.isArray(data.categories)) {
+                    categories = data.categories;
+                } else if (data.data && Array.isArray(data.data)) {
+                    categories = data.data;
+                } else {
+                    console.warn('⚠️ No categories found or unexpected response structure');
+                    return;
+                }
+                
+                const select = document.getElementById('filterCategory');
+                
+                if (select && categories.length > 0) {
+                    select.innerHTML = '<option value="">Tất cả danh mục</option>' +
+                        categories.map(cat => `<option value="${cat._id}">${escapeHtml(cat.name)}</option>`).join('');
+                }
+            } catch (error) {
+                console.error('❌ Error loading categories:', error);
+            }
+        }
+
+        // Update statistics
+        function updateStatistics() {
+            const totalWordSets = wordSetsState.allWordSets.length;
+            const totalWords = wordSetsState.allWordSets.reduce((sum, ws) => sum + (ws.wordCount || 0), 0);
+            const uniqueCategories = new Set(wordSetsState.allWordSets.map(ws => ws.category?._id).filter(Boolean)).size;
+            
+            document.getElementById('totalWordSets').textContent = totalWordSets;
+            document.getElementById('totalWords').textContent = totalWords;
+            document.getElementById('totalCategories').textContent = uniqueCategories;
+        }
+
+        // Handle search
+        function handleSearch(e) {
+            wordSetsState.searchTerm = e.target.value.toLowerCase();
+            applyFilters();
+        }
+
+        // Handle category filter
+        function handleFilter(e) {
+            wordSetsState.selectedCategory = e.target.value;
+            applyFilters();
+        }
+
+        // Handle sorting
+        function handleSort(e) {
+            wordSetsState.sortBy = e.target.value;
+            applySorting();
+            renderWordSets();
+        }
+
+        // Apply filters
+        function applyFilters() {
+            let filtered = [...wordSetsState.allWordSets];
+            
+            // Apply search filter
+            if (wordSetsState.searchTerm) {
+                filtered = filtered.filter(ws => 
+                    ws.name.toLowerCase().includes(wordSetsState.searchTerm) ||
+                    (ws.description && ws.description.toLowerCase().includes(wordSetsState.searchTerm))
+                );
+            }
+            
+            // Apply category filter
+            if (wordSetsState.selectedCategory) {
+                filtered = filtered.filter(ws => 
+                    ws.category && ws.category._id === wordSetsState.selectedCategory
+                );
+            }
+            
+            wordSetsState.filteredWordSets = filtered;
+            wordSetsState.currentPage = 1;
+            applySorting();
+            renderWordSets();
+        }
+
+        // Apply sorting
+        function applySorting() {
+            const sortBy = wordSetsState.sortBy;
+            
+            wordSetsState.filteredWordSets.sort((a, b) => {
+                switch(sortBy) {
+                    case 'name-asc':
+                        return a.name.localeCompare(b.name);
+                    case 'name-desc':
+                        return b.name.localeCompare(a.name);
+                    case 'words-desc':
+                        return (b.wordCount || 0) - (a.wordCount || 0);
+                    case 'words-asc':
+                        return (a.wordCount || 0) - (b.wordCount || 0);
+                    case 'date-desc':
+                        return new Date(b.createdAt || 0) - new Date(a.createdAt || 0);
+                    case 'date-asc':
+                        return new Date(a.createdAt || 0) - new Date(b.createdAt || 0);
+                    default:
+                        return 0;
+                }
+            });
+        }
+
+        // Reset filters
+        function resetFilters() {
+            document.getElementById('searchWordSets').value = '';
+            document.getElementById('filterCategory').value = '';
+            document.getElementById('sortBy').value = 'name-asc';
+            
+            wordSetsState.searchTerm = '';
+            wordSetsState.selectedCategory = '';
+            wordSetsState.sortBy = 'name-asc';
+            wordSetsState.currentPage = 1;
+            
+            wordSetsState.filteredWordSets = [...wordSetsState.allWordSets];
+            applySorting();
+            renderWordSets();
+        }
+
+        // Render word sets
+        function renderWordSets() {
+            const grid = document.getElementById('wordSetsGrid');
+            const pagination = document.getElementById('paginationContainer');
+            
+            const wordsets = wordSetsState.filteredWordSets;
+            const startIndex = (wordSetsState.currentPage - 1) * wordSetsState.itemsPerPage;
+            const endIndex = startIndex + wordSetsState.itemsPerPage;
+            const paginatedWordSets = wordsets.slice(startIndex, endIndex);
+            
+            if (paginatedWordSets.length === 0) {
+                grid.innerHTML = `
+                    <div class="col-12">
+                        <div class="empty-state">
+                            <i class="fas fa-folder-open"></i>
+                            <h3>Không tìm thấy bộ từ vựng</h3>
+                            <p>Thử thay đổi bộ lọc hoặc tìm kiếm với từ khóa khác</p>
+                        </div>
+                    </div>
+                `;
+                pagination.style.display = 'none';
+                return;
+            }
+            
+            // Render cards
+            grid.innerHTML = paginatedWordSets.map(wordset => `
+                <div class="col-md-6 col-lg-4">
+                    <div class="wordset-card">
+                        <div class="card-header">
+                            <h3 class="card-title">${escapeHtml(wordset.name)}</h3>
+                            ${wordset.category ? `
+                                <span class="card-category">
+                                    <i class="fas fa-tag"></i> ${escapeHtml(wordset.category.name || 'N/A')}
+                                </span>
+                            ` : ''}
+                        </div>
+                        
+                        ${wordset.description ? `
+                            <p class="card-description">${escapeHtml(wordset.description)}</p>
+                        ` : ''}
+                        
+                        <div class="card-stats">
+                            <div class="stat-item-small">
+                                <i class="fas fa-book"></i>
+                                <span class="stat-value">${wordset.wordCount || 0}</span>
+                                <span>từ</span>
+                            </div>
+                            ${wordset.difficulty ? `
+                                <div class="stat-item-small">
+                                    <i class="fas fa-signal"></i>
+                                    <span class="stat-value">${wordset.difficulty}/5</span>
+                                </div>
+                            ` : ''}
+                            ${wordset.user ? `
+                                <div class="stat-item-small">
+                                    <i class="fas fa-user-shield"></i>
+                                    <span>Admin</span>
+                                </div>
+                            ` : ''}
+                        </div>
+                        
+                        <div class="card-actions">
+                            <button class="btn btn-study" onclick="studyWordSet('${wordset._id}')">
+                                <i class="fas fa-graduation-cap"></i> Học ngay
+                            </button>
+                            <button class="btn btn-save" onclick="saveWordSet('${wordset._id}')">
+                                <i class="fas fa-bookmark"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+            
+            // Show pagination
+            pagination.style.display = 'flex';
+            renderPagination();
+        }
+
+        // Render pagination
+        function renderPagination() {
+            const totalItems = wordSetsState.filteredWordSets.length;
+            const totalPages = Math.ceil(totalItems / wordSetsState.itemsPerPage);
+            const currentPage = wordSetsState.currentPage;
+            
+            // Update showing info
+            const startIndex = (currentPage - 1) * wordSetsState.itemsPerPage + 1;
+            const endIndex = Math.min(currentPage * wordSetsState.itemsPerPage, totalItems);
+            
+            document.getElementById('showingStart').textContent = totalItems > 0 ? startIndex : 0;
+            document.getElementById('showingEnd').textContent = endIndex;
+            document.getElementById('totalCount').textContent = totalItems;
+            
+            // Render pagination buttons
+            const paginationList = document.getElementById('paginationList');
+            let paginationHTML = '';
+            
+            // Previous button
+            paginationHTML += `
+                <li class="page-item ${currentPage === 1 ? 'disabled' : ''}">
+                    <a class="page-link" href="#" onclick="changePage(${currentPage - 1}); return false;">
+                        <i class="fas fa-chevron-left"></i>
+                    </a>
+                </li>
+            `;
+            
+            // Page numbers
+            for (let i = 1; i <= totalPages; i++) {
+                if (i === 1 || i === totalPages || (i >= currentPage - 1 && i <= currentPage + 1)) {
+                    paginationHTML += `
+                        <li class="page-item ${i === currentPage ? 'active' : ''}">
+                            <a class="page-link" href="#" onclick="changePage(${i}); return false;">${i}</a>
+                        </li>
+                    `;
+                } else if (i === currentPage - 2 || i === currentPage + 2) {
+                    paginationHTML += `<li class="page-item disabled"><span class="page-link">...</span></li>`;
+                }
+            }
+            
+            // Next button
+            paginationHTML += `
+                <li class="page-item ${currentPage === totalPages ? 'disabled' : ''}">
+                    <a class="page-link" href="#" onclick="changePage(${currentPage + 1}); return false;">
+                        <i class="fas fa-chevron-right"></i>
+                    </a>
+                </li>
+            `;
+            
+            paginationList.innerHTML = paginationHTML;
+        }
+
+        // Change page
+        function changePage(page) {
+            const totalPages = Math.ceil(wordSetsState.filteredWordSets.length / wordSetsState.itemsPerPage);
+            if (page < 1 || page > totalPages) return;
+            
+            wordSetsState.currentPage = page;
+            renderWordSets();
+            
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Study wordset
+        function studyWordSet(wordSetId) {
+            console.log('📖 Starting to study wordset:', wordSetId);
+            // Redirect to learning page or open study modal
+            alert('Chức năng học tập sẽ được phát triển trong tương lai!');
+        }
+
+        // Save wordset to favorites
+        function saveWordSet(wordSetId) {
+            console.log('💾 Saving wordset:', wordSetId);
+            alert('Chức năng lưu bộ từ vựng sẽ được phát triển trong tương lai!');
+        }
+
+        // Show error
+        function showError(message) {
+            document.getElementById('wordSetsGrid').innerHTML = `
+                <div class="col-12">
+                    <div class="empty-state">
+                        <i class="fas fa-exclamation-triangle text-danger"></i>
+                        <h3>Có lỗi xảy ra</h3>
+                        <p>${message}</p>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Escape HTML
+        function escapeHtml(text) {
+            if (!text) return '';
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+    </script>
+</body>
+</html>

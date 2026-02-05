@@ -1,0 +1,342 @@
+/* ============================================
+   SPEAKING PRACTICE MODE - MODERN DESIGN
+   ============================================ */
+
+
+
+.speaking-header {
+    text-align: center;
+    padding-right: 180px;
+}
+
+.speaking-title {
+    color: #667eea;
+    font-weight: 700;
+    font-size: 1.4rem;
+    margin-bottom: 0.5rem;
+}
+
+.speaking-subtitle {
+    color: #6c757d;
+    font-size: 0.95rem;
+    margin: 0;
+}
+
+/* Word Showcase */
+.word-showcase {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 16px;
+    padding: 1rem 0.75rem 0.75rem;
+    color: white;
+    box-shadow: 0 8px 20px rgba(102, 126, 234, 0.25);
+    margin-bottom: 1rem;
+}
+
+.word-main-display {
+    text-align: center;
+    margin-bottom: .5rem;
+}
+
+.word-traditional-large {
+    font-size: 3rem;
+    font-weight: 700;
+    text-shadow: 2px 2px 8px rgba(0,0,0,0.2);
+    animation: fadeInScale 0.6s ease-out;
+}
+
+.word-simplified-display {
+    font-size: 2rem;
+    opacity: 0.9;
+    font-weight: 500;
+}
+
+@keyframes fadeInScale {
+    from {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Word Info Panel */
+.word-info-panel {
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    border-radius: 12px;
+    padding: 0.875rem;
+    margin-bottom: 0.75rem;
+}
+
+.info-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.5rem 0;
+}
+
+.info-item + .info-item {
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.info-item i {
+    font-size: 1.2rem;
+    width: 24px;
+    text-align: center;
+}
+
+.info-label {
+    font-weight: 600;
+    min-width: 70px;
+}
+
+.info-value {
+    flex: 1;
+    font-size: 1.1rem;
+}
+
+.pinyin-text {
+    font-style: italic;
+    font-weight: 500;
+}
+
+/* Listen Sample Button */
+.btn-listen-sample {
+    background: rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(10px);
+    border: 2px solid rgba(255, 255, 255, 0.4);
+    color: white;
+    padding: 0.875rem 0.5rem;
+    border-radius: 12px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    margin: 0.75rem auto 0.5rem;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+.btn-listen-sample:hover {
+    background: rgba(255, 255, 255, 0.35);
+    border-color: rgba(255, 255, 255, 0.6);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.btn-listen-sample i {
+    font-size: 1.25rem;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.6; }
+}
+
+/* Recording Panel */
+.speaking-practice-area {
+    padding: 0.5rem 0;
+}
+
+.recording-status {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.625rem;
+    background: #f8f9fa;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    font-weight: 500;
+    color: #495057;
+    font-size: 0.938rem;
+}
+
+.recording-dot {
+    color: #28a745;
+    font-size: 1rem;
+}
+
+.recording-status.recording .recording-dot {
+    color: #dc3545;
+    animation: blink 1s infinite;
+}
+
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+}
+
+/* Speaking Navigation Controls */
+.speaking-nav-controls {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 0.75rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.btn-prev-speaking {
+    background: rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(10px);
+    border: 2px solid rgba(255, 255, 255, 0.4);
+    color: white;
+    padding: 0.625rem 1.25rem;
+    border-radius: 12px;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    font-size: 0.938rem;
+}
+
+.btn-prev-speaking:hover:not(:disabled) {
+    background: rgba(255, 255, 255, 0.35);
+    border-color: rgba(255, 255, 255, 0.6);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.btn-prev-speaking:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+.btn-prev-speaking i {
+    font-size: 1rem;
+}
+
+/* Record Button - Optimized for Space */
+.btn-record {
+    background: rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(10px);
+    border: 2px solid rgba(255, 255, 255, 0.4);
+    color: white;
+    padding: 0.875rem 1.5rem;
+    border-radius: 12px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    margin: 0 auto 0.75rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 1rem;
+}
+
+.btn-record:hover {
+    background: rgba(255, 255, 255, 0.35);
+    border-color: rgba(255, 255, 255, 0.6);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+.speaking-mode-container{
+    display: flex;
+    position: relative;
+}
+.btn-backspeaking-question{
+    padding-top: 360px;
+    padding-left: 180px;
+}
+.btn-record:active {
+    transform: translateY(0);
+}
+
+.btn-record i {
+    font-size: 1.25rem;
+}
+
+.btn-record.recording {
+    background: rgba(220, 38, 38, 0.25);
+    border-color: rgba(220, 38, 38, 0.5);
+    animation: recordPulse 1.5s infinite;
+}
+
+@keyframes recordPulse {
+    0%, 100% {
+        box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.4);
+    }
+    50% {
+        box-shadow: 0 0 0 8px rgba(220, 38, 38, 0);
+    }
+}
+
+/* Pronunciation Options - REMOVED TO SAVE SPACE */
+
+/* Speaking Feedback */
+.speaking-feedback-area {
+    margin-top: 1rem;
+    min-height: 50px;
+}
+
+.feedback-message {
+    padding: 1rem 1.5rem;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    font-size: 1.05rem;
+    font-weight: 600;
+    animation: slideIn 0.4s ease;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.feedback-correct {
+    background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+    border: 2px solid #28a745;
+    color: #155724;
+}
+
+.feedback-correct i {
+    color: #28a745;
+    font-size: 1.5rem;
+}
+
+.feedback-incorrect {
+    background: linear-gradient(135deg, #f8d7da 0%, #f5c6cb 100%);
+    border: 2px solid #dc3545;
+    color: #721c24;
+}
+
+.feedback-incorrect i {
+    color: #dc3545;
+    font-size: 1.5rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .word-traditional-large {
+        font-size: 3.5rem;
+    }
+    
+    .word-simplified-display {
+        font-size: 1.5rem;
+    }
+    
+    .btn-record {
+        padding: 0.875rem 1.5rem;
+        font-size: 1rem;
+    }
+    
+    .btn-record i {
+        font-size: 1.25rem;
+    }
+}

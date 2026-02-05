@@ -1,0 +1,380 @@
+/**
+ * Learning Practice Page Styles
+ */
+
+/* Overall Layout */
+body {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+    min-height: 100vh;
+}
+
+/* Practice Info Header */
+.practice-info-header {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    border-radius: 20px;
+    padding: 2rem;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+.practice-info-header h3 {
+    color: #1f2937;
+    font-weight: 700;
+    margin: 0;
+}
+
+.practice-info-header .badge {
+    font-size: 1rem;
+    padding: 0.5rem 1rem;
+    font-weight: 600;
+}
+
+#loadingScreen {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    border: none;
+    border-radius: 20px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+/* Practice Cards */
+#welcomeScreen,
+#practiceScreen,
+#resultsScreen {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    border: none;
+    border-radius: 20px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    min-height: 500px;
+}
+
+#practiceScreen .card-header,
+#resultsScreen .card-header {
+    border-radius: 20px 20px 0 0 !important;
+    border: none;
+}
+
+#practiceScreen .card-header {
+    background: rgba(102, 126, 234, 0.1);
+}
+
+#resultsScreen .card-header {
+    background: linear-gradient(135deg, #22C55E, #84cc16);
+}
+
+/* Welcome Screen Cards */
+#welcomeScreen .border {
+    transition: all 0.3s ease;
+    border-radius: 16px;
+    border: 2px solid #e5e7eb !important;
+    background: white;
+}
+
+#welcomeScreen .border:hover {
+    border-color: #667eea !important;
+    box-shadow: 0 8px 24px rgba(102, 126, 234, 0.2);
+    transform: translateY(-5px);
+}
+
+/* Question Area */
+#questionArea {
+    padding: 2rem 1rem;
+    min-height: 200px;
+}
+
+.word-display {
+    border: 2px solid #dee2e6;
+    transition: all 0.3s ease;
+}
+
+.word-display:hover {
+    border-color: #0d6efd;
+    box-shadow: 0 0 10px rgba(13, 110, 253, 0.2);
+}
+
+.meaning-display {
+    border: 2px solid #dee2e6;
+}
+
+/* Options */
+.option-btn {
+    transition: all 0.3s ease;
+    border-width: 2px;
+    min-height: 80px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.option-btn:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.option-btn:active:not(:disabled) {
+    transform: translateY(0);
+}
+
+.option-btn:disabled {
+    cursor: not-allowed;
+}
+
+/* Success/Error States */
+.btn-success {
+    animation: successPulse 0.5s ease;
+}
+
+.btn-danger {
+    animation: errorShake 0.5s ease;
+}
+
+@keyframes successPulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+@keyframes errorShake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-10px); }
+    75% { transform: translateX(10px); }
+}
+
+/* Progress Bar */
+.progress {
+    background-color: #e9ecef;
+}
+
+.progress-bar {
+    transition: width 0.3s ease;
+    background-color: #0d6efd;
+}
+
+/* Results Screen */
+#resultIcon {
+    animation: bounceIn 0.8s ease;
+}
+
+@keyframes bounceIn {
+    0% { 
+        opacity: 0;
+        transform: scale(0.3);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+    70% {
+        transform: scale(0.9);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Review Cards */
+#reviewList .card {
+    transition: all 0.3s ease;
+}
+
+#reviewList .card:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transform: translateX(5px);
+}
+
+/* Welcome Screen Cards */
+#welcomeScreen .border {
+    transition: all 0.3s ease;
+}
+
+#welcomeScreen .border:hover {
+    border-color: #0d6efd !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transform: translateY(-5px);
+}
+
+/* Statistics Cards */
+.card.bg-light {
+    transition: all 0.3s ease;
+}
+
+.card.bg-light:hover {
+    background-color: #fff !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    #questionArea {
+        padding: 1rem 0.5rem;
+    }
+    
+    .option-btn {
+        min-height: 60px;
+        font-size: 0.9rem;
+    }
+    
+    .word-display h1 {
+        font-size: 3rem;
+    }
+    
+    #welcomeScreen .col-md-4 {
+        margin-bottom: 1rem;
+    }
+}
+
+/* Audio Button Animation */
+button[onclick^="speakWord"] {
+    transition: all 0.3s ease;
+}
+
+button[onclick^="speakWord"]:hover {
+    transform: scale(1.1);
+}
+
+button[onclick^="speakWord"]:active {
+    transform: scale(0.95);
+    animation: pulse 0.5s ease;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
+}
+
+/* Mode Selection Radio Buttons */
+.form-check-input:checked {
+    background-color: #0d6efd;
+    border-color: #0d6efd;
+}
+
+.form-check-label {
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.form-check-label:hover {
+    color: #0d6efd;
+    transform: translateX(3px);
+}
+
+/* Navigation Buttons */
+#nextQuestionBtn,
+#finishPracticeBtn {
+    animation: fadeInRight 0.5s ease;
+}
+
+@keyframes fadeInRight {
+    from {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Loading States */
+.loading-spinner {
+    display: inline-block;
+    width: 2rem;
+    height: 2rem;
+    border: 3px solid rgba(0, 0, 0, 0.1);
+    border-top-color: #0d6efd;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* Badge Styles */
+.badge {
+    font-size: 0.9rem;
+    padding: 0.5rem 1rem;
+}
+
+/* Custom Scrollbar for Review List */
+#reviewList {
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+#reviewList::-webkit-scrollbar {
+    width: 8px;
+}
+
+#reviewList::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+
+#reviewList::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 4px;
+}
+
+#reviewList::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+/* Buttons Enhancement */
+.btn-primary {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    border: none;
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+    transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+}
+
+.btn-success {
+    background: linear-gradient(135deg, #22C55E, #84cc16);
+    border: none;
+    box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3);
+}
+
+.btn-success:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(34, 197, 94, 0.4);
+}
+
+/* Statistics Cards Enhancement */
+.col-md-3 .card-body {
+    padding: 1.5rem;
+}
+
+.border-top {
+    border-color: rgba(102, 126, 234, 0.2) !important;
+}
+
+/* Form Elements */
+.form-check-input:checked {
+    background-color: #667eea;
+    border-color: #667eea;
+}
+
+.form-select:focus,
+.form-control:focus {
+    border-color: #667eea;
+    box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+}
+
+/* Badge */
+.badge {
+    font-weight: 600;
+    padding: 0.5rem 1rem;
+    border-radius: 12px;
+}
+
+/* Navbar Enhancement */
+.navbar {
+    background: linear-gradient(135deg, #667eea, #764ba2) !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}

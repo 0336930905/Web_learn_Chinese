@@ -1,0 +1,1065 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Luyện Tập - Học Tiếng Đài Loan</title>
+
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+
+    <!-- Font Awesome -->
+    <script src="https://kit.fontawesome.com/8b9a27d5a0.js" crossorigin="anonymous"></script>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml"
+        href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📚</text></svg>">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/pages/dashboard.css">
+    <link rel="stylesheet" href="/css/pages/speaking-practice.css">
+
+    <!-- Auth Protection Script -->
+    <script>
+        const hasToken = localStorage.getItem('token');
+        if (!hasToken) {
+            sessionStorage.clear();
+            localStorage.clear();
+            window.location.href = '/pages/auth/login.html';
+        }
+    </script>
+
+    <style>
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .container {
+            padding-top: 0.5rem;
+            padding-bottom: 0.5rem;
+        }
+
+        /* ============================================
+           WELCOME BANNER / HEADER
+           ============================================ */
+        .welcome-banner {
+            margin-bottom: 0;
+            display: none;
+            /* Hidden to save space */
+        }
+
+        .welcome-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 20px;
+            padding: 1.5rem;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .welcome-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -10%;
+            width: 400px;
+            height: 400px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+        }
+
+        .welcome-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .welcome-title {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: white;
+            margin-bottom: 0.25rem;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .welcome-subtitle {
+            font-size: 0.875rem;
+            color: rgba(255, 255, 255, 0.9);
+            margin: 0;
+        }
+
+        .practice-info-badges {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+            margin-top: 0.5rem;
+        }
+
+        .info-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            padding: 0.375rem 0.875rem;
+            border-radius: 20px;
+            color: white;
+            font-weight: 600;
+            font-size: 0.875rem;
+        }
+
+        .btn-back {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            padding: 0.5rem 1.25rem;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 0.875rem;
+            text-decoration: none;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .btn-back:hover {
+            background: rgba(255, 255, 255, 0.3);
+            color: white;
+            transform: translateY(-3px);
+        }
+
+        /* ============================================
+           PRACTICE CARD (Main Container)
+           ============================================ */
+        .practice-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            margin-bottom: 0.5rem;
+        }
+
+        .practice-card-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 0.4rem 1.25rem;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .practice-card-header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 300px;
+            height: 300px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+        }
+
+        .practice-card-header-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .question-counter {
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 0;
+        }
+
+        .progress-wrapper {
+            margin-top: 0.5rem;
+        }
+
+        .progress-bar-custom {
+            height: 6px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.2);
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #fee140, #84cc16);
+            transition: width 0.6s ease;
+            border-radius: 10px;
+        }
+
+        .practice-card-body {
+            padding: 1rem 1.25rem;
+        }
+
+        /* ============================================
+           QUESTION AREA
+           ============================================ */
+        .question-display {
+            background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
+            border-radius: 16px;
+            padding-top: 0.5rem;
+            text-align: center;
+            min-height: 100px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid #e2e8f0;
+            transition: all 0.3s ease;
+        }
+
+        .question-display:hover {
+            border-color: #667eea;
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.15);
+        }
+
+        .question-text {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: #2d3748;
+            margin-bottom: 0.25rem;
+        }
+
+        .question-hint {
+            font-size: 0.938rem;
+            color: #667eea;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .btn-speak {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            color: white;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-speak:hover {
+            transform: scale(1.1);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.5);
+        }
+
+        .btn-speak:active {
+            transform: scale(0.95);
+        }
+
+        /* ============================================
+           OPTIONS AREA
+           ============================================ */
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.75rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .option-card {
+            background: white;
+            border: 3px solid #e2e8f0;
+            border-radius: 16px;
+            padding: 0.875rem 0.75rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            min-height: 65px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            font-weight: 600;
+            color: #2d3748;
+        }
+
+        .option-card:hover:not(.disabled):not(.correct):not(.incorrect) {
+            border-color: #667eea;
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.2);
+        }
+
+        .option-card.correct {
+            border-color: #22c55e;
+            background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+            color: #166534;
+            animation: correctPulse 0.5s ease;
+        }
+
+        .option-card.incorrect {
+            border-color: #ef4444;
+            background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+            color: #991b1b;
+            animation: incorrectShake 0.5s ease;
+        }
+
+        .option-card.disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        @keyframes correctPulse {
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.05);
+            }
+        }
+
+        @keyframes incorrectShake {
+
+            0%,
+            100% {
+                transform: translateX(0);
+            }
+
+            25% {
+                transform: translateX(-10px);
+            }
+
+            50% {
+                transform: translateX(10px);
+            }
+
+            75% {
+                transform: translateX(-5px);
+            }
+        }
+
+        /* ============================================
+           NAVIGATION BUTTONS
+           ============================================ */
+        .practice-navigation {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 0.75rem;
+            padding-top: 0.75rem;
+            border-top: 2px solid #e2e8f0;
+        }
+
+        .btn-nav {
+            padding: 0.5rem 1.25rem;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 0.938rem;
+            transition: all 0.3s ease;
+            border: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .btn-nav-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-nav-primary:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-nav-success {
+            background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+            color: white;
+            box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3);
+        }
+
+        .btn-nav-success:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(34, 197, 94, 0.4);
+        }
+
+        .btn-nav-secondary {
+            background: #f1f5f9;
+            color: #64748b;
+            border: 2px solid #e2e8f0;
+        }
+
+        .btn-nav-secondary:hover:not(:disabled) {
+            background: #e2e8f0;
+            color: #475569;
+        }
+
+        .btn-nav-info {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            color: white;
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+        }
+
+        .btn-nav-info:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(59, 130, 246, 0.4);
+        }
+
+        .btn-nav:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .btn-exit {
+            background: rgba(239, 68, 68, 0.1);
+            border: 2px solid rgba(239, 68, 68, 0.3);
+            color: #dc2626;
+            padding: 0.5rem 0.75rem;
+            border-radius: 10px;
+            font-weight: 600;
+            transition: all 0.3s;
+            font-size: 0.938rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-exit:hover {
+            background: rgba(239, 68, 68, 0.2);
+            color: #dc2626;
+        }
+
+        /* Previous Question Button */
+        .btn-prev-fixed {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            color: white;
+            padding: 0.625rem 1.25rem;
+            border-radius: 12px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            font-size: 0.938rem;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+            margin-top: 0.75rem;
+        }
+
+        .btn-prev-fixed:hover:not(:disabled) {
+            background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-prev-fixed:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        .btn-prev-fixed i {
+            font-size: 1rem;
+        }
+
+        /* ============================================
+           RESULTS SCREEN
+           ============================================ */
+        .results-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .results-header {
+            background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+            padding: 1.75rem 1.5rem;
+            color: white;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .results-header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 400px;
+            height: 400px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+        }
+
+        .results-header-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .trophy-icon {
+            font-size: 3.5rem;
+            margin-bottom: 0.5rem;
+            animation: bounceIn 0.8s ease;
+        }
+
+        @keyframes bounceIn {
+            0% {
+                opacity: 0;
+                transform: scale(0.3);
+            }
+
+            50% {
+                transform: scale(1.05);
+            }
+
+            70% {
+                transform: scale(0.9);
+            }
+
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .results-title {
+            font-size: 1.75rem;
+            font-weight: 800;
+            margin-bottom: 0.25rem;
+        }
+
+        .results-subtitle {
+            font-size: 0.938rem;
+            opacity: 0.95;
+        }
+
+        .results-body {
+            padding: 1.75rem 1.5rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
+            border-radius: 16px;
+            padding: 1.25rem;
+            text-align: center;
+            border: 2px solid #e2e8f0;
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .stat-value {
+            font-size: 2.25rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+
+        .stat-value.correct {
+            color: #22c55e;
+        }
+
+        .stat-value.incorrect {
+            color: #ef4444;
+        }
+
+        .stat-value.accuracy {
+            color: #667eea;
+        }
+
+        .stat-label {
+            font-size: 0.938rem;
+            color: #64748b;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Review Section */
+        .review-section {
+            background: #f8fafc;
+            border-radius: 16px;
+            padding: 1.25rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .review-title {
+            font-size: 1.125rem;
+            font-weight: 700;
+            color: #2d3748;
+            margin-bottom: 1rem;
+        }
+
+        .review-list {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .review-item {
+            background: white;
+            border-radius: 12px;
+            padding: 1rem;
+            margin-bottom: 0.75rem;
+            border: 2px solid #e2e8f0;
+        }
+
+        .review-word {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #2d3748;
+            margin-bottom: 0.375rem;
+        }
+
+        .review-details {
+            display: flex;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .review-detail {
+            font-size: 0.938rem;
+            color: #64748b;
+        }
+
+        .review-detail strong {
+            color: #2d3748;
+        }
+
+        .your-answer {
+            color: #ef4444;
+        }
+
+        .correct-answer {
+            color: #22c55e;
+        }
+
+        /* Action Buttons */
+        .results-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        /* Loading Screen */
+        .loading-screen {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem 1.25rem;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .spinner-border {
+            width: 3rem;
+            height: 3rem;
+            border-width: 3px;
+            color: #667eea;
+        }
+
+        .loading-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #2d3748;
+            margin-top: 1rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .loading-text {
+            font-size: 1rem;
+            color: #64748b;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .welcome-card {
+                padding: 1.5rem;
+            }
+
+            .welcome-title {
+                font-size: 1.5rem;
+            }
+
+            .practice-card-header,
+            .practice-card-body,
+            .results-body {
+                padding: 1.5rem;
+            }
+
+            .options-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .question-text {
+                font-size: 2rem;
+            }
+
+            .practice-navigation {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .btn-nav {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .practice-info-badges {
+                flex-direction: column;
+            }
+
+            .info-badge {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .practice-card,
+        .results-card {
+            animation: fadeInUp 0.5s ease-out;
+        }
+
+        /* ============================================
+           ACHIEVEMENT NOTIFICATIONS
+           ============================================ */
+        .achievement-notification {
+            position: fixed;
+            top: 20px;
+            right: -400px;
+            width: 350px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 16px;
+            padding: 1.25rem;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+            transition: right 0.3s ease;
+            z-index: 9999;
+            color: white;
+        }
+
+        .achievement-notification.show {
+            right: 20px;
+        }
+
+        .achievement-content {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .achievement-icon {
+            font-size: 3rem;
+            animation: bounceIn 0.8s ease;
+        }
+
+        .achievement-details {
+            flex: 1;
+        }
+
+        .achievement-title {
+            font-size: 0.875rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            opacity: 0.9;
+            margin-bottom: 0.25rem;
+        }
+
+        .achievement-name {
+            font-size: 1.25rem;
+            font-weight: 800;
+            margin-bottom: 0.25rem;
+        }
+
+        .achievement-desc {
+            font-size: 0.875rem;
+            opacity: 0.9;
+            margin-bottom: 0.5rem;
+        }
+
+        .achievement-rarity {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .rarity-common {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .rarity-rare {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+        }
+
+        .rarity-epic {
+            background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+        }
+
+        .rarity-legendary {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+        }
+
+        /* ============================================
+           SPEAKING MODE FEEDBACK
+           ============================================ */
+        #speakingFeedback .alert {
+            margin: 0;
+            border-radius: 12px;
+            font-size: 0.938rem;
+        }
+
+        #speakingFeedback .alert-info {
+            background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%);
+            border: 2px solid #38bdf8;
+            color: #0369a1;
+        }
+
+        #speakingFeedback .alert-success {
+            background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+            border: 2px solid #22c55e;
+            color: #166534;
+        }
+
+        #speakingFeedback .alert-danger {
+            background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+            border: 2px solid #ef4444;
+            color: #991b1b;
+        }
+
+        #speakingFeedback .alert-warning {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            border: 2px solid #f59e0b;
+            color: #92400e;
+        }
+
+        .feedback-message {
+            padding: 1rem;
+            border-radius: 12px;
+            margin-top: 1rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .feedback-correct {
+            background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+            border: 2px solid #22c55e;
+            color: #166534;
+        }
+
+        .feedback-incorrect {
+            background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+            border: 2px solid #ef4444;
+            color: #991b1b;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Header -->
+    <div id="header-placeholder"></div>
+
+    <div class="container">
+        <!-- Welcome Banner (Hidden to save space) -->
+        <section class="welcome-banner" style="display: none;">
+            <div class="welcome-card">
+                <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+                    <div class="welcome-content">
+                        <h1 class="welcome-title">
+                            <i class="fas fa-graduation-cap me-2"></i>
+                            <span id="categoryNameDisplay">Luyện Tập</span>
+                        </h1>
+                        <p class="welcome-subtitle">Hoàn thành bài tập để nâng cao kỹ năng của bạn!</p>
+                        <div class="practice-info-badges">
+                            <div class="info-badge" id="modeDisplay">
+                                <i class="fas fa-headphones"></i>
+                                <span>Luyện Nghe</span>
+                            </div>
+                            <div class="info-badge" id="wordCountDisplay">
+                                <i class="fas fa-layer-group"></i>
+                                <span>Đang tải...</span>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="btn-back" onclick="history.back()">
+                        <i class="fas fa-arrow-left"></i> Quay lại
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Loading Screen -->
+        <div id="loadingScreen" class="loading-screen">
+            <div class="spinner-border" role="status">
+                <span class="visually-hidden">Đang tải...</span>
+            </div>
+            <h3 class="loading-title">Đang chuẩn bị bài tập...</h3>
+            <p class="loading-text">Vui lòng đợi trong giây lát</p>
+        </div>
+
+        <!-- Practice Screen -->
+        <div id="practiceScreen" class="practice-card" style="display: none;">
+            <div class="practice-card-header">
+                <div class="practice-card-header-content">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="question-counter" id="practiceTitle">
+                            <i class="fas fa-clipboard-list me-2"></i>
+                            Câu <span id="currentQuestion">1</span>/<span id="totalQuestions">10</span>
+                        </div>
+                        <button class="btn-exit" id="exitPracticeBtn">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="progress-wrapper">
+                        <div class="progress-bar-custom">
+                            <div class="progress-fill" id="progressBar" style="width: 0%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="practice-card-body">
+                <!-- Question Display -->
+                <div class="question-display" id="questionArea">
+                    <!-- Populated by JS -->
+                </div>
+
+
+
+                <!-- Options -->
+                <div class="options-grid" id="optionsArea">
+                    <!-- Populated by JS -->
+                </div>
+
+                <!-- Navigation -->
+                <div class="practice-navigation">
+                    <div class="d-flex gap-2">
+                        <button class="btn-prev-fixed" id="prevQuestionBtn" >
+                            <i class="fas fa-arrow-left"></i>
+                            <span>Câu trước</span>
+                        </button>
+                        <button class="btn-prev-fixed" id="nextQuestionBtn" >
+                            Câu Tiếp
+                            <i class="fas fa-arrow-right"></i>
+                        </button>
+                        <!-- Previous Question Button -->
+
+                        <button class="btn-nav btn-nav-success" id="finishPracticeBtn" style="display: none;">
+                            <i class="fas fa-check-circle"></i>
+                            Hoàn Thành
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Results Screen -->
+        <div id="resultsScreen" class="results-card" style="display: none;">
+            <div class="results-header">
+                <div class="results-header-content">
+                    <div class="trophy-icon" id="resultIcon">
+                        <i class="fas fa-trophy"></i>
+                    </div>
+                    <h2 class="results-title" id="resultTitle">Xuất Sắc!</h2>
+                    <p class="results-subtitle" id="resultMessage">Bạn đã hoàn thành bài luyện tập</p>
+                </div>
+            </div>
+
+            <div class="results-body">
+                <!-- Statistics -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-value correct" id="correctCount">0</div>
+                        <div class="stat-label">Đúng</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value incorrect" id="wrongCount">0</div>
+                        <div class="stat-label">Sai</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value accuracy" id="accuracyPercent">0%</div>
+                        <div class="stat-label">Độ Chính Xác</div>
+                    </div>
+                </div>
+
+                <!-- Review Section -->
+                <div class="review-section" id="reviewSection">
+                    <h3 class="review-title">
+                        <i class="fas fa-list-check me-2"></i>
+                        Xem Lại Các Câu Sai
+                    </h3>
+                    <div class="review-list" id="reviewList">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="results-actions">
+                    <button class="btn-nav btn-nav-primary" id="practiceAgainBtn">
+                        <i class="fas fa-redo"></i>
+                        Luyện Lại
+                    </button>
+                    <button class="btn-nav btn-nav-secondary" onclick="window.location.href='learning-categories.html'">
+                        <i class="fas fa-list"></i>
+                        Chọn Danh Mục Khác
+                    </button>
+                    <button class="btn-nav btn-nav-info" id="returnToModesBtn">
+                        <i class="fas fa-arrow-left"></i>
+                        Chọn Chế Độ Khác
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
+    <script type="module" src="/js/utils/component-loader.js"></script>
+
+    <!-- Practice Logic -->
+    <script type="module" src="/js/pages/learning-practice-new.js"></script>
+</body>
+
+</html>

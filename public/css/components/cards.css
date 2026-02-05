@@ -1,0 +1,153 @@
+/**
+ * Card Component Styles
+ * Reusable card container styles
+ */
+
+/* Base Card */
+.card {
+    background-color: var(--bg-primary);
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    transition: all var(--transition-fast);
+}
+
+.card:hover {
+    box-shadow: var(--shadow-md);
+}
+
+/* Card Variants */
+.card-elevated {
+    border: none;
+    box-shadow: var(--shadow-md);
+}
+
+.card-elevated:hover {
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-2px);
+}
+
+.card-bordered {
+    border: 2px solid var(--border-color);
+    box-shadow: none;
+}
+
+.card-flat {
+    border: none;
+    box-shadow: none;
+}
+
+/* Card Header */
+.card-header {
+    padding: var(--spacing-lg);
+    border-bottom: 1px solid var(--border-light);
+}
+
+.card-header-title {
+    margin: 0;
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-semibold);
+    color: var(--text-primary);
+}
+
+.card-header-subtitle {
+    margin-top: var(--spacing-xs);
+    font-size: var(--font-size-sm);
+    color: var(--text-secondary);
+}
+
+/* Card Body */
+.card-body {
+    padding: var(--spacing-lg);
+}
+
+.card-body > *:last-child {
+    margin-bottom: 0;
+}
+
+/* Card Footer */
+.card-footer {
+    padding: var(--spacing-lg);
+    border-top: 1px solid var(--border-light);
+    background-color: var(--bg-secondary);
+}
+
+/* Card Image */
+.card-img {
+    width: 100%;
+    height: auto;
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+}
+
+.card-img-bottom {
+    border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+}
+
+/* Card Actions */
+.card-actions {
+    display: flex;
+    gap: var(--spacing-sm);
+    padding: var(--spacing-md) var(--spacing-lg);
+    border-top: 1px solid var(--border-light);
+}
+
+.card-actions.justify-end {
+    justify-content: flex-end;
+}
+
+.card-actions.justify-between {
+    justify-content: space-between;
+}
+
+/* Card Grid */
+.card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: var(--spacing-lg);
+}
+
+/* Card Sizes */
+.card-sm .card-header,
+.card-sm .card-body,
+.card-sm .card-footer {
+    padding: var(--spacing-md);
+}
+
+.card-lg .card-header,
+.card-lg .card-body,
+.card-lg .card-footer {
+    padding: var(--spacing-xl);
+}
+
+/* Interactive Card */
+.card-interactive {
+    cursor: pointer;
+    transition: all var(--transition-base);
+}
+
+.card-interactive:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-xl);
+}
+
+.card-interactive:active {
+    transform: translateY(-2px);
+}
+
+/* Card with Badge */
+.card-badge {
+    position: relative;
+}
+
+.card-badge::after {
+    content: attr(data-badge);
+    position: absolute;
+    top: var(--spacing-sm);
+    right: var(--spacing-sm);
+    padding: var(--spacing-xs) var(--spacing-sm);
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-semibold);
+    color: white;
+    background-color: var(--danger-color);
+    border-radius: var(--radius-full);
+}
