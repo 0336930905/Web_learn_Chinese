@@ -1,7 +1,5 @@
-// API URL - Change this in production
-const API_URL = window.location.hostname === 'localhost' 
-    ? 'http://localhost:3000/api' 
-    : '/api';
+// API URL - Automatically detects environment
+const API_URL = '/api';
 
 // State
 let allWords = [];
