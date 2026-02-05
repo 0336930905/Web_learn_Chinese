@@ -15,11 +15,175 @@
     <link rel="stylesheet" href="/css/main.css">
     <link rel="stylesheet" href="/css/pages/login.css">
     <style>
-        /* Inline styles can be removed - now using external CSS */
+        /* Browser Warning Banner */
+        .browser-warning {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1.25rem;
+            z-index: 10000;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            animation: slideDown 0.5s ease;
+            display: none;
+        }
 
+        .browser-warning.show {
+            display: block;
+        }
+
+        @keyframes slideDown {
+            from { transform: translateY(-100%); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .browser-warning-content {
+            max-width: 900px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .browser-warning-icon {
+            font-size: 2rem;
+            flex-shrink: 0;
+        }
+
+        .browser-warning-text {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .browser-warning-text h4 {
+            margin: 0 0 0.25rem 0;
+            font-size: 1.1rem;
+            font-weight: 700;
+        }
+
+        .browser-warning-text p {
+            margin: 0;
+            font-size: 0.9rem;
+            opacity: 0.95;
+        }
+
+        .browser-warning-actions {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+        }
+
+        .browser-warning-btn {
+            padding: 0.625rem 1.25rem;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+        }
+
+        .browser-warning-btn-primary {
+            background: white;
+            color: #667eea;
+        }
+
+        .browser-warning-btn-primary:hover {
+            background: #f0f0f0;
+            transform: translateY(-2px);
+        }
+
+        .browser-warning-btn-secondary {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .browser-warning-btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .browser-warning-close {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0.25rem;
+            opacity: 0.8;
+            transition: opacity 0.3s;
+        }
+
+        .browser-warning-close:hover {
+            opacity: 1;
+        }
+
+        @media (max-width: 768px) {
+            .browser-warning {
+                padding: 1rem;
+            }
+            
+            .browser-warning-content {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .browser-warning-actions {
+                width: 100%;
+            }
+            
+            .browser-warning-btn {
+                flex: 1;
+                justify-content: center;
+            }
+        }
+
+        /* Adjust main content when warning is shown */
+        body.has-browser-warning {
+            padding-top: 120px;
+        }
+
+        @media (max-width: 768px) {
+            body.has-browser-warning {
+                padding-top: 180px;
+            }
+        }
     </style>
 </head>
 <body>
+    <!-- Browser Warning Banner -->
+    <div id="browserWarning" class="browser-warning">
+        <div class="browser-warning-content">
+            <div class="browser-warning-icon">
+                <i class="fas fa-exclamation-triangle"></i>
+            </div>
+            <div class="browser-warning-text">
+                <h4><i class="fas fa-globe"></i> Đăng nhập Google không khả dụng</h4>
+                <p>Bạn đang sử dụng trình duyệt nhúng (Zalo, Facebook, Instagram...). Vui lòng mở trong trình duyệt chính thức hoặc đăng nhập bằng Email/Mật khẩu.</p>
+            </div>
+            <div class="browser-warning-actions">
+                <button class="browser-warning-btn browser-warning-btn-primary" onclick="openInExternalBrowser()">
+                    <i class="fas fa-external-link-alt"></i>
+                    Mở trong trình duyệt
+                </button>
+                <button class="browser-warning-btn browser-warning-btn-secondary" onclick="scrollToEmailLogin()">
+                    <i class="fas fa-envelope"></i>
+                    Đăng nhập Email
+                </button>
+            </div>
+            <button class="browser-warning-close" onclick="closeBrowserWarning()" aria-label="Đóng">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+    </div>
+
     <!-- Header -->
     <div id="header-placeholder"></div>
 
@@ -138,11 +302,11 @@
                     </button>
                 </form>
 
-                <div class="divider">
+                <div class="divider" id="googleDivider">
                     <span>hoặc</span>
                 </div>
 
-                <a href="/api/auth/google" class="btn btn-google">
+                <a href="/api/auth/google" class="btn btn-google" id="googleLoginBtn">
                     <svg class="google-icon" viewBox="0 0 24 24">
                         <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
                         <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
@@ -151,6 +315,12 @@
                     </svg>
                     <span>Đăng nhập với Google</span>
                 </a>
+                
+                <!-- Warning for in-app browsers -->
+                <div id="googleWarningText" style="display: none; margin-top: 1rem; padding: 0.75rem; background: #fff3cd; border: 1px solid #ffc107; border-radius: 8px; font-size: 0.85rem; color: #856404;">
+                    <i class="fas fa-info-circle"></i>
+                    <strong>Lưu ý:</strong> Đăng nhập Google không khả dụng trong trình duyệt này. Vui lòng sử dụng Email/Mật khẩu hoặc mở trang trong Chrome/Safari.
+                </div>
 
                 <div class="form-toggle">
                     Chưa có tài khoản? <a onclick="showRegister()">Đăng ký ngay</a>
@@ -571,7 +741,132 @@
             }
         });
 
+        // ============================================================================
+        // IN-APP BROWSER DETECTION & WARNING
+        // ============================================================================
+        function isInAppBrowser() {
+            const ua = navigator.userAgent || navigator.vendor || window.opera;
+            
+            // Detect various in-app browsers
+            const inAppBrowsers = [
+                'FBAN',        // Facebook App
+                'FBAV',        // Facebook App
+                'Instagram',   // Instagram App
+                'Line',        // Line App
+                'Zalo',        // Zalo Browser
+                'ZaloPC',      // Zalo PC
+                'wv',          // WebView
+                'MessengerLite',
+                'Messenger',
+                'Twitter',
+                'LinkedIn',
+                'WhatsApp',
+                'Telegram'
+            ];
+            
+            // Check if any in-app browser pattern matches
+            const isInApp = inAppBrowsers.some(pattern => ua.indexOf(pattern) > -1);
+            
+            // Additional check for WebView
+            const isWebView = /(iPhone|iPod|iPad).*AppleWebKit(?!.*Safari)/i.test(ua) ||
+                            /Android.*(wv|.0.0.0)/i.test(ua);
+            
+            return isInApp || isWebView;
+        }
+
+        function getBrowserName() {
+            const ua = navigator.userAgent;
+            if (ua.indexOf('Zalo') > -1) return 'Zalo';
+            if (ua.indexOf('FBAN') > -1 || ua.indexOf('FBAV') > -1) return 'Facebook';
+            if (ua.indexOf('Instagram') > -1) return 'Instagram';
+            if (ua.indexOf('Line') > -1) return 'Line';
+            if (ua.indexOf('Messenger') > -1) return 'Messenger';
+            if (ua.indexOf('Twitter') > -1) return 'Twitter';
+            if (ua.indexOf('LinkedIn') > -1) return 'LinkedIn';
+            return 'trình duyệt nhúng';
+        }
+
+        function showBrowserWarning() {
+            const warning = document.getElementById('browserWarning');
+            const googleBtn = document.getElementById('googleLoginBtn');
+            const googleDivider = document.getElementById('googleDivider');
+            const googleWarningText = document.getElementById('googleWarningText');
+            
+            if (warning) {
+                warning.classList.add('show');
+                document.body.classList.add('has-browser-warning');
+                
+                // Update warning text with specific browser name
+                const browserName = getBrowserName();
+                const warningText = warning.querySelector('.browser-warning-text p');
+                if (warningText && browserName !== 'trình duyệt nhúng') {
+                    warningText.textContent = `Bạn đang sử dụng trình duyệt ${browserName}. Vui lòng mở trong trình duyệt chính thức (Chrome, Safari, Edge) hoặc đăng nhập bằng Email/Mật khẩu.`;
+                }
+            }
+            
+            // Disable Google login button and show warning
+            if (googleBtn) {
+                googleBtn.style.opacity = '0.5';
+                googleBtn.style.pointerEvents = 'none';
+                googleBtn.style.cursor = 'not-allowed';
+                googleBtn.title = 'Không khả dụng trong trình duyệt này';
+            }
+            
+            // Show inline warning
+            if (googleWarningText) {
+                googleWarningText.style.display = 'block';
+            }
+            
+            console.log('⚠️ In-app browser detected:', getBrowserName());
+        }
+
+        function closeBrowserWarning() {
+            const warning = document.getElementById('browserWarning');
+            if (warning) {
+                warning.classList.remove('show');
+                document.body.classList.remove('has-browser-warning');
+            }
+        }
+
+        function openInExternalBrowser() {
+            const currentUrl = window.location.href;
+            
+            // Try different methods to open in external browser
+            // Method 1: Try to open in default browser (works on some apps)
+            window.open(currentUrl, '_system');
+            
+            // Method 2: Show instructions
+            setTimeout(() => {
+                alert('📱 Hướng dẫn:\n\n' +
+                      '1. Nhấn nút "Mở trong trình duyệt" (⋮ hoặc ...) ở góc trên\n' +
+                      '2. Chọn "Mở bằng Chrome" hoặc "Mở bằng Safari"\n\n' +
+                      'Hoặc sao chép link này:\n' + currentUrl);
+            }, 100);
+        }
+
+        function scrollToEmailLogin() {
+            closeBrowserWarning();
+            const emailInput = document.getElementById('loginEmail');
+            if (emailInput) {
+                emailInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                setTimeout(() => emailInput.focus(), 500);
+            }
+        }
+
+        // Check on page load
+        (function checkBrowser() {
+            if (isInAppBrowser()) {
+                // Wait for DOM to be ready
+                if (document.readyState === 'loading') {
+                    document.addEventListener('DOMContentLoaded', showBrowserWarning);
+                } else {
+                    showBrowserWarning();
+                }
+            }
+        })();
+
         console.log('✅ Login page initialized');
+        console.log('🌐 Browser check:', isInAppBrowser() ? '⚠️ In-app browser' : '✅ Standard browser');
     </script>
     
     <!-- jQuery -->
