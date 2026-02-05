@@ -509,11 +509,230 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script type="module" src="/js/utils/component-loader.js"></script>
     
+    <!-- Voice Settings Script -->
+    <script>
+        // ===== VOICE SETTINGS =====
+        let availableVoices = [];
+        
+        // Load voices when available
+        function loadVoices() {
+            if ('speechSynthesis' in window) {
+                availableVoices = window.speechSynthesis.getVoices();
+                
+                if (availableVoices.length > 0) {
+                    populateVoiceSelector();
+                    console.log('🎤 Loaded', availableVoices.length, 'voices');
+                    
+                    // Log Chinese voices
+                    const chineseVoices = availableVoices.filter(v => v.lang.startsWith('zh'));
+                    console.log('🇹🇼 Chinese voices:', chineseVoices.map(v => v.name + ' (' + v.lang + ')'));
+                }
+            }
+        }
+        
+        // Populate voice selector with available voices
+        function populateVoiceSelector() {
+            const voiceSelector = document.getElementById('voiceSelector');
+            if (!voiceSelector) return;
+            
+            // Get saved voice preference
+            const savedVoice = localStorage.getItem('ttsVoice') || 'auto';
+            
+            // Clear existing options except "auto"
+            voiceSelector.innerHTML = '<option value="auto">🤖 Tự động (Giọng mặc định)</option>';
+            
+            // Add language-based options
+            const languageOptions = [
+                { value: 'zh-TW', label: '🇹🇼 Tiếng Đài Loan (zh-TW)', priority: 1 },
+                { value: 'zh-CN', label: '🇨🇳 Tiếng Trung Quốc (zh-CN)', priority: 2 },
+                { value: 'zh-HK', label: '🇭🇰 Tiếng Hồng Kông (zh-HK)', priority: 3 }
+            ];
+            
+            languageOptions.forEach(opt => {
+                const option = document.createElement('option');
+                option.value = opt.value;
+                option.textContent = opt.label;
+                voiceSelector.appendChild(option);
+            });
+            
+            // Add separator
+            const separator = document.createElement('option');
+            separator.disabled = true;
+            separator.textContent = '─────────────────';
+            voiceSelector.appendChild(separator);
+            
+            // Add specific voices (Taiwan first, then others)
+            const taiwanVoices = availableVoices.filter(v => v.lang.startsWith('zh-TW'));
+            const chinaVoices = availableVoices.filter(v => v.lang.startsWith('zh-CN'));
+            const hkVoices = availableVoices.filter(v => v.lang.startsWith('zh-HK'));
+            const otherChineseVoices = availableVoices.filter(v => 
+                v.lang.startsWith('zh') && 
+                !v.lang.startsWith('zh-TW') && 
+                !v.lang.startsWith('zh-CN') && 
+                !v.lang.startsWith('zh-HK')
+            );
+            
+            // Group voices by region
+            const voiceGroups = [
+                { label: '🇹🇼 Giọng Đài Loan:', voices: taiwanVoices },
+                { label: '🇨🇳 Giọng Trung Quốc:', voices: chinaVoices },
+                { label: '🇭🇰 Giọng Hồng Kông:', voices: hkVoices },
+                { label: '🌏 Giọng khác:', voices: otherChineseVoices }
+            ];
+            
+            voiceGroups.forEach(group => {
+                if (group.voices.length > 0) {
+                    // Add group label
+                    const groupLabel = document.createElement('option');
+                    groupLabel.disabled = true;
+                    groupLabel.textContent = group.label;
+                    groupLabel.style.fontWeight = 'bold';
+                    groupLabel.style.backgroundColor = '#f0f0f0';
+                    voiceSelector.appendChild(groupLabel);
+                    
+                    // Add voices in this group
+                    group.voices.forEach(voice => {
+                        const option = document.createElement('option');
+                        option.value = voice.name;
+                        option.textContent = `  ${voice.name}`;
+                        option.dataset.lang = voice.lang;
+                        voiceSelector.appendChild(option);
+                    });
+                }
+            });
+            
+            // Set saved voice
+            voiceSelector.value = savedVoice;
+        }
+        
+        // Load voice preference from localStorage
+        function loadVoicePreference() {
+            const savedVoice = localStorage.getItem('ttsVoice') || 'auto';
+            const voiceSelector = document.getElementById('voiceSelector');
+            if (voiceSelector) {
+                voiceSelector.value = savedVoice;
+            }
+        }
+        
+        // Save voice preference
+        function saveVoicePreference() {
+            const voiceSelector = document.getElementById('voiceSelector');
+            if (voiceSelector) {
+                localStorage.setItem('ttsVoice', voiceSelector.value);
+                console.log('✅ Voice preference saved:', voiceSelector.value);
+            }
+        }
+        
+        // Test voice function
+        window.testVoice = function() {
+            const testText = '你好'; // Traditional Chinese "Hello"
+            const voiceSelector = document.getElementById('voiceSelector');
+            const selectedValue = voiceSelector.value;
+            
+            console.log('🎤 Testing voice:', selectedValue);
+            
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+                
+                const utterance = new SpeechSynthesisUtterance(testText);
+                
+                // Determine language and voice
+                if (selectedValue === 'auto') {
+                    utterance.lang = 'zh-TW';
+                } else if (selectedValue.startsWith('zh-')) {
+                    // Language code (zh-TW, zh-CN, zh-HK)
+                    utterance.lang = selectedValue;
+                } else {
+                    // Specific voice name
+                    const voice = availableVoices.find(v => v.name === selectedValue);
+                    if (voice) {
+                        utterance.voice = voice;
+                        utterance.lang = voice.lang;
+                        console.log('🎵 Using specific voice:', voice.name, '(' + voice.lang + ')');
+                    } else {
+                        utterance.lang = 'zh-TW';
+                    }
+                }
+                
+                utterance.rate = 0.85;
+                utterance.pitch = 1.0;
+                utterance.volume = 1.0;
+                
+                // Try to find matching voice if not already set
+                if (!utterance.voice) {
+                    const matchingVoice = availableVoices.find(voice => 
+                        voice.lang.startsWith(utterance.lang)
+                    );
+                    
+                    if (matchingVoice) {
+                        utterance.voice = matchingVoice;
+                        console.log('🎵 Using matching voice:', matchingVoice.name, '(' + matchingVoice.lang + ')');
+                    } else {
+                        console.log('⚠️ No matching voice found for', utterance.lang, '- using default');
+                    }
+                }
+                
+                utterance.onstart = () => {
+                    console.log('🔊 Voice test started');
+                    const testBtn = event.target.closest('button');
+                    if (testBtn) {
+                        testBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Đang phát âm...';
+                        testBtn.disabled = true;
+                    }
+                };
+                
+                utterance.onend = () => {
+                    console.log('✅ Voice test completed');
+                    const testBtn = document.querySelector('button[onclick="testVoice()"]');
+                    if (testBtn) {
+                        testBtn.innerHTML = '<i class="fas fa-play-circle"></i> Thử giọng đọc';
+                        testBtn.disabled = false;
+                    }
+                };
+                
+                utterance.onerror = (e) => {
+                    console.error('❌ Voice test error:', e);
+                    const testBtn = document.querySelector('button[onclick="testVoice()"]');
+                    if (testBtn) {
+                        testBtn.innerHTML = '<i class="fas fa-play-circle"></i> Thử giọng đọc';
+                        testBtn.disabled = false;
+                    }
+                    alert('⚠️ Lỗi khi phát âm. Vui lòng thử lại.');
+                };
+                
+                window.speechSynthesis.speak(utterance);
+            } else {
+                alert('⚠️ Trình duyệt của bạn không hỗ trợ phát âm tự động');
+            }
+        };
+        
+        // Initialize voices
+        if ('speechSynthesis' in window) {
+            // Load voices immediately
+            loadVoices();
+            
+            // Also listen for voices changed event (some browsers load voices async)
+            window.speechSynthesis.onvoiceschanged = () => {
+                loadVoices();
+            };
+        }
+    </script>
+    
     <script>
         let categorySlug = '';
         let categoryName = '';
 
         document.addEventListener('DOMContentLoaded', () => {
+            // Load voice preference
+            loadVoicePreference();
+            
+            // Listen for voice selector changes
+            const voiceSelector = document.getElementById('voiceSelector');
+            if (voiceSelector) {
+                voiceSelector.addEventListener('change', saveVoicePreference);
+            }
+            
+            // Auth check
             const authToken = sessionStorage.getItem('currentToken') || localStorage.getItem('token');
             if (!authToken) {
                 window.location.href = '/pages/auth/login.html';
