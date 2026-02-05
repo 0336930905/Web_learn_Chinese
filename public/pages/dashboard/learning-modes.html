@@ -85,6 +85,72 @@
             margin-top: 0.75rem;
         }
 
+        /* Voice Selector */
+        .voice-selector-container {
+            margin-top: 1rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .voice-selector {
+            background: rgba(255, 255, 255, 0.95);
+            border: 2px solid rgba(102, 126, 234, 0.3);
+            border-radius: 12px;
+            padding: 0.875rem 1.25rem;
+            font-size: 0.938rem;
+            font-weight: 600;
+            color: #667eea;
+            cursor: pointer;
+            transition: all 0.3s;
+            outline: none;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%23667eea' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14L2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+            background-size: 16px;
+            padding-right: 3rem;
+            min-width: 280px;
+        }
+
+        .voice-selector:hover {
+            background: white;
+            border-color: #667eea;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+        }
+
+        .voice-selector:focus {
+            background: white;
+            border-color: #667eea;
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.15);
+        }
+
+        .voice-selector option {
+            padding: 0.75rem;
+            font-size: 0.938rem;
+        }
+
+        .voice-label {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: white;
+            font-weight: 600;
+            font-size: 0.875rem;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+        }
+
+        .voice-label i {
+            font-size: 1rem;
+        }
+
+        @media (max-width: 768px) {
+            .voice-selector {
+                min-width: 100%;
+                width: 100%;
+            }
+        }
+
         .btn-back {
             background: rgba(255, 255, 255, 0.2);
             backdrop-filter: blur(10px);
@@ -285,6 +351,23 @@
                         <div class="category-badge" id="categoryInfo">
                             <i class="fas fa-folder-open"></i>
                             <span>Đang tải...</span>
+                        </div>
+                        
+                        <!-- Voice Selector -->
+                        <div class="voice-selector-container">
+                            <label class="voice-label">
+                                <i class="fas fa-volume-up"></i>
+                                Chọn giọng đọc:
+                            </label>
+                            <select id="voiceSelector" class="voice-selector">
+                                <option value="auto">🤖 Tự động (Giọng mặc định)</option>
+                                <option value="zh-TW">🇹🇼 Tiếng Đài Loan (zh-TW)</option>
+                                <option value="zh-CN">🇨🇳 Tiếng Trung Quốc (zh-CN)</option>
+                                <option value="zh-HK">🇭🇰 Tiếng Hồng Kông (zh-HK)</option>
+                            </select>
+                            <button class="btn btn-sm btn-light mt-2" onclick="testVoice()" style="background: rgba(255, 255, 255, 0.2); border: 1px solid rgba(255, 255, 255, 0.3); color: white; padding: 0.5rem 1rem; border-radius: 8px; font-weight: 600;">
+                                <i class="fas fa-play-circle"></i> Thử giọng đọc
+                            </button>
                         </div>
                     </div>
                     <a href="learning-categories.html" class="btn-back">

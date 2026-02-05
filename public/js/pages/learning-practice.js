@@ -315,7 +315,7 @@ function showListeningQuestion(word, questionArea, optionsArea) {
     questionArea.innerHTML = `
         <div class="mb-4">
             <h4 class="mb-3">Nghe và chọn từ đúng:</h4>
-            <button class="btn btn-lg btn-primary" onclick="speakWord('${word.pinyin || word.traditional}')">
+            <button class="btn btn-lg btn-primary" onclick="speakWord('${word.traditional}')">
                 <i class="fas fa-volume-up fa-2x"></i>
                 <div class="mt-2">Phát Âm</div>
             </button>
@@ -337,8 +337,8 @@ function showListeningQuestion(word, questionArea, optionsArea) {
     
     attachOptionListeners(word._id);
     
-    // Auto-play on first load
-    setTimeout(() => speakWord(word.pinyin || word.traditional), 500);
+    // Auto-play on first load - USE TRADITIONAL instead of Pinyin
+    setTimeout(() => speakWord(word.traditional), 500);
 }
 
 // Memory Mode: Show word, choose correct Vietnamese meaning
@@ -350,7 +350,7 @@ function showMemoryQuestion(word, questionArea, optionsArea) {
                 <h1 class="display-3 mb-2">${word.traditional}</h1>
                 <p class="h4 text-muted">${word.simplified}</p>
                 <p class="text-secondary">${word.pinyin}</p>
-                <button class="btn btn-sm btn-outline-primary mt-2" onclick="speakWord('${word.pinyin || word.traditional}')">
+                <button class="btn btn-sm btn-outline-primary mt-2" onclick="speakWord('${word.traditional}')">
                     <i class="fas fa-volume-up"></i> Nghe Phát Âm
                 </button>
             </div>
@@ -586,7 +586,7 @@ async function showResults() {
                             <div class="text-success fw-bold">${ans.word.vietnamese}</div>
                         </div>
                         <div class="col-md-2 text-end">
-                            <button class="btn btn-sm btn-outline-primary" onclick="speakWord('${ans.word.pinyin || ans.word.traditional}')">
+                            <button class="btn btn-sm btn-outline-primary" onclick="speakWord('${ans.word.traditional}')">
                                 <i class="fas fa-volume-up"></i>
                             </button>
                         </div>
@@ -623,12 +623,33 @@ function updateTodayStats() {
     document.getElementById('todayAccuracy').textContent = todayAccuracy + '%';
 }
 
+// Get preferred TTS language from localStorage
+function getTTSLanguage() {
+    const savedVoice = localStorage.getItem('ttsVoice') || 'zh-TW';
+    return savedVoice === 'auto' ? 'zh-TW' : savedVoice;
+}
+
 // Speak Word (Text-to-Speech)
 window.speakWord = function(text) {
     if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+        
         const utterance = new SpeechSynthesisUtterance(text);
-        utterance.lang = 'zh-TW'; // Taiwan Chinese
-        utterance.rate = 0.8; // Slower for learning
+        const preferredLang = getTTSLanguage();
+        utterance.lang = preferredLang;
+        utterance.rate = 0.85; // Slower for learning
+        utterance.pitch = 1.0;
+        utterance.volume = 1.0;
+        
+        // Try to find a voice that matches the preferred language
+        const voices = window.speechSynthesis.getVoices();
+        const matchingVoice = voices.find(voice => voice.lang.startsWith(preferredLang));
+        
+        if (matchingVoice) {
+            utterance.voice = matchingVoice;
+            console.log('🎵 Using voice:', matchingVoice.name, '(' + matchingVoice.lang + ')');
+        }
+        
         speechSynthesis.speak(utterance);
     }
 }

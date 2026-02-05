@@ -205,7 +205,7 @@ function showListeningQuestion(word, questionArea, optionsArea) {
     setTimeout(() => {
         const playBtn = document.getElementById('listeningPlayBtn');
         if (playBtn) {
-            playBtn.addEventListener('click', () => speakWord(word.pinyin || word.traditional));
+            playBtn.addEventListener('click', () => speakWord(word.traditional));
         }
     }, 100);
     
@@ -220,8 +220,8 @@ function showListeningQuestion(word, questionArea, optionsArea) {
     `).join('');
     
     attachOptionListeners(word._id);
-    // Delay auto-play to avoid conflicts
-    setTimeout(() => speakWord(word.pinyin || word.traditional), 800);
+    // Delay auto-play to avoid conflicts - USE TRADITIONAL instead of Pinyin
+    setTimeout(() => speakWord(word.traditional), 800);
 }
 
 // ===== MEMORY MODE =====
@@ -249,11 +249,11 @@ function showMemoryQuestion(word, questionArea, optionsArea) {
         </div>
     `).join('');
     
-    // Add event listener for play button
+    // Add event listener for play button - USE TRADITIONAL instead of Pinyin
     setTimeout(() => {
         const playBtn = document.getElementById('memoryPlayBtn');
         if (playBtn) {
-            playBtn.addEventListener('click', () => speakWord(word.pinyin || word.traditional));
+            playBtn.addEventListener('click', () => speakWord(word.traditional));
         }
     }, 100);
     
@@ -309,11 +309,11 @@ function showWritingQuestion(word, questionArea, optionsArea) {
         </div>
     `;
     
-    // Add event listener
+    // Add event listener - USE TRADITIONAL instead of Pinyin
     setTimeout(() => {
         const playBtn = document.getElementById('writingPlayBtn');
         if (playBtn) {
-            playBtn.addEventListener('click', () => speakWord(word.pinyin || word.traditional));
+            playBtn.addEventListener('click', () => speakWord(word.traditional));
         }
     }, 100);
     
@@ -342,8 +342,8 @@ function showWritingQuestion(word, questionArea, optionsArea) {
         </div>
     `;
     
-    // Auto-play pronunciation
-    setTimeout(() => speakWord(word.pinyin || word.traditional), 800);
+    // Auto-play pronunciation - USE TRADITIONAL instead of Pinyin
+    setTimeout(() => speakWord(word.traditional), 800);
     
     // Focus input
     setTimeout(() => document.getElementById('writingInput')?.focus(), 900);
@@ -407,12 +407,12 @@ function showSpeakingQuestion(word, questionArea, optionsArea) {
           
     `;
     
-    // Add event listener for listen button
+    // Add event listener for listen button - USE TRADITIONAL instead of Pinyin
     setTimeout(() => {
         const listenBtn = document.getElementById('listenSampleBtn');
         if (listenBtn) {
             listenBtn.addEventListener('click', () => {
-                speakWord(word.pinyin || word.traditional);
+                speakWord(word.traditional);
             });
         }
     }, 100);
@@ -421,10 +421,10 @@ function showSpeakingQuestion(word, questionArea, optionsArea) {
     window.currentCorrectPinyin = word.pinyin;
     window.currentCorrectTraditional = word.traditional;
     
-    // Auto-play pronunciation when showing new word
+    // Auto-play pronunciation when showing new word - USE TRADITIONAL instead of Pinyin
     setTimeout(() => {
-        speakWord(word.pinyin || word.traditional);
-        console.log('🔊 Auto-playing pronunciation:', word.pinyin);
+        speakWord(word.traditional);
+        console.log('🔊 Auto-playing pronunciation:', word.traditional);
     }, 800);
 }
 
